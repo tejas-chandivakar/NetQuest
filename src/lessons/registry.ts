@@ -6,6 +6,10 @@ import SubnetCalculator from '../components/SubnetCalculator'
 import { b1l1 } from './b1l1'
 import { b2l3 } from './b2l3'
 import { n2l1 } from './n2l1'
+import { b1l2, b1l3, b1l4, b1l5 } from './beginner1'
+import { b2l1, b2l2, b2l4, b2l5 } from './beginner2'
+import { b3l1, b3l2, b3l3, b3l4, b3l5 } from './beginner3'
+import { b4l1, b4l2, b4l3, b4l4, b4l5 } from './beginner4'
 import { b1l1Config, n3l3Config } from './configs'
 import { b1l1Break, n3l3Break } from './breaks'
 import { n2l2Break, n2l2Config, n2l3Config } from './switching'
@@ -26,7 +30,25 @@ import { n7l1Config, n7l2Config } from './projects'
 /** Learn-stage animations that are built. */
 export const LESSONS: Record<string, LessonSpec> = {
   b1l1,
+  b1l2,
+  b1l3,
+  b1l4,
+  b1l5,
+  b2l1,
+  b2l2,
   b2l3,
+  b2l4,
+  b2l5,
+  b3l1,
+  b3l2,
+  b3l3,
+  b3l4,
+  b3l5,
+  b4l1,
+  b4l2,
+  b4l3,
+  b4l4,
+  b4l5,
   n2l1,
 }
 

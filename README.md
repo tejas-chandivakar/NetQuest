@@ -104,10 +104,32 @@ All three stages are built:
 - **Break it** — fault switches over a working network, plus ping probes that animate the
   packet hop by hop and explain the failure
 
+**Networking Foundation is complete** — all 20 lessons have a Learn animation, so a
+beginner can go from "two computers, one wire" to "what happens when you type
+google.com" without hitting a gap.
+
 | Lesson | Learn | Configure | Break it |
 |---|:--:|:--:|:--:|
 | `b1l1` How two computers talk | yes | yes | yes |
+| `b1l2` Cables, WiFi and signals | yes | — | — |
+| `b1l3` LAN, WAN and the Internet | yes | — | — |
+| `b1l4` Clients and servers | yes | — | — |
+| `b1l5` The cast of a network | yes | — | — |
+| `b2l1` IP address | yes | — | — |
+| `b2l2` MAC address | yes | — | — |
 | `b2l3` IP vs MAC, and ARP | yes | — | — |
+| `b2l4` Public vs private IP | yes | — | — |
+| `b2l5` Binary made easy | yes | — | — |
+| `b3l1` What is a packet | yes | — | — |
+| `b3l2` The 7 OSI layers | yes | — | — |
+| `b3l3` TCP vs UDP | yes | — | — |
+| `b3l4` Port numbers | yes | — | — |
+| `b3l5` What is a protocol | yes | — | — |
+| `b4l1` When you type google.com | yes | — | — |
+| `b4l2` DNS | yes | — | — |
+| `b4l3` DHCP | yes | — | — |
+| `b4l4` Inside your WiFi router | yes | — | — |
+| `b4l5` Firewalls and security | yes | — | — |
 | `n1l4` Subnetting | — | calculator | — |
 | `n2l1` Switching and the MAC table | yes | — | — |
 | `n2l2` VLANs | — | yes | yes |
@@ -122,7 +144,8 @@ All three stages are built:
 | `n7l2` Project 2 — departments apart | — | yes | — |
 | `p2l4` BGP with two providers | — | yes | — |
 
-Every other lesson shows a roadmap card until its spec is written.
+Every CCNA and CCNP lesson not listed above shows a roadmap card until its spec is written.
 
-Not built yet: STP, QoS and multicast in the engine; the drag-and-drop topology builder;
-projects 3 to 5; and the quiz, flashcard and exam-simulator work.
+Not built yet: Learn animations for most of CCNA and CCNP; STP, QoS and multicast in the
+engine; the drag-and-drop topology builder; projects 3 to 5; and the quiz, flashcard and
+exam-simulator work.
