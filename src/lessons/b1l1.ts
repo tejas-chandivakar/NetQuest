@@ -45,6 +45,7 @@ export const b1l1: LessonSpec = {
         },
       },
       scene: () => ({ nodes: [A(), B()], links: [] }),
+      say: () => ({ nodeId: 'a', text: { gu: 'મને B વિશે કશી ખબર નથી', en: 'I have no idea B exists' } }),
     },
     {
       ms: 2400,
@@ -114,6 +115,7 @@ export const b1l1: LessonSpec = {
             ? [{ id: 'p', from: 'a', to: 'b', t: 0.055, color: 'var(--nq-pkt-data)', label: 'Hello →' }]
             : [],
       }),
+      say: () => ({ nodeId: 'a', text: { gu: 'પરબીડિયા પર B નું સરનામું લખું છું', en: 'Writing B’s address on the envelope' } }),
     },
     {
       ms: 3000,

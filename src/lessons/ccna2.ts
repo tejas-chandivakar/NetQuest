@@ -73,6 +73,10 @@ export const n3l3: LessonSpec = {
           { id: 'p', from: 'pc1', to: 'r1', t: 0.1 + ease(Math.min(1, t / 0.6)) * 0.8, color: t > 0.6 ? 'var(--nq-err)' : 'var(--nq-pkt-data)', label: t > 0.6 ? 'dropped ✕' : '→ 10.2.2.10' },
         ],
       }),
+      say: (t) =>
+        t > 0.6
+          ? { nodeId: 'r1', text: { gu: '10.2.2.0 મારા table માં નથી', en: '10.2.2.0 is not in my table' } }
+          : null,
     },
     {
       ms: 3000,
@@ -128,6 +132,10 @@ export const n3l3: LessonSpec = {
             ? [{ id: 'f', from: 'pc1', to: 'pc2', t: 0.08 + ease(t / 0.5) * 0.84, color: 'var(--nq-ok)', label: 'forward ✓' }]
             : [{ id: 'r', from: 'pc2', to: 'r2', t: 0.1 + ease((t - 0.5) / 0.5) * 0.8, color: 'var(--nq-err)', label: 'reply dropped ✕' }],
       }),
+      say: (t) =>
+        t > 0.55
+          ? { nodeId: 'r2', text: { gu: 'જવાબ ક્યાં મોકલું? રસ્તો જ નથી', en: 'Where do I send the reply? No route' } }
+          : null,
       aside: () => ({
         title: { gu: 'R2 નું routing table', en: 'R2 routing table' },
         head: ['code', 'network', 'via'],

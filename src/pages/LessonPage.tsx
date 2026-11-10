@@ -106,7 +106,7 @@ export default function LessonPage() {
 
   return (
     <div
-      className="mx-auto w-full max-w-[1240px] px-5 py-8"
+      className="mx-auto w-full max-w-[1640px] px-5 py-8"
     >
       <nav className="flex flex-wrap items-center gap-2 text-xs text-[var(--nq-text-mute)]">
         <Link to={`/track/${track.id}`} className="nq-focus rounded hover:text-[var(--nq-text-dim)]">

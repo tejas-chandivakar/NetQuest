@@ -448,6 +448,7 @@ export const b4l3: LessonSpec = {
             ? [{ id: 'q', from: 'n', to: 'sw', t: 0.1 + ease(t / 0.5) * 0.8, color: 'var(--nq-pkt-dns)', label: 'DISCOVER' }]
             : [{ id: 'q', from: 'sw', to: 'd', t: 0.1 + ease((t - 0.5) / 0.5) * 0.8, color: 'var(--nq-pkt-dns)', label: 'DISCOVER' }],
       }),
+      say: () => ({ nodeId: 'n', text: { gu: 'મારી પાસે સરનામું જ નથી!', en: 'I have no address at all!' } }),
     },
     {
       ms: 2800,
@@ -470,6 +471,7 @@ export const b4l3: LessonSpec = {
         links: [{ id: 'l', from: 'n', to: 'd', state: 'up', flowing: true }],
         packets: [{ id: 'o', from: 'd', to: 'n', t: 0.08 + ease(t) * 0.84, color: 'var(--nq-pkt-ctrl)', label: 'OFFER 192.168.1.50' }],
       }),
+      say: () => ({ nodeId: 'd', text: { gu: 'આ લો — .50 ખાલી છે', en: 'Here, .50 is free' } }),
     },
     {
       ms: 2800,
@@ -492,6 +494,7 @@ export const b4l3: LessonSpec = {
         links: [{ id: 'l', from: 'n', to: 'd', state: 'up', flowing: true }],
         packets: [{ id: 'r', from: 'n', to: 'd', t: 0.08 + ease(t) * 0.84, color: 'var(--nq-pkt-tcp)', label: 'REQUEST .50' }],
       }),
+      say: () => ({ nodeId: 'n', text: { gu: 'હા, એ જ મને આપો', en: 'Yes, give me that one' } }),
     },
     {
       ms: 3000,
@@ -514,9 +517,28 @@ export const b4l3: LessonSpec = {
         links: [{ id: 'l', from: 'n', to: 'd', state: 'up', flowing: true }],
         packets: [{ id: 'a', from: 'd', to: 'n', t: 0.08 + ease(t) * 0.84, color: 'var(--nq-ok)', label: 'ACK · lease 24h' }],
       }),
+      say: (t) =>
+        t > 0.5
+          ? { nodeId: 'n', text: { gu: 'મળ્યું! હવે હું 192.168.1.50 છું', en: 'Got it — I am 192.168.1.50 now' } }
+          : { nodeId: 'd', text: { gu: 'મંજૂર, 24 કલાક માટે', en: 'Approved, for 24 hours' } },
       aside: (t) => ({
         title: { gu: 'મળેલી માહિતી', en: 'What you received' },
+        owner: 'n',
+        caption:
+          t > 0.5
+            ? {
+                gu: 'એક ACK માં ચાર સેટિંગ એકસાથે આવ્યાં — સરનામું એકલું પૂરતું નથી.',
+                en: 'One ACK carried four settings at once — an address alone would not be enough.',
+              }
+            : { gu: 'હજી કશું મળ્યું નથી. ACK આવશે ત્યારે આ ભરાશે.', en: 'Nothing yet. This fills in when the ACK lands.' },
         head: ['setting', 'value'],
+        notes: {
+          0: { gu: 'આ મશીનનું પોતાનું સરનામું', en: 'this machine’s own address' },
+          2: { gu: 'બહાર જવાનો દરવાજો', en: 'the way out of this network' },
+          3: { gu: 'નામને IP માં બદલનાર', en: 'turns names into addresses' },
+          4: { gu: 'મુદત — અડધે પહોંચતાં renew થશે', en: 'renews itself halfway through' },
+        },
+        empty: { gu: 'ACK હજી આવ્યું નથી.', en: 'The ACK has not arrived yet.' },
         rows:
           t > 0.5
             ? [

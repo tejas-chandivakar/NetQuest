@@ -84,6 +84,22 @@ still completable.
 
 ## One interface everywhere
 
+The stage is a theatre, not a scroll. The drawing sits on the left with its
+height capped; the reading rail on the right carries the narration and the live
+working surface. Both are on screen at once, because the whole point is to watch
+a panel change while the animation is still running. A Focus button drops
+everything else away; Esc brings it back.
+
+A live panel explains itself rather than appearing as an unlabelled grid of
+values. Rows that changed during the current step stay highlighted for the whole
+step — not a flash that expires while you are paused — the heading says in words
+what just happened, and the panel names the device whose table it is, inferred
+from the heading, the device the step is drawing attention to, or where a packet
+is arriving. When a table changes, a line is drawn from that device to the panel
+so cause and effect are visibly joined. Devices with nothing to do with the
+current moment fade back, and a step can give a device a line of speech so the
+drawing explains itself without the eye leaving it.
+
 Two rules hold the interface still:
 
 - **Beginner and Exam change the words, never the interface.** One stylesheet, one set of

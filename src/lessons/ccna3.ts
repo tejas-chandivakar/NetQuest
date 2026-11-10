@@ -583,6 +583,10 @@ export const n5l2: LessonSpec = {
           { id: 'g', from: 'guest', to: 'r1', t: 0.06 + ease(Math.min(1, t / 0.65)) * 0.84, color: t > 0.65 ? 'var(--nq-err)' : WARN, label: t > 0.65 ? 'line 20 · deny ✕' : 'from 10.0.2.10' },
         ],
       }),
+      say: (t) =>
+        t > 0.65
+          ? { nodeId: 'r1', text: { gu: 'લીટી 20 મેળ ખાઈ — deny', en: 'Line 20 matched — deny' } }
+          : null,
       aside: (t) => ({
         title: { gu: 'તપાસ', en: 'Evaluation' },
         head: ['#', 'rule', 'result'],
@@ -615,6 +619,10 @@ export const n5l2: LessonSpec = {
           { id: 'o', from: 'other', to: 'r1', t: 0.06 + ease(Math.min(1, t / 0.7)) * 0.84, color: t > 0.7 ? 'var(--nq-err)' : CCNA, label: t > 0.7 ? 'implicit deny ✕' : 'matches nothing…' },
         ],
       }),
+      say: (t) =>
+        t > 0.7
+          ? { nodeId: 'r1', text: { gu: 'કશામાં મેળ નહીં — એટલે બંધ', en: 'Matched nothing — so blocked' } }
+          : null,
       aside: (t) => ({
         title: { gu: 'ACL 100 — ખરેખર', en: 'ACL 100 — what it really is' },
         head: ['#', 'rule', 'action'],

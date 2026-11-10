@@ -308,7 +308,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
           </button>
         </div>
       }
-      left={
+      narration={
         <div className="nq-panel p-5">
           <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--nq-text-mute)]">
             {t(L.faults)}
@@ -360,7 +360,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
           </div>
         </div>
       }
-      right={
+      surface={
         <>
           <div className="nq-panel p-5">
             <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--nq-text-mute)]">

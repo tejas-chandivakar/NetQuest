@@ -13,6 +13,15 @@ export interface NodeSpec {
   dim?: boolean
   /** draw an attention ring */
   pulse?: boolean
+  /** softly pushed back because another node is the subject of this step */
+  faded?: boolean
+  accent?: string
+}
+
+/** A short line of speech anchored above a device. */
+export interface CalloutSpec {
+  nodeId: string
+  text: string
   accent?: string
 }
 
@@ -40,6 +49,7 @@ interface Props {
   nodes: NodeSpec[]
   links?: LinkSpec[]
   packets?: PacketSpec[]
+  callouts?: CalloutSpec[]
   width?: number
   height?: number
   className?: string
@@ -190,6 +200,7 @@ export default function Topology({
   nodes,
   links = [],
   packets = [],
+  callouts = [],
   width = 860,
   height = 420,
   className = '',
@@ -209,7 +220,7 @@ export default function Topology({
     <svg
       viewBox={`0 0 ${width} ${height}`}
       className={className}
-      style={{ width: '100%', height: 'auto', display: 'block', ...style }}
+      style={{ width: '100%', height: 'auto', maxHeight: '100%', display: 'block', ...style }}
       role="img"
     >
       {grid && (
@@ -285,7 +296,13 @@ export default function Topology({
       {/* nodes */}
       <g>
         {nodes.map((n) => (
-          <g key={n.id} transform={`translate(${n.x},${n.y})`} opacity={n.dim ? 0.32 : 1}>
+          <g
+            key={n.id}
+            data-node-id={n.id}
+            transform={`translate(${n.x},${n.y})`}
+            opacity={n.dim ? 0.32 : n.faded ? 0.42 : 1}
+            style={{ transition: 'opacity 260ms' }}
+          >
             {n.pulse && (
               <circle
                 r={46}
@@ -343,6 +360,42 @@ export default function Topology({
                   {p.label}
                 </text>
               )}
+            </g>
+          )
+        })}
+      </g>
+
+      {/* callouts — the drawing explaining itself, so the eye never has to leave it */}
+      <g>
+        {callouts.map((c) => {
+          const n = byId.get(c.nodeId)
+          if (!n) return null
+          const accent = c.accent ?? n.accent ?? 'var(--nq-accent)'
+          const w = Math.min(230, c.text.length * 6.6 + 24)
+          const top = n.y - SIZE[n.type].h / 2 - 54
+          return (
+            <g key={c.nodeId} transform={`translate(${n.x},${top})`}>
+              <rect
+                x={-w / 2}
+                y={-16}
+                width={w}
+                height={32}
+                rx={10}
+                fill="var(--nq-panel)"
+                stroke={accent}
+                strokeWidth={1.4}
+              />
+              <path d={`M -7 16 L 0 26 L 7 16 Z`} fill="var(--nq-panel)" stroke={accent} strokeWidth={1.4} />
+              <path d={`M -6 16 L 6 16`} stroke="var(--nq-panel)" strokeWidth={2.4} />
+              <text
+                y={4}
+                textAnchor="middle"
+                fontSize={11.5}
+                fontWeight={600}
+                fill="var(--nq-text)"
+              >
+                {c.text}
+              </text>
             </g>
           )
         })}

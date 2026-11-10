@@ -239,7 +239,7 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
             </span>
           </div>
         }
-        left={
+        narration={
           <>
             <div className="nq-panel p-5">
               <div className="flex items-center gap-3">
@@ -293,7 +293,9 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                 </div>
               )}
             </div>
-
+          </>
+        }
+        progress={
             <ol className="nq-panel space-y-1.5 p-5">
               {spec.tasks.map((task, i) => {
                 const ok = doneSet.has(task.id)
@@ -327,9 +329,8 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                 )
               })}
             </ol>
-          </>
         }
-        right={
+        surface={
           <>
             <Terminal
               key={`${active}-${nonce}`}
