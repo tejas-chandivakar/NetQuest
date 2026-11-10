@@ -1,10 +1,17 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Bi } from '../data/courses'
+
+type BiText = { gu: string; en: string }
 import type { DeviceType, LinkSpec, NodeSpec } from './Topology'
 import Topology from './Topology'
 import Terminal from './Terminal'
 import StageLayout from './StageLayout'
-import { CliSession, type CliLine } from '../engine/cli'
+import { CliSession, MODE_NAME, type CliLine } from '../engine/cli'
+import CommandList from './CommandList'
+import { CommandReferenceButton } from './CommandReference'
+import LiveTable from './LiveTable'
+import { describeChange, snapshot } from '../lib/netDiff'
+import { useApp } from '../store/useApp'
 import type { Network } from '../engine/network'
 import { cidr } from '../engine/ip'
 import { useT } from '../lib/i18n'
@@ -22,6 +29,8 @@ export interface ConfigTask {
   instruction: Bi
   /** three escalating levels: nudge, syntax, full answer */
   hints: [Bi, Bi, Bi]
+  /** the lines to type; taken from the full-answer hint when not given */
+  commands?: string[]
   why?: Bi
   check: (net: Network) => boolean
   done: Bi
@@ -51,77 +60,64 @@ const L = {
     en: 'Tab completes · ↑ recalls · ? lists commands',
   },
   whatToDo: { gu: 'શું કરવાનું છે', en: 'What to do' },
+  youAre: { gu: 'તમે અત્યારે', en: 'You are in' },
+  justHappened: { gu: 'હમણાં શું થયું', en: 'What just happened' },
+  nothingYet: { gu: 'હજી કોઈ કમાન્ડ ચાલ્યો નથી.', en: 'No command has run yet.' },
+  noEffect: { gu: 'એ કમાન્ડે કશું બદલ્યું નહીં.', en: 'That command changed nothing.' },
+  showAll: { gu: 'આખી lesson ના કમાન્ડ', en: 'All commands' },
+  hideAll: { gu: 'છુપાવો', en: 'Hide' },
+  allTitle: { gu: 'આ lesson ના બધા કમાન્ડ', en: 'Every command in this lesson' },
   console: { gu: 'Console', en: 'Console' },
 }
 
-function Tables({ net, deviceId }: { net: Network; deviceId: string }) {
-  const t = useT()
+function Tables({ net, deviceId, rev }: { net: Network; deviceId: string; rev: number }) {
   const dev = net.get(deviceId)
   if (!dev) return null
   const routes = dev.routingTable().filter((r) => r.source !== 'L')
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      <div className="nq-panel p-3">
-        <h4 className="nq-mono mb-2 text-[10px] uppercase tracking-[0.14em] text-[var(--nq-text-mute)]">
-          {t(L.ifaces)}
-        </h4>
-        <table className="nq-mono w-full text-[11px]">
-          <tbody>
-            {dev.ifaces.map((i) => {
-              const up = !i.shutdown && (i.vlanId !== undefined || net.linkUp(dev.id, i.name))
-              return (
-                <tr key={i.name} className="border-t border-[var(--nq-border)] first:border-0">
-                  <td className="py-1 pr-2 text-[var(--nq-text-dim)]">{i.name}</td>
-                  <td className="py-1 pr-2 text-[var(--nq-text)]">
-                    {i.ip ? cidr(i.ip, i.mask!) : <span className="opacity-40">unassigned</span>}
-                  </td>
-                  <td className="py-1 text-right">
-                    <span
-                      className="rounded px-1.5 py-px text-[10px]"
-                      style={{
-                        color: up ? 'var(--nq-ok)' : 'var(--nq-err)',
-                        background: up
-                          ? 'color-mix(in srgb, var(--nq-ok) 14%, transparent)'
-                          : 'color-mix(in srgb, var(--nq-err) 12%, transparent)',
-                      }}
-                    >
-                      {i.shutdown ? 'admin down' : up ? 'up/up' : 'down'}
-                    </span>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="nq-panel p-3">
-        <h4 className="nq-mono mb-2 text-[10px] uppercase tracking-[0.14em] text-[var(--nq-text-mute)]">
-          {t(L.routes)}
-        </h4>
-        {routes.length === 0 ? (
-          <p className="nq-mono text-[11px] text-[var(--nq-text-mute)]">{t(L.empty)}</p>
-        ) : (
-          <table className="nq-mono w-full text-[11px]">
-            <tbody>
-              {routes.map((r, i) => (
-                <tr key={i} className="border-t border-[var(--nq-border)] first:border-0">
-                  <td className="w-6 py-1" style={{ color: 'var(--nq-accent)' }}>
-                    {r.source}
-                  </td>
-                  <td className="py-1 pr-2 text-[var(--nq-text)]">{cidr(r.prefix, r.mask)}</td>
-                  <td className="py-1 text-right text-[var(--nq-text-mute)]">
-                    {r.nextHop ? `via ${r.nextHop}` : r.iface}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <LiveTable
+        stepKey={rev}
+        spec={{
+          title: L.ifaces,
+          owner: deviceId,
+          head: ['port', 'address', 'state'],
+          empty: { gu: 'કોઈ પોર્ટ નથી.', en: 'No ports on this device.' },
+          rows: dev.ifaces.map((i) => {
+            const up = !i.shutdown && (i.vlanId !== undefined || net.linkUp(dev.id, i.name))
+            return [
+              i.name,
+              i.ip ? cidr(i.ip, i.mask!) : '—',
+              i.shutdown ? 'admin down' : up ? 'up/up' : 'down',
+            ]
+          }),
+        }}
+      />
+      <LiveTable
+        stepKey={rev}
+        spec={{
+          title: L.routes,
+          owner: deviceId,
+          head: ['', 'network', 'via'],
+          empty: {
+            gu: 'એકેય રસ્તો નથી — એટલે બીજે ક્યાંય પહોંચાશે નહીં.',
+            en: 'No paths yet, so nothing elsewhere can be reached.',
+          },
+          rows: routes.map((r) => [r.source, cidr(r.prefix, r.mask), r.nextHop ? `via ${r.nextHop}` : (r.iface ?? '—')]),
+        }}
+      />
     </div>
   )
+}
+
+/** The lines a task wants typed. The full-answer hint already is that list. */
+function commandsFor(task: ConfigTask): string[] {
+  if (task.commands) return task.commands
+  return task.hints[2].en
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean)
 }
 
 export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
@@ -142,6 +138,14 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
   const [lines, setLines] = useState<Record<string, CliLine[]>>({})
   const [hintLevel, setHintLevel] = useState(0)
   const [rev, setRev] = useState(0)
+  const [typed, setTyped] = useState<Set<string>>(new Set())
+  const [changed, setChanged] = useState<{ lines: BiText[]; touched: string[]; n: number }>({
+    lines: [],
+    touched: [],
+    n: 0,
+  })
+  const [prefill, setPrefill] = useState<{ text: string; n: number }>({ text: '', n: 0 })
+  const mode = useApp((st) => st.mode)
 
   const doneSet = new Set<string>()
   for (const task of spec.tasks) {
@@ -157,18 +161,51 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
 
   const run = (raw: string) => {
     const s = sessions.get(active)!
+    const before = snapshot(net)
     const produced = s.exec(raw)
+    const diff = describeChange(before, snapshot(net))
+
     setLines((prev) => ({ ...prev, [active]: [...(prev[active] ?? []), ...produced] }))
+    setTyped((prev) => new Set(prev).add(raw.trim().toLowerCase()))
+    if (diff.lines.length) setChanged((c) => ({ ...diff, n: c.n + 1 }))
     setHintLevel(0)
     setRev((r) => r + 1)
   }
 
   const reset = () => {
     setLines({})
+    setTyped(new Set())
+    setChanged({ lines: [], touched: [], n: 0 })
     setHintLevel(0)
     setNonce((n) => n + 1)
     setActive(spec.terminals[0])
   }
+
+  // the devices the last command actually altered, lit briefly so the change
+  // is visible on the drawing and not only in a table
+  const [showAll, setShowAll] = useState(false)
+  const [flash, setFlash] = useState<string[]>([])
+  useEffect(() => {
+    if (!changed.touched.length) return
+    setFlash(changed.touched)
+    const h = setTimeout(() => setFlash([]), 1400)
+    return () => clearTimeout(h)
+  }, [changed.n, changed.touched])
+
+  // where this console currently stands, so IOS modes stop being a guessing game
+  const sessionMode = sessions.get(active)!.mode
+  const CHAIN: Record<string, string[]> = {
+    user: ['user'],
+    priv: ['user', 'priv'],
+    config: ['user', 'priv', 'config'],
+    'config-if': ['user', 'priv', 'config', 'config-if'],
+    'config-vlan': ['user', 'priv', 'config', 'config-vlan'],
+    'config-router': ['user', 'priv', 'config', 'config-router'],
+    'config-dhcp': ['user', 'priv', 'config', 'config-dhcp'],
+  }
+  const trail = (CHAIN[sessionMode] ?? ['user']).map(
+    (m) => MODE_NAME[m as keyof typeof MODE_NAME],
+  )
 
   const nodes: NodeSpec[] = spec.layout.map((d) => {
     const dev = net.get(d.id)!
@@ -181,7 +218,7 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
       label: dev.name,
       sub: ip ?? '—',
       dim: !ip,
-      pulse: d.id === active && !allDone,
+      pulse: flash.includes(d.id) || (d.id === active && !allDone),
       accent: d.accent,
     }
   })
@@ -227,12 +264,21 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                 {net.get(id)?.name ?? id}
               </button>
             ))}
-            <button
-              onClick={reset}
-              className="nq-focus ml-auto rounded-lg border border-[var(--nq-border-2)] px-3 py-1.5 text-[11px] text-[var(--nq-text-mute)] transition hover:text-[var(--nq-text)]"
-            >
-              ↺ {t(L.reset)}
-            </button>
+            <span className="ml-auto flex items-center gap-2">
+              <CommandReferenceButton />
+              <button
+                onClick={() => setShowAll((v) => !v)}
+                className="nq-focus rounded-lg border border-[var(--nq-border-2)] px-3 py-1.5 text-[11px] text-[var(--nq-text-mute)] transition hover:text-[var(--nq-text)]"
+              >
+                {showAll ? t(L.hideAll) : t(L.showAll)}
+              </button>
+              <button
+                onClick={reset}
+                className="nq-focus rounded-lg border border-[var(--nq-border-2)] px-3 py-1.5 text-[11px] text-[var(--nq-text-mute)] transition hover:text-[var(--nq-text)]"
+              >
+                ↺ {t(L.reset)}
+              </button>
+            </span>
             <span className="nq-mono text-[11px] tracking-wider text-[var(--nq-text-mute)]">
               {t(L.task)} {Math.min(currentIdx + 1 || spec.tasks.length, spec.tasks.length)}/
               {spec.tasks.length}
@@ -263,7 +309,7 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                 {allDone ? t(spec.success) : t(current!.instruction)}
               </p>
 
-              {!allDone && (
+              {!allDone && mode === 'beginner' && (
                 <div className="mt-4">
                   {hintLevel > 0 && (
                     <div className="mb-2 space-y-1.5">
@@ -291,6 +337,54 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                     </button>
                   )}
                 </div>
+              )}
+            </div>
+
+            {showAll && (
+              <div className="nq-panel p-5">
+                <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--nq-text-mute)]">
+                  {t(L.allTitle)}
+                </h3>
+                <ol className="mt-3 space-y-3">
+                  {spec.tasks.map((task, i) => (
+                    <li key={task.id}>
+                      <p className="text-[12px] font-semibold text-[var(--nq-text-dim)]">
+                        {i + 1}. {t(task.instruction)}
+                      </p>
+                      <pre className="nq-mono mt-1 whitespace-pre-wrap rounded-lg px-3 py-2 text-[11.5px] text-[var(--nq-text-mute)]" style={{ background: 'var(--nq-panel-2)' }}>
+                        {commandsFor(task).join(String.fromCharCode(10))}
+                      </pre>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            {!allDone && mode === 'beginner' && (
+              <CommandList
+                commands={commandsFor(current!)}
+                typed={typed}
+                onPick={(line) => setPrefill((p) => ({ text: line, n: p.n + 1 }))}
+              />
+            )}
+
+            <div className="nq-panel p-5">
+              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--nq-text-mute)]">
+                {t(L.justHappened)}
+              </h3>
+              {changed.n === 0 ? (
+                <p className="nq-prose mt-2 text-[12.5px] text-[var(--nq-text-mute)]">{t(L.nothingYet)}</p>
+              ) : changed.lines.length === 0 ? (
+                <p className="nq-prose mt-2 text-[12.5px] text-[var(--nq-text-mute)]">{t(L.noEffect)}</p>
+              ) : (
+                <ul className="mt-2 space-y-1">
+                  {changed.lines.map((l, i) => (
+                    <li key={i} className="nq-prose flex items-start gap-2 text-[12.5px]">
+                      <span style={{ color: 'var(--nq-ok)' }}>→</span>
+                      <span className="text-[var(--nq-text-dim)]">{t(l)}</span>
+                    </li>
+                  ))}
+                </ul>
               )}
             </div>
           </>
@@ -332,6 +426,30 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
         }
         surface={
           <>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="nq-mono text-[10px] uppercase tracking-[0.14em] text-[var(--nq-text-mute)]">
+                {t(L.youAre)}
+              </span>
+              {trail.map((m, i) => (
+                <span key={i} className="flex items-center gap-1.5">
+                  {i > 0 && <span className="text-[var(--nq-text-mute)]">›</span>}
+                  <span
+                    className="nq-mono rounded px-1.5 py-px text-[10.5px]"
+                    style={
+                      i === trail.length - 1
+                        ? {
+                            background: 'color-mix(in srgb, var(--nq-accent) 18%, transparent)',
+                            color: 'var(--nq-accent)',
+                          }
+                        : { color: 'var(--nq-text-mute)' }
+                    }
+                  >
+                    {t(m)}
+                  </span>
+                </span>
+              ))}
+            </div>
+
             <Terminal
               key={`${active}-${nonce}`}
               session={sessions.get(active)!}
@@ -339,9 +457,10 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
               onRun={run}
               placeholder={t(L.typeHere)}
               height={260}
+              prefill={prefill}
             />
             <p className="nq-mono text-[10.5px] text-[var(--nq-text-mute)]">{t(L.tabHint)}</p>
-            <Tables net={net} deviceId={active} />
+            <Tables net={net} deviceId={active} rev={rev} />
           </>
         }
       />
