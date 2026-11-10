@@ -130,22 +130,25 @@ google.com" without hitting a gap.
 | `b4l3` DHCP | yes | — | — |
 | `b4l4` Inside your WiFi router | yes | — | — |
 | `b4l5` Firewalls and security | yes | — | — |
-| `n1l4` Subnetting | — | calculator | — |
+| `n1l4` Subnetting | yes | calculator | — |
 | `n2l1` Switching and the MAC table | yes | — | — |
-| `n2l2` VLANs | — | yes | yes |
-| `n2l3` Trunking and 802.1Q | — | yes | — |
-| `n3l3` Static routing | — | yes | yes |
-| `n3l5` OSPF single area | — | yes | yes |
-| `n3l6` HSRP | — | yes | yes |
-| `n4l1` DHCP | — | yes | — |
-| `n4l2` NAT and PAT | — | yes | yes |
-| `n5l2` Access control lists | — | yes | yes |
-| `n7l1` Project 1 — small office | — | yes | — |
-| `n7l2` Project 2 — departments apart | — | yes | — |
+| `n2l2` VLANs | yes | yes | yes |
+| `n2l3` Trunking and 802.1Q | yes | yes | — |
+| `n3l3` Static routing | yes | yes | yes |
+| `n3l5` OSPF single area | yes | yes | yes |
+| `n3l6` HSRP | yes | yes | yes |
+| `n4l1` DHCP | yes | yes | — |
+| `n4l2` NAT and PAT | yes | yes | yes |
+| `n5l2` Access control lists | yes | yes | yes |
+| `n7l1` Project 1 — small office | yes | yes | — |
+| `n7l2` Project 2 — departments apart | yes | yes | — |
 | `p2l4` BGP with two providers | — | yes | — |
 
 Every CCNA and CCNP lesson not listed above shows a roadmap card until its spec is written.
 
-Not built yet: Learn animations for most of CCNA and CCNP; STP, QoS and multicast in the
-engine; the drag-and-drop topology builder; projects 3 to 5; and the quiz, flashcard and
+Every CCNA lesson that has a lab now also has the Learn animation that explains it, so
+the core CCNA topics run through all the stages they have.
+
+Not built yet: the 24 CCNA and 19 CCNP lessons with no spec at all; STP, QoS and
+multicast in the engine; the drag-and-drop topology builder; projects 3 to 5; and the quiz, flashcard and
 exam-simulator work.
