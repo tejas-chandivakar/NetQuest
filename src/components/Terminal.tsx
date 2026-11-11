@@ -2,12 +2,13 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { explainCommand, type CliLine, type CliSession } from '../engine/cli'
 import { useT } from '../lib/i18n'
 
+/* the console keeps its own palette: the page is paper, this is a screen */
 const COLOR: Record<CliLine['kind'], string> = {
-  in: 'var(--nq-text)',
-  out: 'var(--nq-text-dim)',
-  err: 'var(--nq-err)',
-  info: 'var(--nq-info)',
-  ok: 'var(--nq-ok)',
+  in: '#E8EEFC',
+  out: '#9FB0D0',
+  err: '#FCA5A5',
+  info: '#7DD3FC',
+  ok: '#6EE7B7',
 }
 
 interface Props {
@@ -87,16 +88,16 @@ export default function Terminal({ session, lines, onRun, height = 300, placehol
 
   return (
     <div
-      className="overflow-hidden rounded-xl border border-[var(--nq-border-2)] bg-[#05080f]"
+      className="overflow-hidden rounded-xl border border-[var(--nq-border-2)] bg-[var(--nq-term-bg)]"
       onClick={() => inputRef.current?.focus()}
     >
-      <div className="flex items-center gap-2 border-b border-[var(--nq-border)] bg-[var(--nq-bg-2)] px-3 py-1.5">
+      <div className="flex items-center gap-2 border-b border-[#1E293B] bg-[#121A2E] px-3 py-1.5">
         <span className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         </span>
-        <span className="nq-mono ml-1 text-[11px] text-[var(--nq-text-mute)]">
+        <span className="nq-mono ml-1 text-[11px] text-[#94A3B8]">
           {session.dev.name} · console
         </span>
       </div>
@@ -127,7 +128,7 @@ export default function Terminal({ session, lines, onRun, height = 300, placehol
         })}
 
         <div className="flex items-baseline gap-2">
-          <span style={{ color: 'var(--nq-ok)' }}>{session.prompt()}</span>
+          <span style={{ color: '#6EE7B7' }}>{session.prompt()}</span>
           <input
             ref={inputRef}
             value={value}
@@ -136,7 +137,7 @@ export default function Terminal({ session, lines, onRun, height = 300, placehol
             spellCheck={false}
             autoComplete="off"
             placeholder={placeholder}
-            className="nq-mono flex-1 border-0 bg-transparent text-[12.5px] text-[var(--nq-text)] outline-none placeholder:text-[var(--nq-text-mute)]"
+            className="nq-mono flex-1 border-0 bg-transparent text-[12.5px] text-[#E8EEFC] outline-none placeholder:text-[#64748B]"
           />
         </div>
       </div>

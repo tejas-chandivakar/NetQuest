@@ -41,13 +41,21 @@ const L = {
   hint: { gu: 'Esc દબાવો', en: 'press Esc' },
 }
 
+/**
+ * The lead paragraph sits on the page, not inside a panel. A box around prose
+ * reads as chrome; the same words set large and plain read as the author
+ * talking — which is what the opening of a lesson should be.
+ */
 export function StageNote({ label, text, accent }: { label: string; text: string; accent: string }) {
   return (
-    <div className="nq-panel border-l-[3px] p-5" style={{ borderLeftColor: accent }}>
-      <h3 className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: accent }}>
+    <div className="max-w-[46em] px-1 py-1">
+      <span
+        className="text-[11px] font-bold uppercase tracking-[0.13em]"
+        style={{ color: accent }}
+      >
         {label}
-      </h3>
-      <p className="nq-prose mt-2 text-[var(--nq-text-dim)]">{text}</p>
+      </span>
+      <p className="mt-1.5 text-[1.0625rem] leading-[1.75] text-[var(--nq-text-dim)]">{text}</p>
     </div>
   )
 }

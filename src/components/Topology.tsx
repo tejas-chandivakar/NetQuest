@@ -79,9 +79,9 @@ function DeviceShape({ node }: { node: NodeSpec }) {
   const { type } = node
   const accent = node.accent ?? 'var(--nq-accent)'
   const { w, h } = SIZE[type]
-  const face = 'var(--nq-panel-2)'
-  const lid = 'var(--nq-panel)'
-  const edge = node.pulse ? accent : 'var(--nq-border-2)'
+  const face = 'var(--nq-device)'
+  const lid = 'var(--nq-device-top)'
+  const edge = node.pulse ? accent : 'var(--nq-device-edge)'
   const sw = node.pulse ? 2 : 1.5
 
   const body = { fill: face, stroke: edge, strokeWidth: sw }
@@ -300,7 +300,7 @@ export default function Topology({
           if (!a || !b) return null
           const down = l.state === 'down'
           const idle = l.state === 'idle'
-          const colour = down ? 'var(--nq-err)' : idle ? 'var(--nq-border-2)' : 'var(--nq-ok)'
+          const colour = down ? 'var(--nq-err)' : idle ? 'var(--nq-wire)' : 'var(--nq-ok)'
           const mx = (a.x + b.x) / 2
           const my = (a.y + b.y) / 2
           return (

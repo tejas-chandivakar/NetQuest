@@ -1,43 +1,53 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Consolas", monospace;
 }
 
 :root {
-  /* Surfaces */
-  --nq-bg:        #070b14;
-  --nq-bg-2:      #0c1221;
-  --nq-panel:     #111a2e;
-  --nq-panel-2:   #16213a;
-  --nq-border:    #233150;
-  --nq-border-2:  #2e4068;
+  /* Surfaces — paper, not a terminal */
+  --nq-bg:        #F5F3FF;
+  --nq-bg-2:      #EEF2FF;
+  --nq-panel:     #FFFFFF;
+  --nq-panel-2:   #F1F5FD;
+  --nq-border:    #E0E7FF;
+  --nq-border-2:  #C7D2FE;
 
   /* Text */
-  --nq-text:      #e8eefc;
-  --nq-text-dim:  #93a3c4;
-  --nq-text-mute: #5f719a;
+  --nq-text:      #1E1B4B;
+  --nq-text-dim:  #475569;
+  --nq-text-mute: #7C87A8;
 
   /* Track accents */
-  --nq-beginner:  #34d399;
-  --nq-ccna:      #38bdf8;
-  --nq-ccnp:      #a78bfa;
+  --nq-beginner:  #0D9488;
+  --nq-ccna:      #4F46E5;
+  --nq-ccnp:      #7C3AED;
 
   /* Semantic */
-  --nq-ok:        #34d399;
-  --nq-warn:      #fbbf24;
-  --nq-err:       #f87171;
-  --nq-info:      #38bdf8;
+  --nq-ok:        #15803D;
+  --nq-warn:      #B45309;
+  --nq-err:       #DC2626;
+  --nq-info:      #4F46E5;
 
-  /* Packet colours */
-  --nq-pkt-dns:   #fbbf24;
-  --nq-pkt-tcp:   #38bdf8;
-  --nq-pkt-data:  #34d399;
-  --nq-pkt-ctrl:  #a78bfa;
+  /* Packet colours — the envelope is the one warm thing on the page */
+  --nq-pkt-dns:   #B45309;
+  --nq-pkt-tcp:   #4F46E5;
+  --nq-pkt-data:  #EA580C;
+  --nq-pkt-ctrl:  #7C3AED;
 
   --nq-accent:    var(--nq-ccna);
   --nq-radius:    14px;
+
+  /* a device on white paper needs a confident outline, not a pale one */
+  --nq-device:      #EEF2FF;
+  --nq-device-top:  #FFFFFF;
+  --nq-device-edge: #6366F1;
+  --nq-wire:        #94A3B8;
+
+  /* the console stays dark, because a real one is */
+  --nq-term-bg:   #0B1020;
+  --nq-term-text: #E8EEFC;
 }
 
 * { box-sizing: border-box; }
@@ -47,8 +57,8 @@ html, body, #root { height: 100%; }
 body {
   margin: 0;
   background:
-    radial-gradient(1100px 600px at 12% -5%, color-mix(in srgb, var(--nq-accent) 10%, transparent), transparent 60%),
-    radial-gradient(900px 500px at 95% 0%, color-mix(in srgb, var(--nq-ccnp) 8%, transparent), transparent 55%),
+    radial-gradient(1000px 520px at 10% -8%, color-mix(in srgb, var(--nq-accent) 7%, transparent), transparent 62%),
+    radial-gradient(820px 440px at 96% 0%, color-mix(in srgb, var(--nq-ccnp) 6%, transparent), transparent 58%),
     var(--nq-bg);
   color: var(--nq-text);
   font-family: var(--font-sans);
@@ -71,10 +81,9 @@ body {
 /* ---------- reusable primitives ---------- */
 
 .nq-panel {
-  background: color-mix(in srgb, var(--nq-panel) 88%, transparent);
+  background: var(--nq-panel);
   border: 1px solid var(--nq-border);
   border-radius: var(--nq-radius);
-  backdrop-filter: blur(10px);
 }
 
 .nq-chip {
@@ -84,7 +93,7 @@ body {
   border-radius: 99px;
   border: 1px solid var(--nq-border-2);
   color: var(--nq-text-dim);
-  background: color-mix(in srgb, var(--nq-panel-2) 70%, transparent);
+  background: var(--nq-panel-2);
 }
 
 .nq-mono { font-family: var(--font-mono); font-variant-ligatures: none; }
