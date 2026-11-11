@@ -5,7 +5,7 @@ import { UI, useT } from '../lib/i18n'
 import { hasLesson } from '../lessons/registry'
 
 const KIND_COLOR: Record<string, string> = {
-  concept: 'var(--nq-text-mute)',
+  concept: 'var(--nq-text-dim)',
   config: 'var(--nq-ccna)',
   lab: 'var(--nq-warn)',
   project: 'var(--nq-ccnp)',
@@ -26,8 +26,8 @@ function LessonRow({ lesson, n, accent }: { lesson: Lesson; n: number; accent: s
         className="nq-mono mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[11px] font-bold"
         style={
           done
-            ? { background: accent, color: 'var(--nq-bg)' }
-            : { background: 'var(--nq-panel-2)', color: 'var(--nq-text-mute)' }
+            ? { background: accent, color: 'var(--nq-on-accent)' }
+            : { background: 'var(--nq-panel-2)', color: 'var(--nq-text-dim)' }
         }
       >
         {done ? '✓' : n}
@@ -35,7 +35,7 @@ function LessonRow({ lesson, n, accent }: { lesson: Lesson; n: number; accent: s
 
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-2">
-          <span className="font-semibold text-[var(--nq-text)] group-hover:text-white">{t(lesson.title)}</span>
+          <span className="font-semibold text-[var(--nq-text)] group-hover:text-[var(--nq-accent)]">{t(lesson.title)}</span>
           <span
             className="nq-mono rounded px-1.5 py-px text-[10px] uppercase tracking-wider"
             style={{ color: KIND_COLOR[lesson.kind], background: 'var(--nq-panel-2)' }}
@@ -54,7 +54,7 @@ function LessonRow({ lesson, n, accent }: { lesson: Lesson; n: number; accent: s
         <span className="nq-prose mt-1 block text-sm text-[var(--nq-text-dim)]">{t(lesson.blurb)}</span>
       </span>
 
-      <span className="nq-mono mt-0.5 shrink-0 text-xs text-[var(--nq-text-mute)]">{lesson.minutes}m</span>
+      <span className="nq-mono mt-0.5 shrink-0 text-xs text-[var(--nq-text-dim)]">{lesson.minutes}m</span>
     </Link>
   )
 }
@@ -115,7 +115,7 @@ export default function TrackPage() {
           <section key={m.id}>
             <div className="mb-2 flex items-baseline gap-3 px-3">
               <h2 className="text-lg font-bold tracking-tight">
-                <span className="nq-mono mr-2 text-[var(--nq-text-mute)]">
+                <span className="nq-mono mr-2 text-[var(--nq-text-dim)]">
                   {String(mi + 1).padStart(2, '0')}
                 </span>
                 {t(m.title)}

@@ -256,11 +256,32 @@ export default function Topology({
 }: Props) {
   const byId = new Map(nodes.map((n) => [n.id, n]))
 
+  /**
+   * Where a packet sits along a link. The run is pulled in at both ends so an
+   * envelope never lands on top of the device it is leaving or arriving at —
+   * at t=0 it should be beside the machine, not covering its screen.
+   */
   const pointOn = (fromId: string, toId: string, t: number) => {
     const a = byId.get(fromId)
     const b = byId.get(toId)
     if (!a || !b) return null
-    return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t }
+
+    const dx = b.x - a.x
+    const dy = b.y - a.y
+    const len = Math.hypot(dx, dy)
+    if (len === 0) return { x: a.x, y: a.y }
+
+    const clear = (n: NodeSpec) => Math.max(SIZE[n.type].w, SIZE[n.type].h) / 2 + 16
+    // on a short link there is no room to inset; keep a third of it either way
+    const room = Math.min(clear(a), len * 0.34)
+    const roomB = Math.min(clear(b), len * 0.34)
+
+    const sx = a.x + (dx / len) * room
+    const sy = a.y + (dy / len) * room
+    const ex = b.x - (dx / len) * roomB
+    const ey = b.y - (dy / len) * roomB
+
+    return { x: sx + (ex - sx) * t, y: sy + (ey - sy) * t }
   }
 
   return (
