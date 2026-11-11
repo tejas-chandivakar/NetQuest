@@ -169,7 +169,7 @@ export default function AnimatedLesson({ spec }: { spec: LessonSpec }) {
                         : current
                           ? 'color-mix(in srgb, var(--nq-accent) 22%, transparent)'
                           : 'var(--nq-panel-2)',
-                      color: done ? 'var(--nq-bg)' : current ? 'var(--nq-accent)' : 'var(--nq-text-mute)',
+                      color: done ? 'var(--nq-on-accent)' : current ? 'var(--nq-accent)' : 'var(--nq-text-mute)',
                     }}
                   >
                     {done ? '✓' : i + 1}

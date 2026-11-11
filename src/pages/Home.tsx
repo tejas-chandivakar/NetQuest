@@ -104,7 +104,7 @@ export default function Home() {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               to="/track/beginner"
-              className="nq-focus rounded-xl px-5 py-3 text-sm font-bold text-[#06240f] transition hover:brightness-110"
+              className="nq-focus rounded-xl px-5 py-3 text-sm font-bold text-[var(--nq-on-accent)] transition hover:brightness-110"
               style={{ background: 'var(--nq-beginner)' }}
             >
               {lang === 'gu' ? 'શરૂઆતથી શરૂ કરો' : 'Start from the beginning'}

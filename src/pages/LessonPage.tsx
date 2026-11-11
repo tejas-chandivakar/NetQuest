@@ -181,7 +181,7 @@ export default function LessonPage() {
         {next && (
           <Link
             to={`/lesson/${next.id}`}
-            className="nq-focus ml-auto rounded-xl px-5 py-2.5 text-sm font-bold text-[var(--nq-bg)] transition hover:brightness-110"
+            className="nq-focus ml-auto rounded-xl px-5 py-2.5 text-sm font-bold text-[var(--nq-on-accent)] transition hover:brightness-110"
             style={{ background: track.accent }}
           >
             {t(UI.nextLesson)} →

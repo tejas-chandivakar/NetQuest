@@ -75,62 +75,64 @@ const SIZE: Record<DeviceType, { w: number; h: number }> = {
  * These are the shapes the exams, Packet Tracer and every networking book use,
  * so what a learner recognises here is what they will meet everywhere else.
  */
+const DEVICE_COLOUR: Record<DeviceType, string> = {
+  pc: 'var(--nq-dev-host)',
+  laptop: 'var(--nq-dev-host)',
+  switch: 'var(--nq-dev-switch)',
+  router: 'var(--nq-dev-router)',
+  server: 'var(--nq-dev-server)',
+  cloud: 'var(--nq-dev-cloud)',
+  firewall: 'var(--nq-dev-fw)',
+  ap: 'var(--nq-dev-ap)',
+}
+
+/**
+ * The classic Cisco icon language, filled rather than outlined: the router is
+ * a drum with four arrows, the switch a flat box with two opposed arrows, the
+ * firewall a brick wall. These are the shapes the exams, Packet Tracer and
+ * every networking book use, so what a learner recognises here is what they
+ * will meet everywhere else — and the colour says which kind of box it is
+ * before the shape has been read.
+ */
 function DeviceShape({ node }: { node: NodeSpec }) {
   const { type } = node
-  const accent = node.accent ?? 'var(--nq-accent)'
+  const body = DEVICE_COLOUR[type]
   const { w, h } = SIZE[type]
-  const face = 'var(--nq-device)'
-  const lid = 'var(--nq-device-top)'
-  const edge = node.pulse ? accent : 'var(--nq-device-edge)'
-  const sw = node.pulse ? 2 : 1.5
+  const cut = 'var(--nq-dev-top)'
 
-  const body = { fill: face, stroke: edge, strokeWidth: sw }
-  const top = { fill: lid, stroke: edge, strokeWidth: sw }
-  const arrow = {
-    stroke: accent,
-    strokeWidth: 2,
-    fill: 'none',
-    strokeLinecap: 'round' as const,
-    strokeLinejoin: 'round' as const,
-  }
+  /* the lid catches the light, so it is the body lightened against paper */
+  const lid = `color-mix(in srgb, ${body} 72%, white)`
+  const detail = { stroke: cut, strokeWidth: 2, fill: 'none', strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 
   switch (type) {
-    /* a drum lying down, with traffic entering and leaving on every side */
     case 'router': {
       const rx = w / 2
       const ry = 11
       const bh = h - ry * 2
       return (
         <g>
-          <path
-            d={`M ${-rx} ${-bh / 2} v ${bh} a ${rx} ${ry} 0 0 0 ${w} 0 v ${-bh}`}
-            {...body}
-          />
-          <ellipse cx={0} cy={-bh / 2} rx={rx} ry={ry} {...top} />
-          <g {...arrow}>
-            <path d="M -22 -12 h 15 m -4.5 -4 l 4.5 4 l -4.5 4" />
-            <path d="M 22 -4 h -15 m 4.5 -4 l -4.5 4 l 4.5 4" />
-            <path d="M -9 -19 v 12 m -4 -8 l 4 -4 l 4 4" transform="translate(-6 0)" />
-            <path d="M 9 -5 v -12 m -4 8 l 4 4 l 4 -4" transform="translate(6 0)" />
+          <path d={`M ${-rx} ${-bh / 2} v ${bh} a ${rx} ${ry} 0 0 0 ${w} 0 v ${-bh}`} fill={body} />
+          <ellipse cx={0} cy={-bh / 2} rx={rx} ry={ry} fill={lid} />
+          <g {...detail} strokeWidth={1.9}>
+            <path d="M -21 -11 h 13 m -4 -4 l 4 4 l -4 4" />
+            <path d="M 21 -3 h -13 m 4 -4 l -4 4 l 4 4" />
+            <path d="M -13 -18 v 11 m -4 -7 l 4 -4 l 4 4" />
+            <path d="M 13 -4 v -11 m -4 7 l 4 4 l 4 -4" />
           </g>
         </g>
       )
     }
 
-    /* a flat box whose top carries the two opposed arrows of a bridge */
     case 'switch': {
       const lift = 13
       const bh = h - lift
       return (
         <g>
-          <path d={`M ${-w / 2} ${-bh / 2} h ${w} v ${bh} h ${-w} z`} {...body} />
-          <path
-            d={`M ${-w / 2} ${-bh / 2} l 12 ${-lift} h ${w - 24} l 12 ${lift} z`}
-            {...top}
-          />
-          <g {...arrow} strokeWidth={1.8}>
-            <path d="M -20 -16 h 16 m -4.5 -4 l 4.5 4 l -4.5 4" />
-            <path d="M 20 -7 h -16 m 4.5 -4 l -4.5 4 l 4.5 4" />
+          <path d={`M ${-w / 2} ${-bh / 2} h ${w} v ${bh} h ${-w} z`} fill={body} />
+          <path d={`M ${-w / 2} ${-bh / 2} l 12 ${-lift} h ${w - 24} l 12 ${lift} z`} fill={lid} />
+          <g {...detail} strokeWidth={1.8}>
+            <path d="M -19 -22 h 15 m -4 -4 l 4 4 l -4 4" />
+            <path d="M 19 -13 h -15 m 4 -4 l -4 4 l 4 4" />
           </g>
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <rect
@@ -140,7 +142,8 @@ function DeviceShape({ node }: { node: NodeSpec }) {
               width={8}
               height={5.5}
               rx={1.4}
-              fill="var(--nq-border-2)"
+              fill={cut}
+              opacity={0.85}
             />
           ))}
         </g>
@@ -151,24 +154,18 @@ function DeviceShape({ node }: { node: NodeSpec }) {
       const rows = [-h / 2 + 14, -h / 2 + 28, -h / 2 + 42]
       return (
         <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={5} {...body} />
-          {rows.map((y, r) => (
-            <Fragment key={r}>
-              <line x1={-w / 2} y1={y} x2={w / 2} y2={y} stroke={edge} strokeWidth={1.3} />
-              {(r % 2 === 0 ? [-w / 4, w / 4] : [0, -w / 2 + 2, w / 2 - 2]).map((x, j) => (
-                <line
-                  key={j}
-                  x1={x}
-                  y1={y}
-                  x2={x}
-                  y2={y - 14}
-                  stroke={edge}
-                  strokeWidth={1.3}
-                />
-              ))}
-            </Fragment>
-          ))}
-          <line x1={0} y1={h / 2} x2={0} y2={rows[2]} stroke={edge} strokeWidth={1.3} />
+          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={5} fill={body} />
+          <g stroke={cut} strokeWidth={1.8} opacity={0.9}>
+            {rows.map((y, r) => (
+              <Fragment key={r}>
+                <line x1={-w / 2} y1={y} x2={w / 2} y2={y} />
+                {(r % 2 === 0 ? [-w / 4, w / 4] : [0, -w / 2 + 2, w / 2 - 2]).map((x, j) => (
+                  <line key={j} x1={x} y1={y} x2={x} y2={y - 14} />
+                ))}
+              </Fragment>
+            ))}
+            <line x1={0} y1={h / 2} x2={0} y2={rows[2]} />
+          </g>
         </g>
       )
     }
@@ -178,7 +175,7 @@ function DeviceShape({ node }: { node: NodeSpec }) {
         <g>
           <path
             d="M -30 14 a 17 17 0 0 1 2 -33 a 23 23 0 0 1 42 -6 a 18 18 0 0 1 20 20 a 15 15 0 0 1 -12 19 z"
-            {...body}
+            fill={body}
           />
         </g>
       )
@@ -186,7 +183,7 @@ function DeviceShape({ node }: { node: NodeSpec }) {
     case 'server':
       return (
         <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={4} {...body} />
+          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={4} fill={body} />
           {[0, 1, 2, 3].map((i) => (
             <Fragment key={i}>
               <rect
@@ -195,11 +192,10 @@ function DeviceShape({ node }: { node: NodeSpec }) {
                 width={w - 24}
                 height={9}
                 rx={1.6}
-                fill="var(--nq-bg-2)"
-                stroke={edge}
-                strokeWidth={1}
+                fill={cut}
+                opacity={0.9}
               />
-              <circle cx={w / 2 - 9} cy={-h / 2 + 13.5 + i * 15} r={2.4} fill={accent} />
+              <circle cx={w / 2 - 9} cy={-h / 2 + 13.5 + i * 15} r={2.4} fill={cut} />
             </Fragment>
           ))}
         </g>
@@ -208,9 +204,9 @@ function DeviceShape({ node }: { node: NodeSpec }) {
     case 'ap':
       return (
         <g>
-          <path d={`M ${-w / 2} 10 a ${w / 2} 16 0 0 1 ${w} 0 z`} {...body} />
-          <rect x={-w / 2} y={8} width={w} height={5} rx={2.5} {...body} />
-          <g {...arrow}>
+          <path d={`M ${-w / 2} 10 a ${w / 2} 16 0 0 1 ${w} 0 z`} fill={body} />
+          <rect x={-w / 2} y={8} width={w} height={5} rx={2.5} fill={lid} />
+          <g stroke={body} strokeWidth={2.4} fill="none" strokeLinecap="round">
             <path d="M -14 -6 A 20 20 0 0 1 14 -6" />
             <path d="M -8 -15 A 30 30 0 0 1 8 -15" />
           </g>
@@ -220,10 +216,9 @@ function DeviceShape({ node }: { node: NodeSpec }) {
     case 'laptop':
       return (
         <g>
-          <path d="M -29 12 l 5 -34 h 48 l 5 34 z" {...body} />
-          <path d="M -23 8 l 4 -26 h 38 l 4 26 z" fill="var(--nq-bg-2)" stroke="none" />
-          <path d="M -39 12 h 78 l 4 8 h -86 z" {...top} />
-          <circle cx={0} cy={-5} r={4.5} fill={accent} opacity={0.5} />
+          <path d="M -29 12 l 5 -34 h 48 l 5 34 z" fill={body} />
+          <path d="M -23 8 l 4 -26 h 38 l 4 26 z" fill={cut} opacity={0.92} />
+          <path d="M -39 12 h 78 l 4 8 h -86 z" fill={lid} />
         </g>
       )
 
@@ -231,18 +226,18 @@ function DeviceShape({ node }: { node: NodeSpec }) {
     default:
       return (
         <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h - 16} rx={4} {...body} />
+          <rect x={-w / 2} y={-h / 2} width={w} height={h - 16} rx={4} fill={body} />
           <rect
             x={-w / 2 + 5}
             y={-h / 2 + 5}
             width={w - 10}
             height={h - 26}
             rx={2}
-            fill="var(--nq-bg-2)"
-            stroke="none"
+            fill={cut}
+            opacity={0.92}
           />
-          <rect x={-9} y={h / 2 - 16} width={18} height={8} {...body} />
-          <rect x={-22} y={h / 2 - 8} width={44} height={6} rx={3} {...top} />
+          <rect x={-9} y={h / 2 - 16} width={18} height={8} fill={body} />
+          <rect x={-22} y={h / 2 - 8} width={44} height={6} rx={3} fill={body} />
         </g>
       )
   }
@@ -359,7 +354,7 @@ export default function Topology({
               <circle
                 r={46}
                 fill="none"
-                stroke={n.accent ?? 'var(--nq-accent)'}
+                stroke={n.accent ?? DEVICE_COLOUR[n.type]}
                 strokeWidth={2}
                 className="nq-pulse"
               />
@@ -369,8 +364,8 @@ export default function Topology({
               y={SIZE[n.type].h / 2 + 20}
               textAnchor="middle"
               fontSize={13}
-              fontWeight={600}
-              fill="var(--nq-text)"
+              fontWeight={700}
+              fill={n.accent ?? 'var(--nq-text)'}
             >
               {n.label}
             </text>
@@ -399,7 +394,7 @@ export default function Topology({
             <g key={p.id} transform={`translate(${pt.x},${pt.y})`}>
               <circle r={15} fill={colour} opacity={0.2} />
               <rect x={-11} y={-9} width={22} height={18} rx={4} fill={colour} />
-              <path d="M -11 -9 L 0 0 L 11 -9" fill="none" stroke="var(--nq-bg)" strokeWidth={1.6} />
+              <path d="M -11 -9 L 0 0 L 11 -9" fill="none" stroke="var(--nq-on-accent)" strokeWidth={1.6} />
               {p.label && (
                 <text
                   y={-19}

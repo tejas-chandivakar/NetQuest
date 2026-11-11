@@ -394,7 +394,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
                           className="flex h-5 w-5 items-center justify-center rounded text-[10px]"
                           style={{
                             background: bad ? 'var(--nq-err)' : 'var(--nq-panel-2)',
-                            color: bad ? 'var(--nq-bg)' : 'var(--nq-text-mute)',
+                            color: bad ? 'var(--nq-on-accent)' : 'var(--nq-text-mute)',
                           }}
                         >
                           {bad ? '✕' : i + 1}

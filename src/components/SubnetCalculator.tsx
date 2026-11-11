@@ -125,7 +125,7 @@ function Practice() {
             setSeed(Math.floor(Math.random() * 1e6))
             setShown(false)
           }}
-          className="nq-focus rounded-lg px-3 py-1.5 text-xs font-bold text-[var(--nq-bg)]"
+          className="nq-focus rounded-lg px-3 py-1.5 text-xs font-bold text-[var(--nq-on-accent)]"
           style={{ background: 'var(--nq-accent)' }}
         >
           {t(L.again)}

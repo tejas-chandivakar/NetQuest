@@ -57,7 +57,7 @@ export default function CommandList({
                     width: 18,
                     height: 18,
                     background: done ? 'var(--nq-ok)' : 'var(--nq-panel-2)',
-                    color: done ? 'var(--nq-bg)' : 'var(--nq-text-mute)',
+                    color: done ? 'var(--nq-on-accent)' : 'var(--nq-text-mute)',
                   }}
                 >
                   {done ? '✓' : i + 1}

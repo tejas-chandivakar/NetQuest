@@ -406,7 +406,7 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                           : isCurrent
                             ? 'color-mix(in srgb, var(--nq-accent) 22%, transparent)'
                             : 'var(--nq-panel-2)',
-                        color: ok ? 'var(--nq-bg)' : isCurrent ? 'var(--nq-accent)' : 'var(--nq-text-mute)',
+                        color: ok ? 'var(--nq-on-accent)' : isCurrent ? 'var(--nq-accent)' : 'var(--nq-text-mute)',
                       }}
                     >
                       {ok ? '✓' : i + 1}

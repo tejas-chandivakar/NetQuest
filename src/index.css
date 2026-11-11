@@ -37,12 +37,21 @@
   --nq-pkt-ctrl:  #7C3AED;
 
   --nq-accent:    var(--nq-ccna);
+  /* text on a filled accent. Never --nq-bg: that follows the page and
+     vanishes the moment the theme flips. */
+  --nq-on-accent: #FFFFFF;
   --nq-radius:    14px;
 
-  /* a device on white paper needs a confident outline, not a pale one */
-  --nq-device:      #EEF2FF;
-  --nq-device-top:  #FFFFFF;
-  --nq-device-edge: #6366F1;
+  /* Each kind of box gets its own colour, so a diagram is readable at a
+     glance instead of being read shape by shape. */
+  --nq-dev-host:    #2563EB;
+  --nq-dev-switch:  #4F46E5;
+  --nq-dev-router:  #1D4ED8;
+  --nq-dev-fw:      #DC2626;
+  --nq-dev-server:  #0891B2;
+  --nq-dev-ap:      #7C3AED;
+  --nq-dev-cloud:   #64748B;
+  --nq-dev-top:     #FFFFFF;
   --nq-wire:        #94A3B8;
 
   /* the console stays dark, because a real one is */
