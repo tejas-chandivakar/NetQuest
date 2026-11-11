@@ -60,137 +60,189 @@ interface Props {
 const SIZE: Record<DeviceType, { w: number; h: number }> = {
   pc: { w: 74, h: 56 },
   laptop: { w: 78, h: 52 },
-  switch: { w: 96, h: 42 },
-  router: { w: 76, h: 56 },
+  switch: { w: 96, h: 46 },
+  router: { w: 80, h: 52 },
   server: { w: 60, h: 74 },
   cloud: { w: 104, h: 60 },
-  firewall: { w: 72, h: 56 },
-  ap: { w: 64, h: 48 },
+  firewall: { w: 76, h: 56 },
+  ap: { w: 66, h: 48 },
 }
 
+/**
+ * The classic Cisco icon language — a cylinder with four arrows for a router,
+ * a flat box with crossed arrows for a switch, a brick wall for a firewall.
+ *
+ * These are the shapes the exams, Packet Tracer and every networking book use,
+ * so what a learner recognises here is what they will meet everywhere else.
+ */
 function DeviceShape({ node }: { node: NodeSpec }) {
   const { type } = node
   const accent = node.accent ?? 'var(--nq-accent)'
   const { w, h } = SIZE[type]
-  const fill = 'var(--nq-panel-2)'
-  const stroke = node.pulse ? accent : 'var(--nq-border-2)'
+  const face = 'var(--nq-panel-2)'
+  const lid = 'var(--nq-panel)'
+  const edge = node.pulse ? accent : 'var(--nq-border-2)'
+  const sw = node.pulse ? 2 : 1.5
 
-  const common = {
-    fill,
-    stroke,
-    strokeWidth: node.pulse ? 2 : 1.5,
+  const body = { fill: face, stroke: edge, strokeWidth: sw }
+  const top = { fill: lid, stroke: edge, strokeWidth: sw }
+  const arrow = {
+    stroke: accent,
+    strokeWidth: 2,
+    fill: 'none',
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
   }
 
   switch (type) {
-    case 'cloud':
+    /* a drum lying down, with traffic entering and leaving on every side */
+    case 'router': {
+      const rx = w / 2
+      const ry = 11
+      const bh = h - ry * 2
       return (
         <g>
-          <ellipse cx={-26} cy={4} rx={24} ry={18} {...common} />
-          <ellipse cx={4} cy={-6} rx={30} ry={24} {...common} />
-          <ellipse cx={30} cy={6} rx={22} ry={17} {...common} />
-          <rect x={-48} y={0} width={96} height={22} rx={11} {...common} />
+          <path
+            d={`M ${-rx} ${-bh / 2} v ${bh} a ${rx} ${ry} 0 0 0 ${w} 0 v ${-bh}`}
+            {...body}
+          />
+          <ellipse cx={0} cy={-bh / 2} rx={rx} ry={ry} {...top} />
+          <g {...arrow}>
+            <path d="M -22 -12 h 15 m -4.5 -4 l 4.5 4 l -4.5 4" />
+            <path d="M 22 -4 h -15 m 4.5 -4 l -4.5 4 l 4.5 4" />
+            <path d="M -9 -19 v 12 m -4 -8 l 4 -4 l 4 4" transform="translate(-6 0)" />
+            <path d="M 9 -5 v -12 m -4 8 l 4 4 l 4 -4" transform="translate(6 0)" />
+          </g>
         </g>
       )
-    case 'server':
+    }
+
+    /* a flat box whose top carries the two opposed arrows of a bridge */
+    case 'switch': {
+      const lift = 13
+      const bh = h - lift
       return (
         <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={9} {...common} />
-          {[0, 1, 2].map((i) => (
-            <Fragment key={i}>
-              <line
-                x1={-w / 2 + 10}
-                y1={-h / 2 + 16 + i * 18}
-                x2={w / 2 - 20}
-                y2={-h / 2 + 16 + i * 18}
-                stroke="var(--nq-border-2)"
-                strokeWidth={1.5}
-              />
-              <circle cx={w / 2 - 12} cy={-h / 2 + 16 + i * 18} r={2.6} fill={accent} />
-            </Fragment>
-          ))}
-        </g>
-      )
-    case 'switch':
-      return (
-        <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={8} {...common} />
+          <path d={`M ${-w / 2} ${-bh / 2} h ${w} v ${bh} h ${-w} z`} {...body} />
+          <path
+            d={`M ${-w / 2} ${-bh / 2} l 12 ${-lift} h ${w - 24} l 12 ${lift} z`}
+            {...top}
+          />
+          <g {...arrow} strokeWidth={1.8}>
+            <path d="M -20 -16 h 16 m -4.5 -4 l 4.5 4 l -4.5 4" />
+            <path d="M 20 -7 h -16 m 4.5 -4 l -4.5 4 l 4.5 4" />
+          </g>
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <rect
               key={i}
               x={-w / 2 + 11 + i * 12.5}
-              y={h / 2 - 13}
+              y={bh / 2 - 9}
               width={8}
-              height={7}
-              rx={1.6}
+              height={5.5}
+              rx={1.4}
               fill="var(--nq-border-2)"
             />
           ))}
+        </g>
+      )
+    }
+
+    case 'firewall': {
+      const rows = [-h / 2 + 14, -h / 2 + 28, -h / 2 + 42]
+      return (
+        <g>
+          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={5} {...body} />
+          {rows.map((y, r) => (
+            <Fragment key={r}>
+              <line x1={-w / 2} y1={y} x2={w / 2} y2={y} stroke={edge} strokeWidth={1.3} />
+              {(r % 2 === 0 ? [-w / 4, w / 4] : [0, -w / 2 + 2, w / 2 - 2]).map((x, j) => (
+                <line
+                  key={j}
+                  x1={x}
+                  y1={y}
+                  x2={x}
+                  y2={y - 14}
+                  stroke={edge}
+                  strokeWidth={1.3}
+                />
+              ))}
+            </Fragment>
+          ))}
+          <line x1={0} y1={h / 2} x2={0} y2={rows[2]} stroke={edge} strokeWidth={1.3} />
+        </g>
+      )
+    }
+
+    case 'cloud':
+      return (
+        <g>
           <path
-            d={`M ${-14} ${-6} L ${6} ${-6} M ${0} ${-11} L ${7} ${-6} L ${0} ${-1}`}
-            stroke={accent}
-            strokeWidth={1.8}
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            d="M -30 14 a 17 17 0 0 1 2 -33 a 23 23 0 0 1 42 -6 a 18 18 0 0 1 20 20 a 15 15 0 0 1 -12 19 z"
+            {...body}
           />
         </g>
       )
-    case 'router':
+
+    case 'server':
       return (
         <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={h / 2} {...common} />
-          <g stroke={accent} strokeWidth={1.8} fill="none" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M -18 -8 L 14 -8 M 8 -13 L 15 -8 L 8 -3" />
-            <path d="M 18 8 L -14 8 M -8 3 L -15 8 L -8 13" />
-          </g>
-        </g>
-      )
-    case 'firewall':
-      return (
-        <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={8} {...common} />
-          {[0, 1, 2].map((r) => (
-            <line
-              key={r}
-              x1={-w / 2}
-              y1={-h / 2 + 14 + r * 14}
-              x2={w / 2}
-              y2={-h / 2 + 14 + r * 14}
-              stroke="var(--nq-border-2)"
-              strokeWidth={1.4}
-            />
+          <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={4} {...body} />
+          {[0, 1, 2, 3].map((i) => (
+            <Fragment key={i}>
+              <rect
+                x={-w / 2 + 7}
+                y={-h / 2 + 9 + i * 15}
+                width={w - 24}
+                height={9}
+                rx={1.6}
+                fill="var(--nq-bg-2)"
+                stroke={edge}
+                strokeWidth={1}
+              />
+              <circle cx={w / 2 - 9} cy={-h / 2 + 13.5 + i * 15} r={2.4} fill={accent} />
+            </Fragment>
           ))}
-          <line x1={0} y1={-h / 2} x2={0} y2={-h / 2 + 14} stroke="var(--nq-border-2)" strokeWidth={1.4} />
-          <line x1={-18} y1={-h / 2 + 14} x2={-18} y2={-h / 2 + 28} stroke="var(--nq-border-2)" strokeWidth={1.4} />
-          <line x1={18} y1={-h / 2 + 14} x2={18} y2={-h / 2 + 28} stroke="var(--nq-border-2)" strokeWidth={1.4} />
         </g>
       )
+
     case 'ap':
       return (
         <g>
-          <rect x={-w / 2} y={-6} width={w} height={18} rx={9} {...common} />
-          <g stroke={accent} strokeWidth={1.8} fill="none" strokeLinecap="round">
-            <path d="M -13 -12 A 18 18 0 0 1 13 -12" />
-            <path d="M -7 -20 A 28 28 0 0 1 7 -20" />
+          <path d={`M ${-w / 2} 10 a ${w / 2} 16 0 0 1 ${w} 0 z`} {...body} />
+          <rect x={-w / 2} y={8} width={w} height={5} rx={2.5} {...body} />
+          <g {...arrow}>
+            <path d="M -14 -6 A 20 20 0 0 1 14 -6" />
+            <path d="M -8 -15 A 30 30 0 0 1 8 -15" />
           </g>
         </g>
       )
+
     case 'laptop':
       return (
         <g>
-          <rect x={-30} y={-24} width={60} height={38} rx={5} {...common} />
-          <rect x={-26} y={-20} width={52} height={30} rx={3} fill="var(--nq-bg-2)" stroke="none" />
-          <rect x={-39} y={14} width={78} height={7} rx={3.5} {...common} />
-          <circle cx={0} cy={-5} r={5} fill={accent} opacity={0.55} />
+          <path d="M -29 12 l 5 -34 h 48 l 5 34 z" {...body} />
+          <path d="M -23 8 l 4 -26 h 38 l 4 26 z" fill="var(--nq-bg-2)" stroke="none" />
+          <path d="M -39 12 h 78 l 4 8 h -86 z" {...top} />
+          <circle cx={0} cy={-5} r={4.5} fill={accent} opacity={0.5} />
         </g>
       )
+
+    /* pc — a monitor on a stand */
     default:
       return (
         <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h - 12} rx={6} {...common} />
-          <rect x={-22} y={-h / 2} width={44} height={h - 12} rx={4} fill="var(--nq-bg-2)" stroke="none" />
-          <rect x={-12} y={h / 2 - 14} width={24} height={6} rx={2} {...common} />
-          <rect x={-24} y={h / 2 - 8} width={48} height={6} rx={3} {...common} />
+          <rect x={-w / 2} y={-h / 2} width={w} height={h - 16} rx={4} {...body} />
+          <rect
+            x={-w / 2 + 5}
+            y={-h / 2 + 5}
+            width={w - 10}
+            height={h - 26}
+            rx={2}
+            fill="var(--nq-bg-2)"
+            stroke="none"
+          />
+          <rect x={-9} y={h / 2 - 16} width={18} height={8} {...body} />
+          <rect x={-22} y={h / 2 - 8} width={44} height={6} rx={3} {...top} />
         </g>
       )
   }
