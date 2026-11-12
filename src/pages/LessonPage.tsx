@@ -124,7 +124,7 @@ export default function LessonPage() {
           <span className="nq-chip" style={{ borderColor: track.accent, color: track.accent }}>
             {t(KIND_LABEL[lesson.kind])}
           </span>
-          <span className="nq-mono text-xs text-[var(--nq-text-mute)]">{lesson.minutes} min</span>
+          <span className="nq-mono text-xs font-bold text-[var(--nq-text-dim)]">{lesson.minutes} min</span>
         </div>
         <h1 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">{t(lesson.title)}</h1>
         <p className="nq-prose mt-2 text-[var(--nq-text-dim)]">{t(lesson.blurb)}</p>

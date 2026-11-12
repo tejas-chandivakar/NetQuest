@@ -54,7 +54,7 @@ function LessonRow({ lesson, n, accent }: { lesson: Lesson; n: number; accent: s
         <span className="nq-prose mt-1 block text-sm text-[var(--nq-text-dim)]">{t(lesson.blurb)}</span>
       </span>
 
-      <span className="nq-mono mt-0.5 shrink-0 text-xs text-[var(--nq-text-dim)]">{lesson.minutes}m</span>
+      <span className="nq-mono mt-0.5 shrink-0 text-xs font-bold text-[var(--nq-text-dim)]">{lesson.minutes}m</span>
     </Link>
   )
 }
