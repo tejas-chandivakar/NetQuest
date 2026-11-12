@@ -8,6 +8,7 @@ import AddressExplorer from '../components/AddressExplorer'
 import EncapBuilder from '../components/EncapBuilder'
 import PortMatch from '../components/PortMatch'
 import { B4L1Journey, B4L2Journey, B4L3Journey } from './journeys'
+import { b2l3Break, b4l3Break } from './foundationBreaks'
 import { b1l1 } from './b1l1'
 import { b2l3 } from './b2l3'
 import { n2l1 } from './n2l1'
@@ -89,6 +90,8 @@ export const CONFIGS: Record<string, ConfigureSpec> = {
 
 /** Break-it sandboxes that are built. */
 export const BREAKS: Record<string, BreakSpec> = {
+  b2l3: b2l3Break,
+  b4l3: b4l3Break,
   n2l2: n2l2Break,
   n3l3: n3l3Break,
   n3l5: n3l5Break,
