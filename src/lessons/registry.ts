@@ -3,6 +3,8 @@ import type { LessonSpec } from '../components/AnimatedLesson'
 import type { ConfigureSpec } from '../components/ConfigureStage'
 import type { BreakSpec } from '../components/BreakStage'
 import SubnetCalculator from '../components/SubnetCalculator'
+import BinaryBulbs from '../components/BinaryBulbs'
+import AddressExplorer from '../components/AddressExplorer'
 import { b1l1 } from './b1l1'
 import { b2l3 } from './b2l3'
 import { n2l1 } from './n2l1'
@@ -97,6 +99,9 @@ export const BREAKS: Record<string, BreakSpec> = {
  * about working something out rather than typing commands.
  */
 export const TOOLS: Record<string, ComponentType> = {
+  b2l1: AddressExplorer,
+  b2l4: AddressExplorer,
+  b2l5: BinaryBulbs,
   n1l4: SubnetCalculator,
 }
 
