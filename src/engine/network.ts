@@ -199,6 +199,26 @@ export class Device {
     })
   }
 
+  /**
+   * What `show ip route` actually prints — the FIB, not the RIB.
+   *
+   * routingTable() lists every candidate the router has heard of. A real
+   * router only *installs* the most trusted one per prefix, which is why a
+   * floating static with AD 200 is invisible while the AD 1 primary is up,
+   * and appears the instant that primary withdraws. Ties on AD stay (that is
+   * equal-cost load balancing), so this only drops the ones that lost.
+   */
+  installedRoutes(): RouteEntry[] {
+    const best = new Map<string, number>()
+    const table = this.routingTable()
+    for (const r of table) {
+      const key = `${r.prefix}/${r.mask}`
+      const cur = best.get(key)
+      if (cur === undefined || r.ad < cur) best.set(key, r.ad)
+    }
+    return table.filter((r) => r.ad === best.get(`${r.prefix}/${r.mask}`))
+  }
+
   lookup(destIp: string): RouteEntry | null {
     const d = ipToInt(destIp)
     const matches = this.routingTable().filter((r) => {

@@ -41,7 +41,7 @@ export const n1l0: LessonSpec = {
       aside: () => ({
         title: H('Prompt વાંચો', 'Reading the prompt'),
         caption: H('ચિહ્ન કહે છે તમે ક્યાં છો.', 'The symbol says where you are standing.'),
-        head: ['prompt', 'મતલબ / means'],
+        head: ['prompt', 'means'],
         rows: [['R1>', 'look only']],
       }),
     },
@@ -64,7 +64,7 @@ export const n1l0: LessonSpec = {
       aside: (t) => ({
         title: H('Prompt વાંચો', 'Reading the prompt'),
         caption: H('`#` એટલે તાળું ખુલ્યું.', 'A `#` means the lock is off.'),
-        head: ['prompt', 'મતલબ / means'],
+        head: ['prompt', 'means'],
         rows:
           t > 0.45
             ? [
@@ -92,7 +92,7 @@ export const n1l0: LessonSpec = {
       aside: (t) => ({
         title: H('Prompt વાંચો', 'Reading the prompt'),
         caption: H('કૌંસ હંમેશા ઓરડાનું નામ કહે છે.', 'The brackets always name the room.'),
-        head: ['prompt', 'મતલબ / means'],
+        head: ['prompt', 'means'],
         rows: [
           ['R1>', 'look only'],
           ['R1#', 'unlocked'],
@@ -118,7 +118,7 @@ export const n1l0: LessonSpec = {
       aside: () => ({
         title: H('ઓરડાની સીડી', 'The ladder of rooms'),
         caption: H('દરેક પગથિયે prompt બદલાય છે.', 'The prompt changes at every rung.'),
-        head: ['prompt', 'તમે ક્યાં / where you are'],
+        head: ['prompt', 'where you are'],
         rows: [
           ['R1>', 'look only'],
           ['R1#', 'unlocked'],
@@ -146,7 +146,7 @@ export const n1l0: LessonSpec = {
       aside: () => ({
         title: H('શું વાંચવું', 'What to read'),
         caption: H('દરેક ભૂલ કંઈક ચોક્કસ કહે છે.', 'Each refusal says something specific.'),
-        head: ['message', 'મતલબ / means'],
+        head: ['message', 'means'],
         rows: [
           ['% Invalid input', 'wrong room, or wrong word'],
           ['% Incomplete command', 'right, but unfinished'],
@@ -172,7 +172,7 @@ export const n1l0: LessonSpec = {
       aside: () => ({
         title: H('ટૂંકાક્ષર', 'The short forms'),
         caption: H('ડાબું લખો, જમણું ચાલે.', 'Type the left, get the right.'),
-        head: ['ટૂંકું / short', 'આખું / full'],
+        head: ['short', 'full'],
         rows: [
           ['conf t', 'configure terminal'],
           ['int gi0/0', 'interface GigabitEthernet0/0'],
@@ -198,7 +198,7 @@ export const n1l0: LessonSpec = {
       say: (t) => (t > 0.5 ? { nodeId: 'r1', text: H('ખોવાઈ જાઓ તો end', 'Lost? press end') } : null),
       aside: () => ({
         title: H('બહાર નીકળવાના રસ્તા', 'Ways out'),
-        head: ['command', 'શું કરે / does'],
+        head: ['command', 'does'],
         rows: [
           ['exit', 'one room back'],
           ['end', 'straight to R1#'],

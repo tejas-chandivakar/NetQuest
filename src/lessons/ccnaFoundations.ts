@@ -78,7 +78,7 @@ export const n1l3: LessonSpec = {
       }),
       aside: () => ({
         title: H('ખાનગી રેન્જ', 'The private ranges'),
-        head: ['range', 'prefix', 'કોણ વાપરે / who uses it'],
+        head: ['range', 'prefix', 'who uses it'],
         rows: [
           ['10.0.0.0', '/8', 'large enterprises'],
           ['172.16.0.0', '/12', 'mid-size networks'],
@@ -109,7 +109,7 @@ export const n1l3: LessonSpec = {
       }),
       aside: () => ({
         title: H('192.168.1.0/24', '192.168.1.0/24'),
-        head: ['address', 'કોને / who gets it'],
+        head: ['address', 'who gets it'],
         rows: [
           ['192.168.1.0', 'nobody — the network'],
           ['192.168.1.1 – .254', 'your 254 machines'],
@@ -139,7 +139,7 @@ export const n1l3: LessonSpec = {
       aside: (t) => ({
         title: H('એ જ સરનામું', 'The very same address'),
         caption: H('ફક્ત mask બદલાયો.', 'Only the mask changed.'),
-        head: ['address', 'mask', 'એ શું છે / what it is'],
+        head: ['address', 'mask', 'what it is'],
         rows: [
           ['192.168.1.0', '/24', 'the network itself'],
           ...(t > 0.5 ? [['192.168.1.0', '/23', 'a usable host ←']] : []),
@@ -200,7 +200,7 @@ export const n1l5: LessonSpec = {
       }),
       aside: () => ({
         title: H('સરખા ભાગ પાડીએ તો', 'If every piece is equal'),
-        head: ['વિભાગ / area', 'જોઈએ / needs', 'મળે / gets', ''],
+        head: ['area', 'needs', 'gets', ''],
         rows: [
           ['Sales', '100', '62', 'too small'],
           ['HR', '20', '62', '42 wasted'],
@@ -231,7 +231,7 @@ export const n1l5: LessonSpec = {
       aside: (t) => ({
         title: H('પહેલું પગલું', 'The first cut'),
         caption: H('100 જોઈએ, એટલે 128 નો ટુકડો.', 'A hundred needed, so a block of 128.'),
-        head: ['વિભાગ / area', 'prefix', 'range', 'usable'],
+        head: ['area', 'prefix', 'range', 'usable'],
         rows: t > 0.3 ? [['Sales', '/25', '.0 – .127', '126']] : [],
       }),
     },
@@ -257,7 +257,7 @@ export const n1l5: LessonSpec = {
       }),
       aside: (t) => ({
         title: H('ઉતરતા ક્રમે', 'Working downward'),
-        head: ['વિભાગ / area', 'prefix', 'range', 'usable'],
+        head: ['area', 'prefix', 'range', 'usable'],
         rows: [
           ['Sales', '/25', '.0 – .127', '126'],
           ...(t > 0.3 ? [['HR', '/27', '.128 – .159', '30']] : []),
@@ -287,7 +287,7 @@ export const n1l5: LessonSpec = {
       }),
       aside: () => ({
         title: H('આખી યોજના', 'The finished plan'),
-        head: ['વિભાગ / area', 'prefix', 'range', 'usable'],
+        head: ['area', 'prefix', 'range', 'usable'],
         rows: [
           ['Sales', '/25', '.0 – .127', '126'],
           ['HR', '/27', '.128 – .159', '30'],

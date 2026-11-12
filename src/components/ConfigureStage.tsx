@@ -8,7 +8,7 @@ import Terminal from './Terminal'
 import StageLayout from './StageLayout'
 import { CliSession, MODE_NAME, type CliLine } from '../engine/cli'
 import CommandList from './CommandList'
-import Prose from './Prose'
+import Prose, { rich } from './Prose'
 import { CommandReferenceButton } from './CommandReference'
 import LiveTable from './LiveTable'
 import { describeChange, snapshot } from '../lib/netDiff'
@@ -74,7 +74,7 @@ const L = {
 function Tables({ net, deviceId, rev }: { net: Network; deviceId: string; rev: number }) {
   const dev = net.get(deviceId)
   if (!dev) return null
-  const routes = dev.routingTable().filter((r) => r.source !== 'L')
+  const routes = dev.installedRoutes().filter((r) => r.source !== 'L')
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
@@ -350,7 +350,7 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                   {spec.tasks.map((task, i) => (
                     <li key={task.id}>
                       <p className="text-[12px] font-semibold text-[var(--nq-text-dim)]">
-                        {i + 1}. {t(task.instruction)}
+                        {i + 1}. {rich(t(task.instruction))}
                       </p>
                       <pre className="nq-mono mt-1 whitespace-pre-wrap rounded-lg px-3 py-2 text-[11.5px] text-[var(--nq-text-mute)]" style={{ background: 'var(--nq-panel-2)' }}>
                         {commandsFor(task).join(String.fromCharCode(10))}
@@ -418,7 +418,7 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                         textDecoration: ok ? 'line-through' : undefined,
                       }}
                     >
-                      {ok ? t(task.done) : t(task.instruction)}
+                      {ok ? rich(t(task.done)) : rich(t(task.instruction))}
                     </span>
                   </li>
                 )

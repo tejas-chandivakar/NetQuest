@@ -477,7 +477,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
                 .filter((d) => net.get(d.id)?.kind === 'router' || net.get(d.id)?.kind === 'switch')
                 .map((d) => {
                   const dev = net.get(d.id)!
-                  const routes = dev.routingTable().filter((r) => r.source !== 'L')
+                  const routes = dev.installedRoutes().filter((r) => r.source !== 'L')
                   return (
                     <div key={d.id}>
                       <p className="nq-mono mb-1 text-[11px] font-bold text-[var(--nq-text-dim)]">

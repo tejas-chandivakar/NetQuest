@@ -1022,7 +1022,7 @@ const COMMANDS: CmdDef[] = [
     help: 'IP routing table',
     means: { gu: 'Router કયા કયા રસ્તા જાણે છે એ બતાવે.', en: 'Every path this router knows. If a network is missing here, it cannot be reached.' },
     run: ({ dev }) => {
-      const table = dev.routingTable()
+      const table = dev.installedRoutes()
       const header = [
         'Codes: C - connected, L - local, S - static, S* - default',
         '',

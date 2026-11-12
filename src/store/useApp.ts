@@ -23,7 +23,9 @@ export const useApp = create<AppState>()(
   persist(
     (set, get) => ({
       mode: 'beginner',
-      lang: 'gu',
+      // English for now; the Gujarati half of every string is still written and
+      // waiting, so turning other languages back on is this one value again.
+      lang: 'en',
       completed: {},
       setMode: (mode) => set({ mode }),
       toggleMode: () => set((s) => ({ mode: s.mode === 'beginner' ? 'exam' : 'beginner' })),
@@ -38,7 +40,9 @@ export const useApp = create<AppState>()(
         }),
       isDone: (id) => !!get().completed[id],
     }),
-    { name: 'netquest-v1' },
+    // v2 because the stored language changed meaning: anyone carrying a saved
+    // 'gu' from the bilingual build should land on English like everyone else.
+    { name: 'netquest-v1', version: 2, migrate: (s) => ({ ...(s as object), lang: 'en' }) as never },
   ),
 )
 

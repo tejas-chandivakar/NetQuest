@@ -46,6 +46,18 @@ describe('every built lab can actually be completed', () => {
     ])
   })
 
+  it('n3l4 — a floating static waits behind the primary', () => {
+    expectSolved(CONFIGS.n3l4, [
+      [
+        'r1',
+        enter(
+          'ip route 10.9.9.0 255.255.255.0 10.0.12.2',
+          'ip route 10.9.9.0 255.255.255.0 10.0.13.2 200',
+        ),
+      ],
+    ])
+  })
+
   it('n2l2 — VLANs on one switch', () => {
     expectSolved(CONFIGS.n2l2, [
       [

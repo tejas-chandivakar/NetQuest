@@ -262,3 +262,50 @@ describe('routing protocol CLI', () => {
     expect(n.get('r1')!.routingTable().some((r) => r.source === 'O')).toBe(false)
   })
 })
+
+describe('a floating static waits out of sight', () => {
+  const build = () => {
+    const n = new Network()
+    n.addDevice({ id: 'r1', name: 'R1', kind: 'router', ifaces: ['Gi0/1', 'Gi0/2'] })
+    const set = (ifn: string, ip: string) => {
+      const i = n.get('r1')!.iface(ifn)!
+      i.ip = ip
+      i.mask = '255.255.255.252'
+      i.shutdown = false
+    }
+    set('Gi0/1', '10.0.12.1')
+    set('Gi0/2', '10.0.13.1')
+    const s = new CliSession(n, 'r1')
+    for (const c of [
+      'enable',
+      'conf t',
+      'ip route 10.9.9.0 255.255.255.0 10.0.12.2',
+      'ip route 10.9.9.0 255.255.255.0 10.0.13.2 200',
+    ])
+      s.exec(c)
+    return n
+  }
+
+  it('keeps both candidates but installs only the trusted one', () => {
+    const r1 = build().get('r1')!
+    const all = r1.routingTable().filter((r) => r.prefix === '10.9.9.0')
+    const shown = r1.installedRoutes().filter((r) => r.prefix === '10.9.9.0')
+    expect(all).toHaveLength(2)
+    expect(shown).toHaveLength(1)
+    expect(shown[0].nextHop).toBe('10.0.12.2')
+  })
+
+  it('still forwards by the primary', () => {
+    expect(build().get('r1')!.lookup('10.9.9.9')!.nextHop).toBe('10.0.12.2')
+  })
+
+  it('installs equal-cost statics side by side', () => {
+    const n = build()
+    const s = new CliSession(n, 'r1')
+    s.exec('enable')
+    s.exec('conf t')
+    s.exec('ip route 10.8.8.0 255.255.255.0 10.0.12.2')
+    s.exec('ip route 10.8.8.0 255.255.255.0 10.0.13.2')
+    expect(n.get('r1')!.installedRoutes().filter((r) => r.prefix === '10.8.8.0')).toHaveLength(2)
+  })
+})
