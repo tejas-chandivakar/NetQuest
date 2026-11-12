@@ -10,43 +10,50 @@ import BreakStage from '../components/BreakStage'
 
 type Stage = 'learn' | 'config' | 'break'
 
+/**
+ * Only the stages a lesson actually has. A greyed-out "soon" that never
+ * arrives reads as a broken promise, and a lesson with one stage needs no
+ * tabs at all — it is just the lesson.
+ */
 function StageTabs({
   accent,
   stage,
   setStage,
   available,
+  configLabel,
 }: {
   accent: string
   stage: Stage
   setStage: (s: Stage) => void
   available: Record<Stage, boolean>
+  configLabel: string
 }) {
   const t = useT()
   const stages: { k: Stage; label: string }[] = [
     { k: 'learn', label: t(UI.stageLearn) },
-    { k: 'config', label: t(UI.stageConfig) },
+    { k: 'config', label: configLabel },
     { k: 'break', label: t(UI.stageBreak) },
-  ]
+  ].filter((s) => available[s.k as Stage]) as { k: Stage; label: string }[]
+
+  if (stages.length < 2) return null
+
   return (
     <div className="flex gap-1.5 rounded-xl border border-[var(--nq-border)] p-1">
       {stages.map((s, i) => {
-        const on = available[s.k]
         const active = stage === s.k
         return (
           <button
             key={s.k}
-            disabled={!on}
-            onClick={() => on && setStage(s.k)}
-            className="nq-focus flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition disabled:cursor-not-allowed"
+            onClick={() => setStage(s.k)}
+            className="nq-focus flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition"
             style={
               active
                 ? { background: `color-mix(in srgb, ${accent} 16%, transparent)`, color: 'var(--nq-text)' }
-                : { color: on ? 'var(--nq-text-dim)' : 'var(--nq-text-mute)', opacity: on ? 1 : 0.5 }
+                : { color: 'var(--nq-text-dim)' }
             }
           >
             <span className="nq-mono text-[11px]">{i + 1}</span>
             {s.label}
-            {!on && <span className="nq-mono text-[10px] opacity-60">soon</span>}
           </button>
         )
       })}
@@ -131,7 +138,13 @@ export default function LessonPage() {
       </header>
 
       <div className="mt-6">
-        <StageTabs accent={track.accent} stage={activeStage} setStage={setStage} available={available} />
+        <StageTabs
+          accent={track.accent}
+          stage={activeStage}
+          setStage={setStage}
+          available={available}
+          configLabel={t(track.id === 'beginner' ? UI.stageTry : UI.stageConfig)}
+        />
       </div>
 
       <div className="mt-6">

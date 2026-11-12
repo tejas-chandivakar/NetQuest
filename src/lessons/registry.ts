@@ -14,8 +14,8 @@ import { n1l4, n2l2 as n2l2Learn, n2l3 as n2l3Learn } from './ccna1'
 import { n3l3 as n3l3Learn, n3l5 as n3l5Learn, n3l6 as n3l6Learn } from './ccna2'
 import { n4l1 as n4l1Learn, n4l2 as n4l2Learn, n5l2 as n5l2Learn } from './ccna3'
 import { n7l1 as n7l1Learn, n7l2 as n7l2Learn } from './ccna4'
-import { b1l1Config, n3l3Config } from './configs'
-import { b1l1Break, n3l3Break } from './breaks'
+import { n3l3Config } from './configs'
+import { n3l3Break } from './breaks'
 import { n2l2Break, n2l2Config, n2l3Config } from './switching'
 import {
   n3l5Break,
@@ -69,7 +69,6 @@ export const LESSONS: Record<string, LessonSpec> = {
 
 /** Configure-stage labs that are built. */
 export const CONFIGS: Record<string, ConfigureSpec> = {
-  b1l1: b1l1Config,
   n2l2: n2l2Config,
   n2l3: n2l3Config,
   n3l3: n3l3Config,
@@ -85,7 +84,6 @@ export const CONFIGS: Record<string, ConfigureSpec> = {
 
 /** Break-it sandboxes that are built. */
 export const BREAKS: Record<string, BreakSpec> = {
-  b1l1: b1l1Break,
   n2l2: n2l2Break,
   n3l3: n3l3Break,
   n3l5: n3l5Break,

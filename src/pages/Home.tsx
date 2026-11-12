@@ -134,11 +134,11 @@ export default function Home() {
         <StageCard
           n="2"
           accent="var(--nq-ccna)"
-          title={t(UI.stageConfig)}
+          title={t(UI.stageTry)}
           body={
             lang === 'gu'
-              ? 'તમે CLI માં લખો, અને દરેક લાઈન એનિમેશનને એક ડગલું આગળ ચલાવે.'
-              : 'You type in the CLI, and every line moves the animation one step forward.'
+              ? 'જાતે કરો — Foundation માં સાધનોથી, CCNA થી આગળ ખરા IOS કમાન્ડથી.'
+              : 'Do it yourself — with tools in Foundation, with real IOS commands from CCNA onward.'
           }
         />
         <StageCard
