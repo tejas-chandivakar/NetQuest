@@ -7,6 +7,7 @@ import BinaryBulbs from '../components/BinaryBulbs'
 import AddressExplorer from '../components/AddressExplorer'
 import EncapBuilder from '../components/EncapBuilder'
 import PortMatch from '../components/PortMatch'
+import { B4L1Journey, B4L2Journey, B4L3Journey } from './journeys'
 import { b1l1 } from './b1l1'
 import { b2l3 } from './b2l3'
 import { n2l1 } from './n2l1'
@@ -106,6 +107,9 @@ export const TOOLS: Record<string, ComponentType> = {
   b2l5: BinaryBulbs,
   b3l2: EncapBuilder,
   b3l4: PortMatch,
+  b4l1: B4L1Journey,
+  b4l2: B4L2Journey,
+  b4l3: B4L3Journey,
   n1l4: SubnetCalculator,
 }
 
