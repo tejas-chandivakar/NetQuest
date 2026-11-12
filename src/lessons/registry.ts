@@ -16,6 +16,7 @@ import { b1l2, b1l3, b1l4, b1l5 } from './beginner1'
 import { b2l1, b2l2, b2l4, b2l5 } from './beginner2'
 import { b3l1, b3l2, b3l3, b3l4, b3l5 } from './beginner3'
 import { b4l1, b4l2, b4l3, b4l4, b4l5 } from './beginner4'
+import { n1l0, n1l0Config } from './n1l0'
 import { n1l4, n2l2 as n2l2Learn, n2l3 as n2l3Learn } from './ccna1'
 import { n3l3 as n3l3Learn, n3l5 as n3l5Learn, n3l6 as n3l6Learn } from './ccna2'
 import { n4l1 as n4l1Learn, n4l2 as n4l2Learn, n5l2 as n5l2Learn } from './ccna3'
@@ -59,6 +60,7 @@ export const LESSONS: Record<string, LessonSpec> = {
   b4l3,
   b4l4,
   b4l5,
+  n1l0,
   n1l4,
   n2l1,
   n2l2: n2l2Learn,
@@ -75,6 +77,7 @@ export const LESSONS: Record<string, LessonSpec> = {
 
 /** Configure-stage labs that are built. */
 export const CONFIGS: Record<string, ConfigureSpec> = {
+  n1l0: n1l0Config,
   n2l2: n2l2Config,
   n2l3: n2l3Config,
   n3l3: n3l3Config,

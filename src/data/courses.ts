@@ -164,6 +164,9 @@ const ccna: Track = {
       title: { gu: 'Network Fundamentals', en: 'Network Fundamentals' },
       weight: '20%',
       lessons: [
+        L('n1l0', 'Command Line સાથે ઓળખાણ', 'Meet the command line',
+          'પહેલી વાર terminal સામે. Prompt શું કહે છે, modes ની સીડી, અને ભૂલ થાય ત્યારે શું વાંચવું.',
+          'Your first time at a terminal: what the prompt is telling you, the ladder of modes, and what to read when it refuses.', 30, 'concept', true),
         L('n1l1', 'Network Components અને Topology', 'Components and Topology Architectures',
           'Router, Switch, Firewall, AP, Controller — અને કયું ક્યાં બેસે.',
           'Routers, switches, firewalls, APs, controllers — and where each sits.', 35),

@@ -3,6 +3,7 @@ import type { Bi } from '../data/courses'
 import Topology, { type CalloutSpec, type LinkSpec, type NodeSpec, type PacketSpec } from './Topology'
 import PlayerBar from './PlayerBar'
 import StageLayout from './StageLayout'
+import Prose, { rich } from './Prose'
 import StageConnector from './StageConnector'
 import LiveTable, { type LiveTableSpec } from './LiveTable'
 import { spotlight } from '../lib/spotlight'
@@ -54,7 +55,7 @@ function Check({ check }: { check: QuickCheck }) {
       <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--nq-text-mute)]">
         {t(UI.checkTitle)}
       </h3>
-      <p className="nq-prose mt-2 font-semibold">{t(check.q)}</p>
+      <Prose className="nq-prose mt-2 font-semibold">{t(check.q)}</Prose>
       <div className="mt-3 grid gap-2">
         {check.options.map((o, i) => {
           const chosen = picked === i
@@ -78,14 +79,14 @@ function Check({ check }: { check: QuickCheck }) {
               <span className="nq-mono text-xs text-[var(--nq-text-mute)]">
                 {String.fromCharCode(65 + i)}
               </span>
-              <span>{t(o)}</span>
+              <span>{rich(t(o))}</span>
             </button>
           )
         })}
       </div>
       {picked !== null && (
         <p className="nq-prose mt-3 text-sm" style={{ color: right ? 'var(--nq-ok)' : 'var(--nq-warn)' }}>
-          <strong>{right ? t(UI.correct) : t(UI.tryAgain)}</strong> {t(check.explain)}
+          <strong>{right ? t(UI.correct) : t(UI.tryAgain)}</strong> {rich(t(check.explain))}
         </p>
       )}
     </div>
@@ -200,9 +201,9 @@ export default function AnimatedLesson({ spec }: { spec: LessonSpec }) {
               {mode === 'beginner' ? t(UI.modeBeginner) : t(UI.modeExam)}
             </span>
           </div>
-          <p className="nq-prose mt-3 text-[var(--nq-text-dim)]">
+          <Prose className="nq-prose mt-3 text-[var(--nq-text-dim)]">
             {t(mode === 'beginner' ? step.text.beginner : step.text.exam)}
-          </p>
+          </Prose>
         </div>
       }
       surface={
@@ -225,7 +226,7 @@ export default function AnimatedLesson({ spec }: { spec: LessonSpec }) {
           <h3 className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: 'var(--nq-ok)' }}>
             {t(UI.keyTakeaway)}
           </h3>
-          <p className="nq-prose mt-2">{t(spec.takeaway)}</p>
+          <Prose className="nq-prose mt-2">{t(spec.takeaway)}</Prose>
         </div>
       }
     />

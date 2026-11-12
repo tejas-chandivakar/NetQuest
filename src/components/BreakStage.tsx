@@ -3,6 +3,7 @@ import type { Bi } from '../data/courses'
 import Topology, { type LinkSpec, type NodeSpec, type PacketSpec } from './Topology'
 import type { ConfigDeviceLayout } from './ConfigureStage'
 import StageLayout from './StageLayout'
+import { rich } from './Prose'
 import type { Network, PingFailure, PingResult } from '../engine/network'
 import { cidr } from '../engine/ip'
 import { useT } from '../lib/i18n'
@@ -338,7 +339,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
                     <span className="min-w-0 flex-1">
                       <span className="block font-semibold">{t(a.label)}</span>
                       <span className="nq-prose mt-0.5 block text-sm text-[var(--nq-text-dim)]">
-                        {t(a.explain)}
+                        {rich(t(a.explain))}
                       </span>
                     </span>
                   </button>

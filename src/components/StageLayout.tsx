@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useT } from '../lib/i18n'
+import Prose from './Prose'
 
 /**
  * The one shape every stage uses — Learn, Configure and Break it all render
@@ -55,7 +56,9 @@ export function StageNote({ label, text, accent }: { label: string; text: string
       >
         {label}
       </span>
-      <p className="mt-1.5 text-[1.0625rem] leading-[1.75] text-[var(--nq-text-dim)]">{text}</p>
+      <Prose className="mt-1.5 text-[1.0625rem] leading-[1.75] text-[var(--nq-text-dim)]">
+        {text}
+      </Prose>
     </div>
   )
 }

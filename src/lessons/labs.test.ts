@@ -32,6 +32,20 @@ function expectSolved(spec: ConfigureSpec, script: Script) {
 const enter = (...rest: string[]) => ['enable', 'conf t', ...rest]
 
 describe('every built lab can actually be completed', () => {
+  it('n1l0 — meeting the command line', () => {
+    expectSolved(CONFIGS.n1l0, [
+      [
+        'r1',
+        enter(
+          'hostname R1',
+          'interface Gi0/0',
+          'ip address 192.168.1.1 255.255.255.0',
+          'no shutdown',
+        ),
+      ],
+    ])
+  })
+
   it('n2l2 — VLANs on one switch', () => {
     expectSolved(CONFIGS.n2l2, [
       [

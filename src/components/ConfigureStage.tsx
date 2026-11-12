@@ -8,6 +8,7 @@ import Terminal from './Terminal'
 import StageLayout from './StageLayout'
 import { CliSession, MODE_NAME, type CliLine } from '../engine/cli'
 import CommandList from './CommandList'
+import Prose from './Prose'
 import { CommandReferenceButton } from './CommandReference'
 import LiveTable from './LiveTable'
 import { describeChange, snapshot } from '../lib/netDiff'
@@ -305,9 +306,9 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                 </h3>
               </div>
 
-              <p className="nq-prose mt-3 text-[var(--nq-text-dim)]">
+              <Prose className="nq-prose mt-3 text-[var(--nq-text-dim)]">
                 {allDone ? t(spec.success) : t(current!.instruction)}
-              </p>
+              </Prose>
 
               {!allDone && mode === 'beginner' && (
                 <div className="mt-4">
