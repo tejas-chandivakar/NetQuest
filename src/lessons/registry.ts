@@ -5,6 +5,8 @@ import type { BreakSpec } from '../components/BreakStage'
 import SubnetCalculator from '../components/SubnetCalculator'
 import BinaryBulbs from '../components/BinaryBulbs'
 import AddressExplorer from '../components/AddressExplorer'
+import EncapBuilder from '../components/EncapBuilder'
+import PortMatch from '../components/PortMatch'
 import { b1l1 } from './b1l1'
 import { b2l3 } from './b2l3'
 import { n2l1 } from './n2l1'
@@ -102,6 +104,8 @@ export const TOOLS: Record<string, ComponentType> = {
   b2l1: AddressExplorer,
   b2l4: AddressExplorer,
   b2l5: BinaryBulbs,
+  b3l2: EncapBuilder,
+  b3l4: PortMatch,
   n1l4: SubnetCalculator,
 }
 
