@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useT } from '../lib/i18n'
+import { rich } from './Prose'
 
 /**
  * Wrap the data, then unwrap it.
@@ -10,7 +11,8 @@ import { useT } from '../lib/i18n'
  */
 interface Layer {
   id: string
-  n: number
+  /** what the badge shows — a string, because the top one covers three layers */
+  n: string
   name: { gu: string; en: string }
   adds: { gu: string; en: string }
   becomes: { gu: string; en: string }
@@ -20,15 +22,18 @@ interface Layer {
 const LAYERS: Layer[] = [
   {
     id: 'app',
-    n: 7,
-    name: { gu: 'Application', en: 'Application' },
-    adds: { gu: 'તમારો સંદેશ', en: 'your message' },
+    // 7, 6 and 5 together: none of them adds a header of its own, which is
+    // why the numbering jumps straight to 4 below. Splitting them into three
+    // envelopes here would teach something that is not true.
+    n: '7·6·5',
+    name: { gu: 'Application, Presentation, Session', en: 'Application, Presentation, Session' },
+    adds: { gu: 'તમારો સંદેશ — ત્રણેય મળીને', en: 'your message — all three together' },
     becomes: { gu: 'Data', en: 'Data' },
     tone: 'var(--nq-ccnp)',
   },
   {
     id: 'tcp',
-    n: 4,
+    n: '4',
     name: { gu: 'Transport', en: 'Transport' },
     adds: { gu: 'કયા દરવાજે — port નંબર', en: 'which door — port numbers' },
     becomes: { gu: 'Segment', en: 'Segment' },
@@ -36,7 +41,7 @@ const LAYERS: Layer[] = [
   },
   {
     id: 'ip',
-    n: 3,
+    n: '3',
     name: { gu: 'Network', en: 'Network' },
     adds: { gu: 'કયા ઘરે — IP સરનામાં', en: 'which house — IP addresses' },
     becomes: { gu: 'Packet', en: 'Packet' },
@@ -44,7 +49,7 @@ const LAYERS: Layer[] = [
   },
   {
     id: 'eth',
-    n: 2,
+    n: '2',
     name: { gu: 'Data Link', en: 'Data Link' },
     adds: { gu: 'આ લિંક પર કોને — MAC', en: 'who on this link — MAC addresses' },
     becomes: { gu: 'Frame', en: 'Frame' },
@@ -52,7 +57,7 @@ const LAYERS: Layer[] = [
   },
   {
     id: 'phy',
-    n: 1,
+    n: '1',
     name: { gu: 'Physical', en: 'Physical' },
     adds: { gu: 'વાયર પર 1 અને 0', en: '1s and 0s on the wire' },
     becomes: { gu: 'Bits', en: 'Bits' },
@@ -76,6 +81,10 @@ const L = {
   reset: { gu: 'ફરી શરૂ', en: 'Start again' },
   onTheWire: { gu: 'વાયર પર', en: 'On the wire' },
   nowCalled: { gu: 'હવે એને કહેવાય', en: 'now called' },
+  whyJump: {
+    gu: 'આંકડા 7 પછી સીધા 4 પર કેમ કૂદે છે? કારણ કે layer **6 અને 5 પોતાનું કોઈ કવર ઉમેરતા નથી**. એ ત્રણેય મળીને જે બને એને જ `Data` કહેવાય — એટલે અહીં એ એક જ ખાનામાં છે. કવર તો ફક્ત 4, 3, 2 અને 1 ચઢાવે છે.',
+    en: 'Why do the numbers jump from 7 straight to 4? Because layers **6 and 5 add no envelope of their own**. What those three produce together is simply called `Data` — which is why they share one row here. Only 4, 3, 2 and 1 put anything on.',
+  },
 }
 
 export default function EncapBuilder() {
@@ -149,7 +158,7 @@ export default function EncapBuilder() {
                   }}
                 >
                   <span
-                    className="nq-mono flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-xs font-bold"
+                    className="nq-mono flex h-7 shrink-0 items-center justify-center rounded-md px-1.5 text-xs font-bold"
                     style={{
                       background: on ? l.tone : 'var(--nq-panel-2)',
                       color: on ? 'var(--nq-on-accent)' : 'var(--nq-text-mute)',
@@ -182,6 +191,16 @@ export default function EncapBuilder() {
               {t(L.wrong)}
             </p>
           )}
+
+          <p
+            className="nq-prose mt-4 rounded-lg px-3 py-2 text-[12.5px] leading-[1.65]"
+            style={{
+              color: 'var(--nq-text-dim)',
+              background: 'color-mix(in srgb, var(--nq-info) 7%, transparent)',
+            }}
+          >
+            {rich(t(L.whyJump))}
+          </p>
 
           {(full || (unwrapping && applied.length === 0)) && (
             <div className="mt-4 flex flex-wrap items-center gap-3">
