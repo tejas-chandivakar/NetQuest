@@ -7,6 +7,10 @@ import BinaryBulbs from '../components/BinaryBulbs'
 import AddressExplorer from '../components/AddressExplorer'
 import EncapBuilder from '../components/EncapBuilder'
 import PortMatch from '../components/PortMatch'
+import { CableChooser, ClientServer, DeviceCast, ZoneSorter } from '../components/FoundationM1'
+import { MacExplorer } from '../components/FoundationM2'
+import { PacketOpener, ProtocolOrder, TcpUdpChooser } from '../components/FoundationM3'
+import { FirewallRules, InsideRouter } from '../components/FoundationM4'
 import { B4L1Journey, B4L2Journey, B4L3Journey } from './journeys'
 import { b2l3Break, b4l3Break } from './foundationBreaks'
 import { b1l1 } from './b1l1'
@@ -137,14 +141,24 @@ export const BREAKS: Record<string, BreakSpec> = {
  * about working something out rather than typing commands.
  */
 export const TOOLS: Record<string, ComponentType> = {
+  b1l2: CableChooser,
+  b1l3: ZoneSorter,
+  b1l4: ClientServer,
+  b1l5: DeviceCast,
   b2l1: AddressExplorer,
+  b2l2: MacExplorer,
   b2l4: AddressExplorer,
   b2l5: BinaryBulbs,
+  b3l1: PacketOpener,
   b3l2: EncapBuilder,
+  b3l3: TcpUdpChooser,
   b3l4: PortMatch,
+  b3l5: ProtocolOrder,
   b4l1: B4L1Journey,
   b4l2: B4L2Journey,
   b4l3: B4L3Journey,
+  b4l4: InsideRouter,
+  b4l5: FirewallRules,
   n1l3: AddressExplorer,
   n1l4: SubnetCalculator,
   n1l5: SubnetCalculator,
