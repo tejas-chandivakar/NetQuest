@@ -38,14 +38,14 @@ function StageTabs({
   if (stages.length < 2) return null
 
   return (
-    <div className="flex gap-1.5 rounded-xl border border-[var(--nq-border)] p-1">
+    <div className="flex gap-1 rounded-lg border border-[var(--nq-border)] p-0.5">
       {stages.map((s, i) => {
         const active = stage === s.k
         return (
           <button
             key={s.k}
             onClick={() => setStage(s.k)}
-            className="nq-focus flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition"
+            className="nq-focus flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[13px] font-semibold transition"
             style={
               active
                 ? { background: `color-mix(in srgb, ${accent} 16%, transparent)`, color: 'var(--nq-text)' }
@@ -112,42 +112,58 @@ export default function LessonPage() {
   const activeStage: Stage = available[stage] ? stage : spec ? 'learn' : config ? 'config' : 'learn'
 
   return (
-    <div
-      className="mx-auto w-full max-w-[1640px] px-5 py-8"
-    >
-      <nav className="flex flex-wrap items-center gap-2 text-xs text-[var(--nq-text-mute)]">
-        <Link to={`/track/${track.id}`} className="nq-focus rounded hover:text-[var(--nq-text-dim)]">
-          {t(track.title)}
-        </Link>
-        <span>/</span>
-        <span>{t(mod.title)}</span>
-        <span className="nq-mono ml-auto">
-          {pos + 1} / {order.length}
-        </span>
-      </nav>
+    <div>
+      {/*
+        One bar instead of four stacked blocks. Breadcrumb, title, minutes and
+        the stage tabs used to take ~250px between them and push the drawing
+        past the fold; together here they take about 60, and the bar stays put
+        so you always know which lesson and which stage you are in.
+      */}
+      <div
+        className="sticky top-0 z-30 border-b border-[var(--nq-border)]"
+        style={{ background: 'color-mix(in srgb, var(--nq-bg) 92%, transparent)', backdropFilter: 'blur(8px)' }}
+      >
+        <div className="mx-auto flex w-full max-w-[1640px] flex-wrap items-center gap-x-3 gap-y-2 px-5 py-2.5">
+          <Link
+            to={`/track/${track.id}`}
+            className="nq-focus shrink-0 rounded text-xs text-[var(--nq-text-mute)] transition hover:text-[var(--nq-text-dim)]"
+            title={t(mod.title)}
+          >
+            ← <span className="hidden sm:inline">{t(track.title)}</span>
+          </Link>
 
-      <header className="mt-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="nq-chip" style={{ borderColor: track.accent, color: track.accent }}>
+          <h1 className="min-w-0 flex-1 truncate text-base font-extrabold tracking-tight md:text-lg">
+            {t(lesson.title)}
+          </h1>
+
+          {/* the meta is the first thing to go when the bar runs out of room —
+              a readable title matters more than the kind chip */}
+          <span
+            className="nq-chip hidden shrink-0 sm:inline-flex"
+            style={{ borderColor: track.accent, color: track.accent }}
+          >
             {t(KIND_LABEL[lesson.kind])}
           </span>
-          <span className="nq-mono text-xs font-bold text-[var(--nq-text-dim)]">{lesson.minutes} min</span>
-        </div>
-        <h1 className="mt-3 text-3xl font-extrabold tracking-tight md:text-4xl">{t(lesson.title)}</h1>
-        <p className="nq-prose mt-2 text-[var(--nq-text-dim)]">{t(lesson.blurb)}</p>
-      </header>
+          <span className="nq-mono hidden shrink-0 text-xs font-bold text-[var(--nq-text-dim)] sm:inline">
+            {lesson.minutes} min
+          </span>
+          <span className="nq-mono hidden shrink-0 text-xs text-[var(--nq-text-mute)] md:inline">
+            {pos + 1}/{order.length}
+          </span>
 
-      <div className="mt-6">
-        <StageTabs
-          accent={track.accent}
-          stage={activeStage}
-          setStage={setStage}
-          available={available}
-          configLabel={t(track.id === 'beginner' ? UI.stageTry : UI.stageConfig)}
-        />
+          <div className="w-full sm:w-auto">
+            <StageTabs
+              accent={track.accent}
+              stage={activeStage}
+              setStage={setStage}
+              available={available}
+              configLabel={t(track.id === 'beginner' ? UI.stageTry : UI.stageConfig)}
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mx-auto w-full max-w-[1640px] px-5 pb-8 pt-4">
         {activeStage === 'config' && Tool ? (
           <Tool />
         ) : activeStage === 'config' && config ? (
@@ -159,10 +175,9 @@ export default function LessonPage() {
         ) : (
           <Roadmap />
         )}
-      </div>
 
-      {/* footer nav */}
-      <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-[var(--nq-border)] pt-6">
+        {/* footer nav */}
+        <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-[var(--nq-border)] pt-5">
         {prev ? (
           <Link
             to={`/lesson/${prev.id}`}
@@ -200,6 +215,7 @@ export default function LessonPage() {
             {t(UI.nextLesson)} →
           </Link>
         )}
+        </div>
       </div>
     </div>
   )
