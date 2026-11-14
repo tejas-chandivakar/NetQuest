@@ -382,6 +382,7 @@ export const n3l6Break: BreakSpec = {
   actions: [
     {
       id: 'kill-active',
+      silent: true,
       label: H('Active router (R1) બંધ કરો', 'Take the active router (R1) down'),
       explain: H('R1 ના Gi0/0 પર shutdown.', 'shutdown on R1 Gi0/0.'),
       expect: H(
@@ -418,6 +419,7 @@ export const n3l6Break: BreakSpec = {
     },
     {
       id: 'wrong-vip',
+      silent: true,
       label: H('R2 પર virtual IP ખોટો લખો', 'Put the wrong virtual IP on R2'),
       explain: H('R2 પર 10.0.0.1 ને બદલે 10.0.0.9.', '10.0.0.9 instead of 10.0.0.1 on R2.'),
       expect: H(
@@ -964,6 +966,7 @@ export const n5l2Break: BreakSpec = {
       },
     },
   ],
+  startsFailing: ['g'],
   probes: [
     { id: 'g', from: 'guest', to: 'srv', destIp: '10.10.10.50', label: H('GUEST → HR સર્વર', 'GUEST → HR server') },
     { id: 's', from: 'staff', to: 'srv', destIp: '10.10.10.50', label: H('STAFF → HR સર્વર', 'STAFF → HR server') },

@@ -17,6 +17,14 @@ export interface BreakAction {
   explain: Bi
   /** what they should expect to see — revealed after they flip it */
   expect: Bi
+  /**
+   * This fault deliberately leaves every probe as it was — either because it
+   * is harmless (clearing an ARP cache, which simply gets re-learnt) or
+   * because it is latent (a wrong standby address that only bites the day the
+   * primary dies). Both are worth doing; both would otherwise look like a
+   * broken sandbox, so they are declared rather than guessed at.
+   */
+  silent?: true
   apply: (net: Network) => void
   revert: (net: Network) => void
 }
@@ -35,6 +43,12 @@ export interface BreakSpec {
   layout: ConfigDeviceLayout[]
   actions: BreakAction[]
   probes: BreakProbe[]
+  /**
+   * Probe ids that are *supposed* to fail before anything is broken — a
+   * cross-VLAN ping, or traffic an ACL already denies. The separation working
+   * is the lesson, so it is stated here instead of looking like a fault.
+   */
+  startsFailing?: string[]
   intro: Bi
   viewBox?: { w: number; h: number }
 }
@@ -53,6 +67,12 @@ const L = {
   replyBlocked: { gu: 'પહોંચ્યું, પણ જવાબ અટક્યો', en: 'arrived, reply blocked' },
   tables: { gu: 'અસર પામેલું ટેબલ', en: 'Affected tables' },
   on: { gu: 'ચાલુ', en: 'ON' },
+  faultOn: { gu: 'ભૂલ ચાલુ', en: 'fault on' },
+  faultsOn: { gu: 'ભૂલો ચાલુ', en: 'faults on' },
+  yetHealthy: {
+    gu: 'અને તોય બધું પસાર થાય છે. એ ભૂલ છુપાયેલી છે.',
+    en: 'and everything still passes. That fault is hiding.',
+  },
   off: { gu: 'બંધ', en: 'OFF' },
 }
 
@@ -275,6 +295,20 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
   }
 
   const broken = applied.size > 0
+  /**
+   * Whether the probes actually show damage, which is not the same thing as
+   * whether a switch is on. Some faults are latent on purpose — a wrong
+   * standby address, a mask that is only wrong for hosts nobody has talked to
+   * yet. Saying "something is broken" for those would give the game away and
+   * teach the opposite of the lesson, so the chip reports what the probes
+   * report and the fault count is shown beside it.
+   */
+  const expectedToFail = new Set(spec.startsFailing ?? [])
+  const showsDamage = spec.probes.some(
+    // damage in either direction: something that should reach no longer does,
+    // or something the rules were meant to stop is now getting through
+    (p) => !net.ping(p.from, p.destIp).ok !== expectedToFail.has(p.id),
+  )
   const finished = result && anim !== null && anim >= Math.max(1, result.r.hops.length - 1)
 
   return (
@@ -294,12 +328,18 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
           <span
             className="nq-chip"
             style={{
-              borderColor: broken ? 'var(--nq-err)' : 'var(--nq-ok)',
-              color: broken ? 'var(--nq-err)' : 'var(--nq-ok)',
+              borderColor: showsDamage ? 'var(--nq-err)' : 'var(--nq-ok)',
+              color: showsDamage ? 'var(--nq-err)' : 'var(--nq-ok)',
             }}
           >
-            {broken ? t(L.broken) : t(L.healthy)}
+            {showsDamage ? t(L.broken) : t(L.healthy)}
           </span>
+          {broken && (
+            <span className="nq-mono text-[11px] text-[var(--nq-text-mute)]">
+              {applied.size} {t(applied.size === 1 ? L.faultOn : L.faultsOn)}
+              {!showsDamage && ` — ${t(L.yetHealthy)}`}
+            </span>
+          )}
           <button
             onClick={repairAll}
             disabled={!broken}
@@ -337,7 +377,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
                       />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block font-semibold">{t(a.label)}</span>
+                      <span className="block font-semibold">{rich(t(a.label))}</span>
                       <span className="nq-prose mt-0.5 block text-sm text-[var(--nq-text-dim)]">
                         {rich(t(a.explain))}
                       </span>
@@ -352,7 +392,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
                       }}
                     >
                       <strong style={{ color: 'var(--nq-warn)' }}>{t(L.expect)}: </strong>
-                      {t(a.expect)}
+                      {rich(t(a.expect))}
                     </p>
                   )}
                 </div>

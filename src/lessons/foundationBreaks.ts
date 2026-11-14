@@ -48,6 +48,7 @@ export const b2l3Break: BreakSpec = {
   actions: [
     {
       id: 'forget',
+      silent: true,
       label: H('બધાંની યાદશક્તિ ભૂંસો', 'Wipe what everyone has learnt'),
       explain: H(
         'દરેક મશીને યાદ રાખેલું છે કે કયા IP નું કયું MAC. એ નોંધ ભૂંસી નાખો.',

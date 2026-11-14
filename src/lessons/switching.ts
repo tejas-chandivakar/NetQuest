@@ -229,6 +229,7 @@ export const n2l2Break: BreakSpec = {
       },
     },
   ],
+  startsFailing: ['cross'],
   probes: [
     {
       id: 'same',
