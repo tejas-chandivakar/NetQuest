@@ -22,6 +22,9 @@ import { n3l1, n3l2, n3l4, n3l4Config } from './ccnaRouting'
 import { n1l6, n2l4 } from './ccnaAccess'
 import { n1l1, n1l2, n1l7 } from './ccnaFundamentals'
 import { n2l7 } from './ccnaDiscovery'
+import { n4l3, n4l4 } from './ccnaServices'
+import { n5l1, n5l3, n5l4, n5l5 } from './ccnaSecurity'
+import { n6l1, n6l2, n6l3 } from './ccnaAutomation'
 import { n1l4, n2l2 as n2l2Learn, n2l3 as n2l3Learn } from './ccna1'
 import { n3l3 as n3l3Learn, n3l5 as n3l5Learn, n3l6 as n3l6Learn } from './ccna2'
 import { n4l1 as n4l1Learn, n4l2 as n4l2Learn, n5l2 as n5l2Learn } from './ccna3'
@@ -86,7 +89,16 @@ export const LESSONS: Record<string, LessonSpec> = {
   n3l6: n3l6Learn,
   n4l1: n4l1Learn,
   n4l2: n4l2Learn,
+  n4l3,
+  n4l4,
+  n5l1,
   n5l2: n5l2Learn,
+  n5l3,
+  n5l4,
+  n5l5,
+  n6l1,
+  n6l2,
+  n6l3,
   n7l1: n7l1Learn,
   n7l2: n7l2Learn,
 }
