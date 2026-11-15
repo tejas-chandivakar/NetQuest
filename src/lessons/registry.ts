@@ -15,6 +15,7 @@ import { B4L1Journey, B4L2Journey, B4L3Journey } from './journeys'
 import { b2l3Break, b4l3Break } from './foundationBreaks'
 import { b1l1Break, b1l2Break, b1l3Break, b1l4Break, b1l5Break } from './breaksM1'
 import { b2l1Break, b4l2Break, b4l5Break } from './breaksM2'
+import { b2l4Break, b3l2Break, b4l1Break, b4l4Break } from './breaksM3'
 import { b1l1 } from './b1l1'
 import { b2l3 } from './b2l3'
 import { n2l1 } from './n2l1'
@@ -135,8 +136,12 @@ export const BREAKS: Record<string, BreakSpec> = {
   b1l5: b1l5Break,
   b2l1: b2l1Break,
   b2l3: b2l3Break,
+  b2l4: b2l4Break,
+  b3l2: b3l2Break,
+  b4l1: b4l1Break,
   b4l2: b4l2Break,
   b4l3: b4l3Break,
+  b4l4: b4l4Break,
   b4l5: b4l5Break,
   n2l2: n2l2Break,
   n3l3: n3l3Break,

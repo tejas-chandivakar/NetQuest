@@ -143,12 +143,31 @@ describe('NAT', () => {
     expect(n.get('r1')!.natTable.get('192.168.1.10')?.insideGlobal).toBe('203.0.113.2')
   })
 
+  it('does not translate when the inside interface is never marked', () => {
+    const n = edge()
+    n.get('isp')!.staticRoutes = []
+    n.rev++
+    const s = new CliSession(n, 'r1')
+    s.exec('enable')
+    s.exec('conf t')
+    s.exec('access-list 1 permit 192.168.1.0 0.0.0.255')
+    s.exec('interface Gi0/1')
+    s.exec('ip nat outside')
+    s.exec('exit')
+    // no `ip nat inside` anywhere — a real router would not translate, and
+    // forgiving that would let a learner finish a NAT lab with it missing
+    s.exec('ip nat inside source list 1 interface Gi0/1 overload')
+    expect(n.ping('pc1', '198.51.100.20').ok).toBe(false)
+  })
+
   it('shows the translation table', () => {
     const n = edge()
     const s = new CliSession(n, 'r1')
     s.exec('enable')
     s.exec('conf t')
     s.exec('access-list 1 permit 192.168.1.0 0.0.0.255')
+    s.exec('interface Gi0/0')
+    s.exec('ip nat inside')
     s.exec('interface Gi0/1')
     s.exec('ip nat outside')
     s.exec('exit')

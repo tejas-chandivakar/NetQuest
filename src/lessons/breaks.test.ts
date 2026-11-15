@@ -70,3 +70,23 @@ describe.each(Object.entries(BREAKS))('break-it sandbox %s', (id, spec) => {
     },
   )
 })
+
+/**
+ * b3l2 makes a specific promise its text would be a lie without: four faults,
+ * four *different* reasons underneath one identical symptom. The reason codes
+ * are what the stage prints, so they are what the lesson rests on.
+ */
+describe('b3l2 names a different layer for each fault', () => {
+  it('gives four distinct failure reasons', () => {
+    const spec = BREAKS.b3l2
+    const probe = spec.probes[0]
+    const reasons = spec.actions.map((a) => {
+      const net = spec.build()
+      a.apply(net)
+      const r = net.ping(probe.from, probe.destIp)
+      expect(r.ok, `${a.id} should stop the far probe`).toBe(false)
+      return r.failure
+    })
+    expect(new Set(reasons).size, `reasons were ${reasons.join(', ')}`).toBe(4)
+  })
+})

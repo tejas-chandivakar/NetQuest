@@ -84,10 +84,20 @@ export function translateSource(
   dev: Device,
   srcIp: string,
   outIface: string,
+  /**
+   * The interface the packet arrived on. A real router translates only when
+   * traffic crosses from an `ip nat inside` interface to an `ip nat outside`
+   * one — forgetting the inside marking is one of the commonest NAT mistakes,
+   * and without this check the simulator would quietly forgive it. Left
+   * undefined for traffic this device originated itself, which is not
+   * translated and does not need an inside interface.
+   */
+  inIface?: string,
 ): string | null {
   const nat = dev.nat
   if (!nat) return null
   if (!nat.outside.some((n) => n.toLowerCase() === outIface.toLowerCase())) return null
+  if (inIface && !nat.inside.some((n) => n.toLowerCase() === inIface.toLowerCase())) return null
 
   const fixed = nat.statics.find((s) => s.inside === srcIp)
   if (fixed) return fixed.outside

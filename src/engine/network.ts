@@ -583,7 +583,7 @@ export class Network {
       }
 
       // network address translation on the way out
-      const translated = translateSource(cur, effectiveSrc, outIface)
+      const translated = translateSource(cur, effectiveSrc, outIface, inIface)
       if (translated && translated !== effectiveSrc) {
         cur.natTable.set(effectiveSrc, {
           insideLocal: effectiveSrc,
