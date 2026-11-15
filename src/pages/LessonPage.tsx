@@ -164,14 +164,21 @@ export default function LessonPage() {
       </div>
 
       <div className="mx-auto w-full max-w-[1640px] px-5 pb-8 pt-4">
+        {/*
+          Keyed by lesson, so moving between lessons gives each stage a fresh
+          instance. Without it React reuses the component and its player keeps
+          the old step index: finishing a seven-step lesson and pressing Next
+          into a five-step one left the index past the end and blanked the
+          page — on the commonest path through the whole app.
+        */}
         {activeStage === 'config' && Tool ? (
-          <Tool />
+          <Tool key={lesson.id} />
         ) : activeStage === 'config' && config ? (
-          <ConfigureStage spec={config} />
+          <ConfigureStage key={lesson.id} spec={config} />
         ) : activeStage === 'break' && brk ? (
-          <BreakStage spec={brk} />
+          <BreakStage key={lesson.id} spec={brk} />
         ) : spec ? (
-          <AnimatedLesson spec={spec} />
+          <AnimatedLesson key={lesson.id} spec={spec} />
         ) : (
           <Roadmap />
         )}

@@ -37,7 +37,15 @@ export function useStepPlayer(durations: number[], opts?: { autoplay?: boolean }
   speedRef.current = speed
 
   const count = durations.length
-  const atEnd = step >= count - 1 && t >= 1
+  /*
+   * The caller can swap the whole step list under us — moving to another
+   * lesson keeps this hook mounted while `durations` becomes a shorter array.
+   * The stored index would then point past the end and every consumer doing
+   * `steps[player.step]` would read undefined. Clamping on the way out costs
+   * nothing and means no caller can be crashed by it.
+   */
+  const safeStep = count ? Math.min(step, count - 1) : 0
+  const atEnd = safeStep >= count - 1 && t >= 1
 
   const stop = useCallback(() => {
     if (raf.current !== null) {
@@ -110,7 +118,7 @@ export function useStepPlayer(durations: number[], opts?: { autoplay?: boolean }
     setT(0)
   }, [])
 
-  return { step, t, playing, speed, play, pause, toggle, next, prev, reset, goTo, setSpeed, atEnd }
+  return { step: safeStep, t, playing, speed, play, pause, toggle, next, prev, reset, goTo, setSpeed, atEnd }
 }
 
 /** ease-in-out for packet motion */

@@ -58,7 +58,7 @@ interface Props {
 }
 
 const SIZE: Record<DeviceType, { w: number; h: number }> = {
-  pc: { w: 74, h: 56 },
+  pc: { w: 84, h: 42 },
   laptop: { w: 78, h: 40 },
   switch: { w: 96, h: 46 },
   router: { w: 80, h: 52 },
@@ -287,24 +287,40 @@ function DeviceShape({ node }: { node: NodeSpec }) {
       )
     }
 
-    /* pc — a monitor on a stand */
-    default:
+    /* pc — a monitor and its tower, standing on one baseline */
+    default: {
+      /*
+       * A desktop, not just a screen: the tower beside it is what separates
+       * this from the laptop at a glance, and the screen carries a sidebar
+       * and lines rather than the laptop's window, for the same reason.
+       *
+       * Monitor foot and tower both end at y 21, so the pair sits on a
+       * shared baseline instead of floating at different heights.
+       */
+      const op = (o: number) => ({ fill: body, opacity: o })
       return (
         <g>
-          <rect x={-w / 2} y={-h / 2} width={w} height={h - 16} rx={4} fill={body} />
-          <rect
-            x={-w / 2 + 5}
-            y={-h / 2 + 5}
-            width={w - 10}
-            height={h - 26}
-            rx={2}
-            fill={cut}
-            opacity={0.92}
-          />
-          <rect x={-9} y={h / 2 - 16} width={18} height={8} fill={body} />
-          <rect x={-22} y={h / 2 - 8} width={44} height={6} rx={3} fill={body} />
+          {/* the monitor */}
+          <rect x={-42} y={-21} width={56} height={32} rx={3.5} fill={body} />
+          <rect x={-38.5} y={-17.5} width={49} height={25} rx={1.5} fill={cut} />
+          <rect x={-35} y={-14.5} width={9} height={18.5} rx={1.5} {...op(0.22)} />
+          <rect x={-23} y={-14} width={22} height={3} rx={1.5} {...op(0.3)} />
+          <rect x={-23} y={-8.5} width={15} height={3} rx={1.5} {...op(0.3)} />
+          <rect x={-23} y={-3} width={19} height={3} rx={1.5} {...op(0.3)} />
+          <rect x={-18} y={11} width={8} height={6} fill={body} />
+          <rect x={-30} y={17} width={32} height={4} rx={2} fill={body} />
+
+          {/* the tower */}
+          <rect x={20} y={-14} width={22} height={35} rx={2.5} fill={body} />
+          <rect x={23.5} y={-10} width={15} height={3.5} rx={1} fill={lid} />
+          <rect x={23.5} y={-4.5} width={15} height={2.8} rx={1} fill={lid} opacity={0.55} />
+          <circle cx={31} cy={2.5} r={2.1} fill={lid} />
+          {[8, 11.6, 15.2].map((y) => (
+            <rect key={y} x={25} y={y} width={12} height={1.9} rx={0.95} fill={lid} opacity={0.45} />
+          ))}
         </g>
       )
+    }
   }
 }
 
