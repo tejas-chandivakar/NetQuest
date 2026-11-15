@@ -59,7 +59,7 @@ interface Props {
 
 const SIZE: Record<DeviceType, { w: number; h: number }> = {
   pc: { w: 74, h: 56 },
-  laptop: { w: 78, h: 52 },
+  laptop: { w: 78, h: 40 },
   switch: { w: 96, h: 46 },
   router: { w: 80, h: 52 },
   server: { w: 60, h: 74 },
@@ -247,14 +247,45 @@ function DeviceShape({ node }: { node: NodeSpec }) {
         </g>
       )
 
-    case 'laptop':
+    case 'laptop': {
+      /*
+       * The client machine, and the icon a learner meets most often — it
+       * stands for every person in every diagram. The old one was a bare
+       * trapezoid whose base measured 86 across a box 78 wide, so it spilled
+       * sideways and read as a blank slab.
+       *
+       * This one has something on the screen: a window bar with its three
+       * dots, a panel and three lines of content. That is the whole point of
+       * the shape here — it has to say "somebody is using this", because the
+       * lessons lean on the difference between a client and a server. The
+       * detail is deliberately chunky; at 78px wide, hairlines turn to mush.
+       */
+      const op = (o: number) => ({ fill: body, opacity: o })
       return (
         <g>
-          <path d="M -29 12 l 5 -34 h 48 l 5 34 z" fill={body} />
-          <path d="M -23 8 l 4 -26 h 38 l 4 26 z" fill={cut} opacity={0.92} />
-          <path d="M -39 12 h 78 l 4 8 h -86 z" fill={lid} />
+          {/* lid, with the camera above the display */}
+          <rect x={-30} y={-21} width={60} height={32} rx={3.5} fill={body} />
+          <circle cx={0} cy={-18.8} r={0.95} fill={lid} />
+          <rect x={-26} y={-17} width={52} height={24.5} rx={1.6} fill={cut} />
+
+          {/* a window, open on the screen */}
+          <rect x={-26} y={-17} width={52} height={6} rx={1.6} fill={lid} opacity={0.75} />
+          {[-22.6, -19.1, -15.6].map((cx) => (
+            <circle key={cx} cx={cx} cy={-14} r={1.2} fill={cut} />
+          ))}
+          <rect x={-22.5} y={-8.4} width={13.5} height={12} rx={1.8} {...op(0.2)} />
+          <rect x={-6} y={-8} width={25} height={3} rx={1.5} {...op(0.33)} />
+          <rect x={-6} y={-3.2} width={18} height={3} rx={1.5} {...op(0.33)} />
+          <rect x={-6} y={1.6} width={22} height={3} rx={1.5} {...op(0.33)} />
+          <rect x={-22.5} y={5} width={37} height={2.4} rx={1.2} {...op(0.24)} />
+
+          {/* the deck, its hinge, and the lip you open it by */}
+          <path d="M -35 11 H 35 L 39 19 H -39 Z" fill={lid} />
+          <rect x={-30} y={11} width={60} height={1.5} {...op(0.16)} />
+          <path d="M -8 19 h 16 l -2.2 -3 h -11.6 z" {...op(0.32)} />
         </g>
       )
+    }
 
     /* pc — a monitor on a stand */
     default:
