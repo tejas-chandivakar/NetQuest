@@ -63,7 +63,7 @@ const SIZE: Record<DeviceType, { w: number; h: number }> = {
   switch: { w: 96, h: 46 },
   router: { w: 80, h: 52 },
   server: { w: 60, h: 74 },
-  cloud: { w: 104, h: 60 },
+  cloud: { w: 78, h: 52 },
   firewall: { w: 76, h: 56 },
   ap: { w: 66, h: 48 },
 }
@@ -106,39 +106,67 @@ function DeviceShape({ node }: { node: NodeSpec }) {
 
   switch (type) {
     case 'router': {
+      /*
+       * The Cisco drum. Its four arrows are the whole signature — traffic
+       * arriving and leaving in both directions — so they have to sit ON the
+       * elliptical lid, not spill onto the body below it, and they have to be
+       * far enough apart that the arrowheads do not touch. Both of which the
+       * first version of this got wrong at the sizes we actually draw.
+       *
+       * Lid: 80 x 26 centred on cy. Every coordinate below is checked against
+       * the ellipse, |y - cy| <= ry * sqrt(1 - (x/rx)^2).
+       */
       const rx = w / 2
-      const ry = 11
+      const ry = 13
       const bh = h - ry * 2
+      const cy = -bh / 2
       return (
         <g>
-          <path d={`M ${-rx} ${-bh / 2} v ${bh} a ${rx} ${ry} 0 0 0 ${w} 0 v ${-bh}`} fill={body} />
-          <ellipse cx={0} cy={-bh / 2} rx={rx} ry={ry} fill={lid} />
-          <g {...detail} strokeWidth={1.9}>
-            <path d="M -21 -11 h 13 m -4 -4 l 4 4 l -4 4" />
-            <path d="M 21 -3 h -13 m 4 -4 l -4 4 l 4 4" />
-            <path d="M -13 -18 v 11 m -4 -7 l 4 -4 l 4 4" />
-            <path d="M 13 -4 v -11 m -4 7 l 4 4 l 4 -4" />
+          <path d={`M ${-rx} ${cy} v ${bh} a ${rx} ${ry} 0 0 0 ${w} 0 v ${-bh}`} fill={body} />
+          <ellipse cx={0} cy={cy} rx={rx} ry={ry} fill={lid} />
+          <g {...detail} strokeWidth={2}>
+            {/* the two that cross: out to the left, in from the right */}
+            <path d={`M 5 ${cy - 5} H -15 m 5 -4.5 l -5 4.5 l 5 4.5`} />
+            <path d={`M -5 ${cy + 5} H 15 m -5 -4.5 l 5 4.5 l -5 4.5`} />
+            {/* and the two on the shoulders, clear of the arrowheads above */}
+            <path d={`M -27 ${cy + 6} V ${cy - 6} m -4.5 5 l 4.5 -5 l 4.5 5`} />
+            <path d={`M 27 ${cy - 6} V ${cy + 6} m -4.5 -5 l 4.5 5 l 4.5 -5`} />
           </g>
         </g>
       )
     }
 
     case 'switch': {
-      const lift = 13
+      /*
+       * Two opposed arrows on the sloped top, the switch's counterpart to the
+       * router's four. The lid was 13 tall, which is not enough for two
+       * stacked arrowheads — they overlapped and the lower one hung off the
+       * front face. A taller slope gives them room to read as two.
+       */
+      const lift = 18
       const bh = h - lift
+      /*
+       * The sloped lid grows upward from the body, so the body has to start
+       * `lift / 2` lower than centre or the whole icon rides above its own
+       * box — which it did, by 9px, pulling every link that attaches to it
+       * off the shape. Top of the lid is now exactly -h/2, bottom of the body
+       * exactly +h/2.
+       */
+      const top = -bh / 2 + lift / 2
+      const cy = top - lift / 2
       return (
         <g>
-          <path d={`M ${-w / 2} ${-bh / 2} h ${w} v ${bh} h ${-w} z`} fill={body} />
-          <path d={`M ${-w / 2} ${-bh / 2} l 12 ${-lift} h ${w - 24} l 12 ${lift} z`} fill={lid} />
-          <g {...detail} strokeWidth={1.8}>
-            <path d="M -19 -22 h 15 m -4 -4 l 4 4 l -4 4" />
-            <path d="M 19 -13 h -15 m 4 -4 l -4 4 l 4 4" />
+          <path d={`M ${-w / 2} ${top} h ${w} v ${bh} h ${-w} z`} fill={body} />
+          <path d={`M ${-w / 2} ${top} l 12 ${-lift} h ${w - 24} l 12 ${lift} z`} fill={lid} />
+          <g {...detail} strokeWidth={1.9}>
+            <path d={`M 5 ${cy - 4.5} H -18 m 5 -4 l -5 4 l 5 4`} />
+            <path d={`M -5 ${cy + 4.5} H 18 m -5 -4 l 5 4 l -5 4`} />
           </g>
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <rect
               key={i}
               x={-w / 2 + 11 + i * 12.5}
-              y={bh / 2 - 9}
+              y={top + bh - 9}
               width={8}
               height={5.5}
               rx={1.4}
@@ -171,8 +199,14 @@ function DeviceShape({ node }: { node: NodeSpec }) {
     }
 
     case 'cloud':
+      /*
+       * The drawn path measures 77 x 50 and started at x -42, y -36, so it
+       * hung up and to the left of the 104 x 60 box the layout believed in.
+       * Links aim at the box, so they stopped short of the shape. Nudged to
+       * centre; SIZE.cloud now states what is actually drawn.
+       */
       return (
-        <g>
+        <g transform="translate(3.5, 11)">
           <path
             d="M -30 14 a 17 17 0 0 1 2 -33 a 23 23 0 0 1 42 -6 a 18 18 0 0 1 20 20 a 15 15 0 0 1 -12 19 z"
             fill={body}
