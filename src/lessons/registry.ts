@@ -7,8 +7,8 @@ import BinaryBulbs from '../components/BinaryBulbs'
 import AddressExplorer from '../components/AddressExplorer'
 import EncapBuilder from '../components/EncapBuilder'
 import PortMatch from '../components/PortMatch'
-import { CableChooser, ClientServer, DeviceCast, ZoneSorter } from '../components/FoundationM1'
-import { MacExplorer } from '../components/FoundationM2'
+import { CableChooser, ClientServer, ConversationOrder, DeviceCast, ZoneSorter } from '../components/FoundationM1'
+import { ArpMatcher, MacExplorer } from '../components/FoundationM2'
 import { PacketOpener, ProtocolOrder, TcpUdpChooser } from '../components/FoundationM3'
 import { FirewallRules, InsideRouter } from '../components/FoundationM4'
 import { B4L1Journey, B4L2Journey, B4L3Journey } from './journeys'
@@ -16,6 +16,7 @@ import { b2l3Break, b4l3Break } from './foundationBreaks'
 import { b1l1Break, b1l2Break, b1l3Break, b1l4Break, b1l5Break } from './breaksM1'
 import { b2l1Break, b4l2Break, b4l5Break } from './breaksM2'
 import { b2l4Break, b3l2Break, b4l1Break, b4l4Break } from './breaksM3'
+import { b2l2Break, b2l5Break, b3l1Break, b3l3Break, b3l4Break, b3l5Break } from './breaksRemaining'
 import { b1l1 } from './b1l1'
 import { b2l3 } from './b2l3'
 import { n2l1 } from './n2l1'
@@ -135,9 +136,15 @@ export const BREAKS: Record<string, BreakSpec> = {
   b1l4: b1l4Break,
   b1l5: b1l5Break,
   b2l1: b2l1Break,
+  b2l2: b2l2Break,
   b2l3: b2l3Break,
   b2l4: b2l4Break,
+  b2l5: b2l5Break,
+  b3l1: b3l1Break,
   b3l2: b3l2Break,
+  b3l3: b3l3Break,
+  b3l4: b3l4Break,
+  b3l5: b3l5Break,
   b4l1: b4l1Break,
   b4l2: b4l2Break,
   b4l3: b4l3Break,
@@ -156,12 +163,14 @@ export const BREAKS: Record<string, BreakSpec> = {
  * about working something out rather than typing commands.
  */
 export const TOOLS: Record<string, ComponentType> = {
+  b1l1: ConversationOrder,
   b1l2: CableChooser,
   b1l3: ZoneSorter,
   b1l4: ClientServer,
   b1l5: DeviceCast,
   b2l1: AddressExplorer,
   b2l2: MacExplorer,
+  b2l3: ArpMatcher,
   b2l4: AddressExplorer,
   b2l5: BinaryBulbs,
   b3l1: PacketOpener,

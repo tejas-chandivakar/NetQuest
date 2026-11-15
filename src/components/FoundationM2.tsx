@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useT } from '../lib/i18n'
 import type { Bi } from '../data/courses'
 import { rich } from './Prose'
-import { ToolFrame, ToolHead, Verdict } from './ToolFrame'
+import { Choice, ToolFrame, ToolHead, Verdict } from './ToolFrame'
 
 const H = (gu: string, en: string): Bi => ({ gu, en })
 
@@ -181,6 +181,148 @@ export function MacExplorer() {
             ))}
           </tbody>
         </table>
+      </div>
+    </ToolFrame>
+  )
+}
+
+/* ═══════════════════ b2l3 · the ARP question ═══════════════════ */
+
+interface ArpDevice {
+  id: string
+  name: Bi
+  ip: string
+  mac: string
+}
+
+const ARP_DEVICES: ArpDevice[] = [
+  { id: 'pc1', name: H('PC1', 'PC1'), ip: '192.168.1.10', mac: '00:1A:AA:11:00:01' },
+  { id: 'pc2', name: H('PC2', 'PC2'), ip: '192.168.1.20', mac: '00:1A:BB:22:00:02' },
+  { id: 'pc3', name: H('PC3', 'PC3'), ip: '192.168.1.30', mac: '00:1A:CC:33:00:03' },
+  { id: 'gw', name: H('Router (gateway)', 'Router (gateway)'), ip: '192.168.1.1', mac: '00:1A:99:00:00:01' },
+]
+
+const shuffle = <T,>(a: T[]) => {
+  const c = [...a]
+  for (let i = c.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[c[i], c[j]] = [c[j], c[i]]
+  }
+  return c
+}
+
+const A = {
+  title: H('ARP cache ભરો', 'Fill the ARP cache'),
+  lead: H(
+    'PC1 ને ચાર ઉપકરણો સાથે વાત કરવી છે. દરેક IP સરનામું માટે **સાચું MAC** શોધો — ખોટું મૂકો તો packet ખોટા ઉપકરણ પર જાય.',
+    'PC1 wants to talk to four devices. For each IP address, find the **right MAC** — a wrong one sends the packet to the wrong machine.',
+  ),
+  pickMac: H('MAC પસંદ કરો', 'Pick the MAC'),
+  resolved: H('મળ્યાં', 'resolved'),
+  done: H('ARP cache પૂરું.', 'ARP cache complete.'),
+  wrong: H('એ MAC બીજા ઉપકરણનું છે', 'that MAC belongs to a different device'),
+  right: H('સાચું! IP ને MAC મળ્યું — હવે packet પહોંચી શકે.', 'Correct! IP has a MAC now — the packet can reach.'),
+}
+
+export function ArpMatcher() {
+  const t = useT()
+  const [seed, setSeed] = useState(0)
+  const ips = useMemo(() => shuffle(ARP_DEVICES), [seed])
+  const macs = useMemo(() => shuffle(ARP_DEVICES), [seed])
+  const [picked, setPicked] = useState<ArpDevice | null>(null)
+  const [solved, setSolved] = useState<string[]>([])
+  const [said, setSaid] = useState<{ right: boolean } | null>(null)
+
+  const tapIp = (d: ArpDevice) => {
+    if (solved.includes(d.id)) return
+    setPicked(d)
+    setSaid(null)
+  }
+
+  const tapMac = (d: ArpDevice) => {
+    if (!picked || solved.includes(d.id)) return
+    const right = d.id === picked.id
+    setSaid({ right })
+    if (right) {
+      setSolved((s) => [...s, d.id])
+      setPicked(null)
+    }
+  }
+
+  const allDone = solved.length === ARP_DEVICES.length
+
+  return (
+    <ToolFrame
+      title={A.title}
+      lead={A.lead}
+      onReset={() => {
+        setSeed((n) => n + 1)
+        setPicked(null)
+        setSolved([])
+        setSaid(null)
+      }}
+      status={
+        allDone ? (
+          <span className="text-sm font-semibold" style={{ color: 'var(--nq-ok)' }}>
+            ✓ {t(A.done)}
+          </span>
+        ) : (
+          <span className="nq-mono text-[12px] text-[var(--nq-text-mute)]">
+            {solved.length} / {ARP_DEVICES.length} {t(A.resolved)}
+          </span>
+        )
+      }
+    >
+      {said && (
+        <div className="mb-3">
+          <Verdict tone={said.right ? 'ok' : 'miss'}>{t(said.right ? A.right : A.wrong)}</Verdict>
+        </div>
+      )}
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <ToolHead>IP</ToolHead>
+          <div className="mt-2 space-y-1.5">
+            {ips.map((d) => {
+              const done = solved.includes(d.id)
+              return (
+                <Choice
+                  key={d.id}
+                  on={picked?.id === d.id}
+                  done={done}
+                  disabled={done}
+                  onClick={() => tapIp(d)}
+                  className="block w-full"
+                >
+                  <span className="flex items-baseline gap-2">
+                    <span className="text-sm font-semibold text-[var(--nq-text)]">{done && '✓ '}{t(d.name)}</span>
+                    <span className="nq-mono ml-auto text-xs text-[var(--nq-text-mute)]">{d.ip}</span>
+                  </span>
+                </Choice>
+              )
+            })}
+          </div>
+        </div>
+
+        <div>
+          <ToolHead>{t(A.pickMac)}</ToolHead>
+          <div className="mt-2 space-y-1.5">
+            {macs.map((d) => {
+              const done = solved.includes(d.id)
+              return (
+                <Choice
+                  key={d.id}
+                  done={done}
+                  disabled={done || !picked}
+                  onClick={() => tapMac(d)}
+                  className="block w-full"
+                >
+                  <span className="nq-mono text-xs text-[var(--nq-text-dim)]">{done && '✓ '}{d.mac}</span>
+                </Choice>
+              )
+            })}
+          </div>
+        </div>
       </div>
     </ToolFrame>
   )

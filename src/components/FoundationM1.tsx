@@ -13,6 +13,108 @@ const shuffle = <T,>(a: T[]) => {
   return c
 }
 
+/* ═══════════════════ b1l1 · put the conversation in order ═══════════════════ */
+
+interface Step {
+  id: string
+  text: Bi
+  why: Bi
+}
+
+const STEPS: Step[] = [
+  { id: 'cable', text: H('બે કમ્પ્યુટરને વાયરથી જોડો', 'Connect the two computers with a cable'), why: H('વાત કરવા પહેલાં રસ્તો જોઈએ — ભલે તાર, ભલે Wi-Fi.', 'Before any talking, there must be a road — cable or Wi-Fi.') },
+  { id: 'addr', text: H('દરેકને સરનામું આપો', 'Give each one an address'), why: H('સરનામા વગર ખબર ન પડે કે કોણ મોકલે છે ને કોણ લે છે.', 'Without addresses, nobody knows who is sending and who is receiving.') },
+  { id: 'pack', text: H('સંદેશાને પરબીડિયામાં મૂકો', 'Put the message in an envelope'), why: H('"કોના તરફથી" અને "કોને" — એ બંને ઉપર લખવા પડે.', '"From" and "to" must be written on the outside.') },
+  { id: 'send', text: H('પરબીડિયું વાયર પર મોકલો', 'Send the envelope down the wire'), why: H('વાયરમાં ડેટા 0 અને 1 ના signal તરીકે ચાલે.', 'Data travels as 0 and 1 signals on the wire.') },
+  { id: 'recv', text: H('સામેનું કમ્પ્યુટર ખોલીને વાંચે', 'The other computer opens and reads it'), why: H('પરબીડિયું ઉતારે, સંદેશો મળે. વાત પૂરી.', 'It peels off the envelope, reads the message. Conversation done.') },
+]
+
+const C0 = {
+  title: H('વાતચીતના પગલાં ગોઠવો', 'Put the conversation in order'),
+  lead: H(
+    'બે કમ્પ્યુટર વાત કરવા માગે છે. **પગલાં ગોઠવો** — પહેલું શું, પછી શું. ખોટા ક્રમે મૂકો તો કહીશ કે પહેલાં શું થવું જોઈએ.',
+    'Two computers want to talk. **Put the steps in order** — what comes first, what comes next. Place one out of order and it will tell you what needs to happen before it.',
+  ),
+  placed: H('ગોઠવાયેલાં', 'placed'),
+  done: H('બધાં પગલાં સાચા ક્રમમાં.', 'All steps are in the right order.'),
+  notYet: H('પહેલાં આ થવું જોઈએ', 'this needs to happen first'),
+}
+
+export function ConversationOrder() {
+  const t = useT()
+  const [seed, setSeed] = useState(0)
+  const pool = useMemo(() => shuffle(STEPS), [seed])
+  const [order, setOrder] = useState<string[]>([])
+  const [said, setSaid] = useState<{ step: Step; right: boolean } | null>(null)
+
+  const nextIdx = order.length
+  const remaining = pool.filter((s) => !order.includes(s.id))
+  const allDone = order.length === STEPS.length
+
+  const pick = (s: Step) => {
+    const correct = s.id === STEPS[nextIdx].id
+    setSaid({ step: s, right: correct })
+    if (correct) setOrder((o) => [...o, s.id])
+  }
+
+  return (
+    <ToolFrame
+      title={C0.title}
+      lead={C0.lead}
+      onReset={() => {
+        setSeed((n) => n + 1)
+        setOrder([])
+        setSaid(null)
+      }}
+      status={
+        allDone ? (
+          <span className="text-sm font-semibold" style={{ color: 'var(--nq-ok)' }}>
+            ✓ {t(C0.done)}
+          </span>
+        ) : (
+          <span className="nq-mono text-[12px] text-[var(--nq-text-mute)]">
+            {order.length} / {STEPS.length} {t(C0.placed)}
+          </span>
+        )
+      }
+    >
+      {order.length > 0 && (
+        <div className="mb-4 space-y-1">
+          {order.map((id, i) => {
+            const s = STEPS.find((x) => x.id === id)!
+            return (
+              <div key={id} className="flex items-baseline gap-2 rounded-lg px-3 py-1.5" style={{ background: 'color-mix(in srgb, var(--nq-ok) 8%, transparent)' }}>
+                <span className="nq-mono shrink-0 text-xs font-bold" style={{ color: 'var(--nq-ok)' }}>{i + 1}</span>
+                <span className="text-sm text-[var(--nq-text)]">{t(s.text)}</span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {said && (
+        <div className="mb-3">
+          <Verdict tone={said.right ? 'ok' : 'miss'}>
+            {said.right
+              ? t(said.step.why)
+              : `${t(C0.notYet)}: ${t(STEPS[nextIdx].text)}`}
+          </Verdict>
+        </div>
+      )}
+
+      {!allDone && (
+        <div className="flex flex-wrap gap-1.5">
+          {remaining.map((s) => (
+            <Choice key={s.id} onClick={() => pick(s)}>
+              <span className="text-sm font-semibold text-[var(--nq-text)]">{t(s.text)}</span>
+            </Choice>
+          ))}
+        </div>
+      )}
+    </ToolFrame>
+  )
+}
+
 /* ═══════════════════ b1l2 · the cable chooser ═══════════════════ */
 
 interface Cable {
