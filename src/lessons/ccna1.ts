@@ -274,7 +274,16 @@ export const n2l2: LessonSpec = {
         links: vlanLinks,
         packets:
           t > 0.3
-            ? [{ id: 'p', from: 'pc1', to: 'pc4', t: 0.1 + ease((t - 0.3) / 0.7) * 0.8, color: 'var(--nq-pkt-data)', label: 'ping ✓' }]
+            ? [
+                {
+                  id: 'p',
+                  from: (t - 0.3) / 0.7 < 0.5 ? 'pc1' : 'sw1',
+                  to: (t - 0.3) / 0.7 < 0.5 ? 'sw1' : 'pc4',
+                  t: 0.1 + ease((t - 0.3) / 0.7 < 0.5 ? ((t - 0.3) / 0.7) * 2 : (((t - 0.3) / 0.7) - 0.5) * 2) * 0.8,
+                  color: 'var(--nq-pkt-data)',
+                  label: 'ping ✓',
+                },
+              ]
             : [],
       }),
     },
@@ -382,7 +391,16 @@ export const n2l2: LessonSpec = {
         links: vlanLinks,
         packets:
           t < 0.5
-            ? [{ id: 'ok', from: 'pc1', to: 'pc2', t: 0.1 + ease(t / 0.5) * 0.8, color: 'var(--nq-ok)', label: 'same VLAN ✓' }]
+            ? [
+                {
+                  id: 'ok',
+                  from: t < 0.25 ? 'pc1' : 'sw1',
+                  to: t < 0.25 ? 'sw1' : 'pc2',
+                  t: 0.1 + ease(t < 0.25 ? (t / 0.25) : ((t - 0.25) / 0.25)) * 0.8,
+                  color: 'var(--nq-ok)',
+                  label: 'same VLAN ✓',
+                },
+              ]
             : [{ id: 'no', from: 'pc1', to: 'sw1', t: 0.1 + ease((t - 0.5) / 0.5) * 0.8, color: 'var(--nq-err)', label: 'VLAN 10 → 20 ✕' }],
       }),
     },

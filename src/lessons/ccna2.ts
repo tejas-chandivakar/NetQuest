@@ -127,10 +127,14 @@ export const n3l3: LessonSpec = {
       scene: (t) => ({
         nodes: staticNodes(true, false),
         links: staticLinks,
-        packets:
-          t < 0.5
-            ? [{ id: 'f', from: 'pc1', to: 'pc2', t: 0.08 + ease(t / 0.5) * 0.84, color: 'var(--nq-ok)', label: 'forward ✓' }]
-            : [{ id: 'r', from: 'pc2', to: 'r2', t: 0.1 + ease((t - 0.5) / 0.5) * 0.8, color: 'var(--nq-err)', label: 'reply dropped ✕' }],
+        packets: (() => {
+          if (t >= 0.5) return [{ id: 'r', from: 'pc2', to: 'r2', t: 0.1 + ease((t - 0.5) / 0.5) * 0.8, color: 'var(--nq-err)', label: 'reply dropped ✕' }]
+          const hops: [string, string][] = [['pc1', 'r1'], ['r1', 'r2'], ['r2', 'pc2']]
+          const p = t / 0.5
+          const seg = Math.min(2, Math.floor(p * 3))
+          const st = p * 3 - seg
+          return [{ id: 'f', from: hops[seg][0], to: hops[seg][1], t: 0.08 + ease(st) * 0.84, color: 'var(--nq-ok)', label: 'forward ✓' }]
+        })(),
       }),
       say: (t) =>
         t > 0.55
@@ -162,14 +166,21 @@ export const n3l3: LessonSpec = {
       scene: (t) => ({
         nodes: staticNodes(true, t > 0.3),
         links: staticLinks.map((l) => ({ ...l, flowing: t > 0.4 })),
-        packets:
-          t > 0.4
-            ? [
-                t < 0.7
-                  ? { id: 'f', from: 'pc1', to: 'pc2', t: 0.08 + ease((t - 0.4) / 0.3) * 0.84, color: 'var(--nq-pkt-data)', label: 'request' }
-                  : { id: 'r', from: 'pc2', to: 'pc1', t: 0.08 + ease((t - 0.7) / 0.3) * 0.84, color: 'var(--nq-ok)', label: 'reply ✓' },
-              ]
-            : [],
+        packets: (() => {
+          if (t <= 0.4) return []
+          const fwd: [string, string][] = [['pc1', 'r1'], ['r1', 'r2'], ['r2', 'pc2']]
+          const rev: [string, string][] = [['pc2', 'r2'], ['r2', 'r1'], ['r1', 'pc1']]
+          if (t < 0.7) {
+            const p = (t - 0.4) / 0.3
+            const seg = Math.min(2, Math.floor(p * 3))
+            const st = p * 3 - seg
+            return [{ id: 'f', from: fwd[seg][0], to: fwd[seg][1], t: 0.08 + ease(st) * 0.84, color: 'var(--nq-pkt-data)', label: 'request' }]
+          }
+          const p = (t - 0.7) / 0.3
+          const seg = Math.min(2, Math.floor(p * 3))
+          const st = p * 3 - seg
+          return [{ id: 'r', from: rev[seg][0], to: rev[seg][1], t: 0.08 + ease(st) * 0.84, color: 'var(--nq-ok)', label: 'reply ✓' }]
+        })(),
       }),
       aside: (t) => ({
         title: { gu: 'R2 નું routing table', en: 'R2 routing table' },
@@ -428,7 +439,13 @@ export const n3l5: LessonSpec = {
         links: ospfLinks.map((l) => ({ ...l, flowing: t > 0.4 })),
         packets:
           t > 0.55
-            ? [{ id: 'p', from: 'pc1', to: 'pc2', t: 0.06 + ease((t - 0.55) / 0.45) * 0.88, color: 'var(--nq-ok)', label: 'end to end ✓' }]
+            ? (() => {
+                const hops: [string, string][] = [['pc1', 'r1'], ['r1', 'r2'], ['r2', 'r3'], ['r3', 'pc2']]
+                const p = (t - 0.55) / 0.45
+                const seg = Math.min(3, Math.floor(p * 4))
+                const st = p * 4 - seg
+                return [{ id: 'p', from: hops[seg][0], to: hops[seg][1], t: 0.06 + ease(st) * 0.88, color: 'var(--nq-ok)', label: 'end to end ✓' }]
+              })()
             : [],
       }),
       aside: (t) => ({
@@ -689,7 +706,13 @@ export const n3l6: LessonSpec = {
             ? t > 0.2
               ? [{ id: 'x', from: 'pc1', to: 'sw', t: 0.1 + ease((t - 0.2) / 0.25) * 0.6, color: WARN, label: 'waiting…' }]
               : []
-            : [{ id: 'p', from: 'pc1', to: 'srv', t: 0.06 + ease((t - 0.45) / 0.55) * 0.88, color: 'var(--nq-ok)', label: 'same gateway ✓' }],
+            : (() => {
+                const hops: [string, string][] = [['pc1', 'sw'], ['sw', 'r2'], ['r2', 'srv']]
+                const p = (t - 0.45) / 0.55
+                const seg = Math.min(2, Math.floor(p * 3))
+                const st = p * 3 - seg
+                return [{ id: 'p', from: hops[seg][0], to: hops[seg][1], t: 0.06 + ease(st) * 0.88, color: 'var(--nq-ok)', label: 'same gateway ✓' }]
+              })(),
       }),
       aside: (t) => ({
         title: { gu: 'સ્થિતિ', en: 'State' },

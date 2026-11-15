@@ -79,7 +79,7 @@ export const n7l1: LessonSpec = {
         links: p1Links(1).map((l) => ({ ...l, flowing: t > 0.5 && (l.id === 'a' || l.id === 'b') })),
         packets:
           t > 0.5
-            ? [{ id: 'p', from: 'pc1', to: 'pc2', t: 0.1 + ease((t - 0.5) / 0.5) * 0.8, color: 'var(--nq-ok)', label: 'file share ✓' }]
+            ? [{ id: 'p', from: (t - 0.5) / 0.5 < 0.5 ? 'pc1' : 'sw', to: (t - 0.5) / 0.5 < 0.5 ? 'sw' : 'pc2', t: 0.1 + ease((t - 0.5) / 0.5 < 0.5 ? ((t - 0.5) / 0.5) * 2 : (((t - 0.5) / 0.5) - 0.5) * 2) * 0.8, color: 'var(--nq-ok)', label: 'file share ✓' }]
             : [],
       }),
     },
