@@ -152,7 +152,20 @@ export default function AnimatedLesson({ spec }: { spec: LessonSpec }) {
       progress={
         <ol className="nq-panel space-y-1.5 p-5">
           {spec.steps.map((s, i) => {
-            const done = i < player.step
+            /*
+             * The last step could never tick. `i < player.step` is true for
+             * every step the player has moved past, and the player never
+             * moves past the last one — it stops on it. So a learner who
+             * watched a five-step lesson all the way through was shown four
+             * ticks and a bare number, as if they had not finished. The
+             * player already knows it has reached the end; the list just was
+             * not asking.
+             *
+             * `current` stays as it was, so the final step can be both ticked
+             * and the one you are standing on — the badge goes green while
+             * the label keeps the colour that says "you are here".
+             */
+            const done = i < player.step || (i === player.step && player.atEnd)
             const current = i === player.step
             return (
               <li key={i}>
