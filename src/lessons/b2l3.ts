@@ -113,7 +113,7 @@ export const b2l3: LessonSpec = {
                   to: 'sw',
                   t: ease(t / 0.45) * 0.88,
                   color: 'var(--nq-warn)',
-                  label: 'કોનું છે?',
+                  label: 'who has it?',
                 },
               ]
             : (['pc2', 'pc3'] as const).map((p) => ({

@@ -61,8 +61,8 @@ export const n1l3: LessonSpec = {
       },
       scene: (t) => ({
         nodes: [
-          { id: 'h1', x: 130, y: 120, type: 'pc' as const, label: 'તમારું ઘર', sub: '192.168.1.10', accent: BEG },
-          { id: 'h2', x: 130, y: 320, type: 'pc' as const, label: 'પાડોશી', sub: '192.168.1.10', accent: WARN },
+          { id: 'h1', x: 130, y: 120, type: 'pc' as const, label: 'Your house', sub: '192.168.1.10', accent: BEG },
+          { id: 'h2', x: 130, y: 320, type: 'pc' as const, label: 'Neighbour', sub: '192.168.1.10', accent: WARN },
           { id: 'r', x: 430, y: 220, type: 'router' as const, label: 'ISP', accent: CCNP, pulse: t > 0.4 },
           { id: 'net', x: 710, y: 220, type: 'cloud' as const, label: 'Internet', accent: CCNA },
         ],
@@ -225,7 +225,7 @@ export const n1l5: LessonSpec = {
       scene: (t) => ({
         nodes: [
           { id: 's', x: 180, y: 200, type: 'switch' as const, label: 'Sales /25', sub: '.0 – .127 · 126 usable', accent: BEG, pulse: t > 0.3 },
-          { id: 'h', x: 600, y: 200, type: 'switch' as const, label: 'બાકી / left', sub: '.128 – .255', accent: 'var(--nq-text-mute)', dim: t < 0.5 },
+          { id: 'h', x: 600, y: 200, type: 'switch' as const, label: 'remaining', sub: '.128 – .255', accent: 'var(--nq-text-mute)', dim: t < 0.5 },
         ],
       }),
       aside: (t) => ({

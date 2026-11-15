@@ -98,7 +98,7 @@ export const b1l2: LessonSpec = {
         links: [{ id: 'ab', from: 'a', to: 'b', state: 'up', label: 'fibre · 40 km', flowing: t > 0.3 }],
         packets:
           t > 0.3
-            ? [{ id: 'l', from: 'a', to: 'b', t: 0.08 + ease((t - 0.3) / 0.7) * 0.84, color: 'var(--nq-info)', label: '光 light' }]
+            ? [{ id: 'l', from: 'a', to: 'b', t: 0.08 + ease((t - 0.3) / 0.7) * 0.84, color: 'var(--nq-info)', label: 'light' }]
             : [],
       }),
     },
