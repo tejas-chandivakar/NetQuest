@@ -57,15 +57,18 @@ interface Props {
   grid?: boolean
 }
 
+/** What each icon actually measures once SCALE is applied — measured, not guessed. */
 const SIZE: Record<DeviceType, { w: number; h: number }> = {
-  pc: { w: 84, h: 42 },
-  laptop: { w: 78, h: 40 },
-  switch: { w: 96, h: 46 },
-  router: { w: 80, h: 52 },
-  server: { w: 60, h: 74 },
-  cloud: { w: 78, h: 52 },
-  firewall: { w: 76, h: 56 },
-  ap: { w: 66, h: 48 },
+  // the SIZE-driven four: this is both what they measure and what they draw
+  switch: { w: 89, h: 43 },
+  router: { w: 77, h: 50 },
+  server: { w: 56, h: 69 },
+  firewall: { w: 72, h: 53 },
+  // the fixed-geometry four: this is their drawn size times SCALE
+  pc: { w: 87, h: 44 },
+  laptop: { w: 86, h: 44 },
+  cloud: { w: 76, h: 50 },
+  ap: { w: 77, h: 50 },
 }
 
 /**
@@ -75,6 +78,28 @@ const SIZE: Record<DeviceType, { w: number; h: number }> = {
  * These are the shapes the exams, Packet Tracer and every networking book use,
  * so what a learner recognises here is what they will meet everywhere else.
  */
+/**
+ * Optical balance. Each shape is drawn at whatever size its own geometry
+ * wants, and left alone they do not sit together: the AP measured a third of
+ * the router, the server stood a head taller than everything, the switch ran
+ * widest of all. These factors bring every icon to roughly the same drawn
+ * area (~3,800 square units) so a row of devices reads as one family. SIZE
+ * below states the result, because links and packet insets read from it.
+ */
+const SCALE: Record<DeviceType, number> = {
+  // these four draw themselves from SIZE, so their target goes in SIZE and
+  // scaling them again would only shrink what SIZE just set
+  switch: 1,
+  router: 1,
+  server: 1,
+  firewall: 1,
+  // these four are drawn at fixed coordinates, so they take a factor
+  pc: 1.04,
+  laptop: 1.1,
+  cloud: 0.99,
+  ap: 1.13,
+}
+
 const DEVICE_COLOUR: Record<DeviceType, string> = {
   pc: 'var(--nq-dev-host)',
   laptop: 'var(--nq-dev-host)',
@@ -124,13 +149,16 @@ function DeviceShape({ node }: { node: NodeSpec }) {
         <g>
           <path d={`M ${-rx} ${cy} v ${bh} a ${rx} ${ry} 0 0 0 ${w} 0 v ${-bh}`} fill={body} />
           <ellipse cx={0} cy={cy} rx={rx} ry={ry} fill={lid} />
-          <g {...detail} strokeWidth={2}>
+          {/* Trimmed about a sixth from every arrow and thinned the stroke:
+              at the sizes these are drawn the old ones read as the loudest
+              thing on the page, louder than the device they sit on. */}
+          <g {...detail} strokeWidth={1.7}>
             {/* the two that cross: out to the left, in from the right */}
-            <path d={`M 5 ${cy - 5} H -15 m 5 -4.5 l -5 4.5 l 5 4.5`} />
-            <path d={`M -5 ${cy + 5} H 15 m -5 -4.5 l 5 4.5 l -5 4.5`} />
+            <path d={`M 4 ${cy - 4.5} H -13 m 4.2 -3.8 l -4.2 3.8 l 4.2 3.8`} />
+            <path d={`M -4 ${cy + 4.5} H 13 m -4.2 -3.8 l 4.2 3.8 l -4.2 3.8`} />
             {/* and the two on the shoulders, clear of the arrowheads above */}
-            <path d={`M -27 ${cy + 6} V ${cy - 6} m -4.5 5 l 4.5 -5 l 4.5 5`} />
-            <path d={`M 27 ${cy - 6} V ${cy + 6} m -4.5 -5 l 4.5 5 l 4.5 -5`} />
+            <path d={`M -23 ${cy + 4.5} V ${cy - 4.5} m -3.8 4.2 l 3.8 -4.2 l 3.8 4.2`} />
+            <path d={`M 23 ${cy - 4.5} V ${cy + 4.5} m -3.8 -4.2 l 3.8 4.2 l 3.8 -4.2`} />
           </g>
         </g>
       )
@@ -158,9 +186,9 @@ function DeviceShape({ node }: { node: NodeSpec }) {
         <g>
           <path d={`M ${-w / 2} ${top} h ${w} v ${bh} h ${-w} z`} fill={body} />
           <path d={`M ${-w / 2} ${top} l 12 ${-lift} h ${w - 24} l 12 ${lift} z`} fill={lid} />
-          <g {...detail} strokeWidth={1.9}>
-            <path d={`M 5 ${cy - 4.5} H -18 m 5 -4 l -5 4 l 5 4`} />
-            <path d={`M -5 ${cy + 4.5} H 18 m -5 -4 l 5 4 l -5 4`} />
+          <g {...detail} strokeWidth={1.7}>
+            <path d={`M 4 ${cy - 4} H -15 m 4.2 -3.4 l -4.2 3.4 l 4.2 3.4`} />
+            <path d={`M -4 ${cy + 4} H 15 m -4.2 -3.4 l 4.2 3.4 l -4.2 3.4`} />
           </g>
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <rect
@@ -236,13 +264,23 @@ function DeviceShape({ node }: { node: NodeSpec }) {
       )
 
     case 'ap':
+      /*
+       * Redrawn rather than scaled. It measured 66x29 — barely a third of the
+       * router's weight — because the dome was shallow and the two arcs sat
+       * close in. A taller dome, a deeper base and three waves reaching
+       * further up give it a presence that matches the rest, which no amount
+       * of scaling a squat shape could.
+       */
       return (
         <g>
-          <path d={`M ${-w / 2} 10 a ${w / 2} 16 0 0 1 ${w} 0 z`} fill={body} />
-          <rect x={-w / 2} y={8} width={w} height={5} rx={2.5} fill={lid} />
-          <g stroke={body} strokeWidth={2.4} fill="none" strokeLinecap="round">
-            <path d="M -14 -6 A 20 20 0 0 1 14 -6" />
-            <path d="M -8 -15 A 30 30 0 0 1 8 -15" />
+          {/* Sat 5 units high on its own node, because the waves reach up
+              while the dome stays low; everything moved down to match. */}
+          <path d="M -34 17 a 34 21 0 0 1 68 0 z" fill={body} />
+          <rect x={-34} y={15} width={68} height={6} rx={3} fill={lid} />
+          <g stroke={body} strokeWidth={2.6} fill="none" strokeLinecap="round">
+            <path d="M -17 -6 A 23 23 0 0 1 17 -6" />
+            <path d="M -11 -14 A 25 25 0 0 1 11 -14" />
+            <path d="M -5 -21 A 20 20 0 0 1 5 -21" />
           </g>
         </g>
       )
@@ -461,7 +499,9 @@ export default function Topology({
                 className="nq-pulse"
               />
             )}
-            <DeviceShape node={n} />
+            <g transform={`scale(${SCALE[n.type]})`}>
+              <DeviceShape node={n} />
+            </g>
             <text
               y={SIZE[n.type].h / 2 + 20}
               textAnchor="middle"
