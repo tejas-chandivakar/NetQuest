@@ -63,6 +63,15 @@
 
 html, body, #root { height: 100%; }
 
+/*
+  A phone has no horizontal room to spare, and one over-wide child used to
+  drag the whole page sideways — the header ran 6px past 375 and every screen
+  gained a scrollbar it did not want. The page never scrolls sideways; the few
+  things that genuinely need to (a tab strip, a wide table) say so themselves
+  with .nq-scroll-x.
+*/
+html, body { overflow-x: hidden; }
+
 body {
   margin: 0;
   background:
@@ -106,6 +115,30 @@ body {
 }
 
 .nq-mono { font-family: var(--font-mono); font-variant-ligatures: none; }
+
+/*
+  Sideways scrolling where it is the right answer: a row of tabs or chips that
+  will not fit a narrow screen and should not wrap into a ragged block. The
+  bar itself is hidden — the overflowing content is its own affordance.
+*/
+.nq-scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+.nq-scroll-x::-webkit-scrollbar { display: none; }
+
+/*
+  The box the drawing sits in. Its floor has to track the screen: a phone
+  renders the same diagram at roughly a third the height a desktop does, so a
+  fixed floor either crushes the drawing on a laptop or strands it in white
+  space on a phone.
+*/
+.nq-stage-box { min-height: 11rem; max-height: 46vh; }
+@media (min-width: 640px)  { .nq-stage-box { min-height: 15rem; max-height: 52vh; } }
+@media (min-width: 1024px) { .nq-stage-box { min-height: 20rem; max-height: 58vh; } }
 
 .nq-grid-bg {
   background-image:

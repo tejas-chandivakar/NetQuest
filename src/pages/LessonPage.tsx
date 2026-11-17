@@ -40,14 +40,14 @@ function StageTabs({
   if (stages.length < 2) return null
 
   return (
-    <div className="flex gap-1 rounded-lg border border-[var(--nq-border)] p-0.5">
+    <div className="nq-scroll-x flex gap-1 rounded-lg border border-[var(--nq-border)] p-0.5">
       {stages.map((s, i) => {
         const active = stage === s.k
         return (
           <button
             key={s.k}
             onClick={() => setStage(s.k)}
-            className="nq-focus flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[13px] font-semibold transition"
+            className="nq-focus flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[13px] font-semibold transition"
             style={
               active
                 ? { background: `color-mix(in srgb, ${accent} 16%, transparent)`, color: 'var(--nq-text)' }
@@ -127,7 +127,7 @@ export default function LessonPage() {
         className="sticky top-0 z-30 border-b border-[var(--nq-border)]"
         style={{ background: 'color-mix(in srgb, var(--nq-bg) 92%, transparent)', backdropFilter: 'blur(8px)' }}
       >
-        <div className="mx-auto flex w-full max-w-[1640px] flex-wrap items-center gap-x-3 gap-y-2 px-5 py-2.5">
+        <div className="mx-auto flex w-full max-w-[1640px] flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2.5 sm:px-5">
           <Link
             to={`/track/${track.id}`}
             className="nq-focus shrink-0 rounded text-xs text-[var(--nq-text-mute)] transition hover:text-[var(--nq-text-dim)]"
@@ -155,7 +155,9 @@ export default function LessonPage() {
             {pos + 1}/{order.length}
           </span>
 
-          <div className="w-full sm:w-auto">
+          {/* the tabs keep their own row until there is real width to share:
+              squeezed onto the title's line they cut it to "IP A…" */}
+          <div className="w-full lg:w-auto">
             <StageTabs
               accent={track.accent}
               stage={activeStage}
@@ -167,7 +169,7 @@ export default function LessonPage() {
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-[1640px] px-5 pb-8 pt-4">
+      <div className="mx-auto w-full max-w-[1640px] px-3 pb-8 pt-4 sm:px-5">
         {/*
           Keyed by lesson, so moving between lessons gives each stage a fresh
           instance. Without it React reuses the component and its player keeps

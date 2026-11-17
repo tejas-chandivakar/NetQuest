@@ -258,7 +258,14 @@ export default function BuildStage({ spec }: { spec: BuildSpec }) {
     if (!svg) return null
     const r = svg.getBoundingClientRect()
     if (!r.width || !r.height) return null
-    return { x: ((clientX - r.left) / r.width) * W, y: ((clientY - r.top) / r.height) * H }
+    // the drawing crops itself on a narrow screen, so the box a pointer maps
+    // into is whatever the SVG is actually showing — not the declared W × H
+    const vb = svg.viewBox?.baseVal
+    const bx = vb && vb.width ? vb.x : 0
+    const by = vb && vb.height ? vb.y : 0
+    const bw = vb && vb.width ? vb.width : W
+    const bh = vb && vb.height ? vb.height : H
+    return { x: bx + ((clientX - r.left) / r.width) * bw, y: by + ((clientY - r.top) / r.height) * bh }
   }
 
   const onMove = (e: PointerEvent) => {

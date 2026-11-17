@@ -6,8 +6,8 @@ import { UI, useT } from '../lib/i18n'
 
 function Logo() {
   return (
-    <Link to="/" className="nq-focus flex items-center gap-2.5 rounded-lg">
-      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden>
+    <Link to="/" className="nq-focus flex shrink-0 items-center gap-2 rounded-lg sm:gap-2.5">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden className="shrink-0">
         <rect x="1.5" y="1.5" width="29" height="29" rx="9" stroke="var(--nq-accent)" strokeWidth="1.6" />
         <circle cx="16" cy="8.5" r="2.8" fill="var(--nq-accent)" />
         <circle cx="8" cy="22" r="2.8" fill="var(--nq-ccnp)" />
@@ -19,7 +19,7 @@ function Logo() {
           strokeLinecap="round"
         />
       </svg>
-      <span className="text-[17px] font-extrabold tracking-tight">
+      <span className="text-[15px] font-extrabold tracking-tight sm:text-[17px]">
         Net<span className="text-[var(--nq-accent)]">Quest</span>
       </span>
     </Link>
@@ -40,13 +40,13 @@ function Toggle({
   return (
     <div
       title={title}
-      className="flex items-center gap-0.5 rounded-lg border border-[var(--nq-border)] bg-[color-mix(in_srgb,var(--nq-panel)_70%,transparent)] p-0.5"
+      className="flex shrink-0 items-center gap-0.5 rounded-lg border border-[var(--nq-border)] bg-[color-mix(in_srgb,var(--nq-panel)_70%,transparent)] p-0.5"
     >
       {options.map((o) => (
         <button
           key={o.v}
           onClick={() => onChange(o.v)}
-          className={`nq-focus rounded-md px-2.5 py-1 text-xs font-semibold transition ${
+          className={`nq-focus whitespace-nowrap rounded-md px-2 py-1 text-xs font-semibold transition sm:px-2.5 ${
             value === o.v
               ? 'bg-[var(--nq-panel-2)] text-[var(--nq-text)] shadow-sm'
               : 'text-[var(--nq-text-mute)] hover:text-[var(--nq-text-dim)]'
@@ -70,7 +70,7 @@ export default function Layout() {
   return (
     <div className="flex min-h-full flex-col">
       <header className="sticky top-0 z-30 border-b border-[var(--nq-border)] bg-[color-mix(in_srgb,var(--nq-bg)_82%,transparent)] backdrop-blur-xl">
-        <div className="mx-auto flex h-14 w-full max-w-[1280px] items-center gap-5 px-5">
+        <div className="mx-auto flex h-14 w-full max-w-[1280px] items-center gap-3 px-3 sm:gap-5 sm:px-5">
           <Logo />
 
           <nav className="hidden items-center gap-1 md:flex">
@@ -79,7 +79,7 @@ export default function Layout() {
                 key={tr.id}
                 to={`/track/${tr.id}`}
                 className={({ isActive }) =>
-                  `nq-focus rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+                  `nq-focus whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium transition lg:px-3 ${
                     isActive
                       ? 'bg-[var(--nq-panel-2)] text-[var(--nq-text)]'
                       : 'text-[var(--nq-text-dim)] hover:bg-[var(--nq-panel)] hover:text-[var(--nq-text)]'
@@ -92,7 +92,7 @@ export default function Layout() {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex min-w-0 items-center gap-1.5 sm:gap-2">
             <Toggle
               title={t(UI.modeHint)}
               value={mode}
@@ -112,6 +112,35 @@ export default function Layout() {
             />
           </div>
         </div>
+
+        {/*
+          The track links live in the bar above from md up, where there is room
+          for them. Below that they were simply gone — on a phone the three
+          tracks had no way in at all. This strip is that way in: always
+          visible, one tap, and it scrolls sideways rather than wrapping.
+        */}
+        <nav className="nq-scroll-x flex items-center gap-1.5 border-t border-[var(--nq-border)] px-3 py-1.5 md:hidden">
+          {TRACKS.map((tr) => (
+            <NavLink
+              key={tr.id}
+              to={`/track/${tr.id}`}
+              className={({ isActive }) =>
+                `nq-focus shrink-0 whitespace-nowrap rounded-lg border px-2.5 py-1 text-xs font-semibold transition ${
+                  isActive
+                    ? 'bg-[var(--nq-panel-2)] text-[var(--nq-text)]'
+                    : 'border-transparent text-[var(--nq-text-mute)]'
+                }`
+              }
+              style={({ isActive }) =>
+                isActive
+                  ? { borderColor: tr.accent, color: tr.accent }
+                  : { borderColor: 'var(--nq-border)' }
+              }
+            >
+              {t(tr.title)}
+            </NavLink>
+          ))}
+        </nav>
       </header>
 
       <main className="flex-1">

@@ -136,14 +136,21 @@ export default function StageLayout({
           }
         >
           {!focus && focusButton}
+          {/*
+            The floor under the drawing used to be a flat 20rem. On a phone an
+            880×420 diagram renders about 155px tall, so that floor left ~165px
+            of empty box under every stage — the drawing looked lost in it.
+            The floor now scales with the screen (`nq-stage-box`), and the
+            ceiling with it, so the drawing fills its panel at every size.
+          */}
           <div
             ref={stageRef}
-            className="flex items-center justify-center bg-[color-mix(in_srgb,var(--nq-bg-2)_70%,transparent)] p-1"
-            style={{
-              maxHeight: focus ? undefined : '58vh',
-              minHeight: focus ? 0 : '20rem',
-              flex: focus ? '1 1 0' : undefined,
-            }}
+            className={
+              focus
+                ? 'flex items-center justify-center bg-[color-mix(in_srgb,var(--nq-bg-2)_70%,transparent)] p-1'
+                : 'nq-stage-box flex items-center justify-center bg-[color-mix(in_srgb,var(--nq-bg-2)_70%,transparent)] p-1'
+            }
+            style={focus ? { minHeight: 0, flex: '1 1 0' } : undefined}
           >
             {stage}
           </div>

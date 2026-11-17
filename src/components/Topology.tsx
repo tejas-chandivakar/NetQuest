@@ -1,4 +1,13 @@
-import { Fragment, type CSSProperties, type PointerEvent as ReactPointerEvent, type Ref } from 'react'
+import {
+  Fragment,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+  type Ref,
+} from 'react'
 
 export type DeviceType = 'pc' | 'laptop' | 'switch' | 'router' | 'server' | 'cloud' | 'firewall' | 'ap'
 
@@ -388,6 +397,100 @@ export default function Topology({
   const byId = new Map(nodes.map((n) => [n.id, n]))
   const handy = !!(onNodeClick || onNodePointerDown)
 
+  /*
+    Fitting the drawing to a narrow screen.
+
+    A lesson lays its devices out on an 880×420 stage, which is the shape of a
+    desktop panel. A phone gives the same drawing about 325px of width, so
+    everything renders at roughly a third size and a device label lands at
+    four or five pixels — there, but unreadable.
+
+    Most layouts do not use the whole stage: b2l1 keeps every device inside
+    x 120–480, y 95–310. So on a narrow screen the viewBox is pulled in to
+    what is actually drawn, which zooms the picture without moving a single
+    device. Text gets a further nudge for whatever shrink is left. Wide
+    screens keep the declared box exactly as it was.
+  */
+  const hostRef = useRef<SVGSVGElement | null>(null)
+  const [shown, setShown] = useState(0)
+
+  useEffect(() => {
+    const el = hostRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(([e]) => setShown(e.contentRect.width))
+    ro.observe(el)
+    setShown(el.getBoundingClientRect().width)
+    return () => ro.disconnect()
+  }, [])
+
+  const fitted = useMemo(() => {
+    const full = { x: 0, y: 0, w: width, h: height }
+    // below this the picture is simply too small to read unaided
+    if (!shown || shown >= 560 || !nodes.length) return full
+
+    let x0 = Infinity
+    let y0 = Infinity
+    let x1 = -Infinity
+    let y1 = -Infinity
+    for (const n of nodes) {
+      const s = SIZE[n.type]
+      x0 = Math.min(x0, n.x - s.w / 2)
+      x1 = Math.max(x1, n.x + s.w / 2)
+      y0 = Math.min(y0, n.y - s.h / 2)
+      // the name, and the address under it, hang below the icon
+      y1 = Math.max(y1, n.y + s.h / 2 + (n.sub ? 44 : 28))
+    }
+    if (!Number.isFinite(x0)) return full
+
+    const pad = 26
+    x0 -= pad
+    y0 -= pad
+    x1 += pad
+    y1 += pad
+
+    /*
+      Holding the declared 2.1:1 shape here would throw most of the gain away:
+      b2l1's devices occupy 500×355, and stretching that back to 2.1:1 pads it
+      out to 744 wide of mostly nothing. A phone's panel is free to be taller,
+      so the crop takes the drawing's own shape — clamped so it can neither
+      become a narrow column nor end up wider than the stage it came from.
+    */
+    const aspect = width / height
+    let w = Math.max(x1 - x0, 1)
+    let h = Math.max(y1 - y0, 1)
+    const want = Math.min(Math.max(w / h, 0.9), aspect)
+    if (w / h < want) w = h * want
+    else h = w / want
+
+    /*
+      A floor on the zoom. A lesson that draws one device occupies barely a
+      tenth of the stage, and cropping to it blew a single PC up to fill the
+      whole panel. Half the stage is as close as the crop ever gets.
+    */
+    const floor = width * 0.5
+    if (w < floor) {
+      h *= floor / w
+      w = floor
+    }
+
+    const cx = (x0 + x1) / 2
+    const cy = (y0 + y1) / 2
+    // never zoom out past the stage the lesson drew on
+    if (w >= width) return full
+    return { x: cx - w / 2, y: cy - h / 2, w, h }
+  }, [shown, nodes, width, height])
+
+  /**
+   * What is left to make up after the crop. 1 means no help needed; the cap
+   * keeps a label from growing wider than the device it belongs to.
+   */
+  const tf = useMemo(() => {
+    if (!shown) return 1
+    // a 13-unit device name should land on at least ten real pixels
+    const scale = shown / fitted.w
+    return Math.min(1.75, Math.max(1, 10 / 13 / scale))
+  }, [shown, fitted.w])
+
   /**
    * Where a packet sits along a link. The run is pulled in at both ends so an
    * envelope never lands on top of the device it is leaving or arriving at —
@@ -418,8 +521,12 @@ export default function Topology({
 
   return (
     <svg
-      ref={svgRef}
-      viewBox={`0 0 ${width} ${height}`}
+      ref={(el) => {
+        hostRef.current = el
+        if (typeof svgRef === 'function') svgRef(el)
+        else if (svgRef) (svgRef as { current: SVGSVGElement | null }).current = el
+      }}
+      viewBox={`${fitted.x} ${fitted.y} ${fitted.w} ${fitted.h}`}
       className={className}
       style={{ width: '100%', height: 'auto', maxHeight: '100%', display: 'block', ...style }}
       role={handy || onLinkClick ? undefined : 'img'}
@@ -437,7 +544,13 @@ export default function Topology({
               />
             </pattern>
           </defs>
-          <rect width={width} height={height} fill="url(#nq-grid)" />
+          <rect
+            x={fitted.x}
+            y={fitted.y}
+            width={fitted.w}
+            height={fitted.h}
+            fill="url(#nq-grid)"
+          />
         </>
       )}
 
@@ -484,19 +597,19 @@ export default function Topology({
               {l.label && (
                 <>
                   <rect
-                    x={mx - l.label.length * 3.4 - 7}
-                    y={my - 19}
-                    width={l.label.length * 6.8 + 14}
-                    height={17}
+                    x={mx - (l.label.length * 3.4 + 7) * tf}
+                    y={my - 19 * tf}
+                    width={(l.label.length * 6.8 + 14) * tf}
+                    height={17 * tf}
                     rx={8}
                     fill="var(--nq-bg-2)"
                     stroke="var(--nq-border)"
                   />
                   <text
                     x={mx}
-                    y={my - 7}
+                    y={my - 7 * tf}
                     textAnchor="middle"
-                    fontSize={10}
+                    fontSize={10 * tf}
                     fill="var(--nq-text-dim)"
                     style={{ fontFamily: 'var(--font-mono)' }}
                   >
@@ -548,9 +661,9 @@ export default function Topology({
               <DeviceShape node={n} />
             </g>
             <text
-              y={SIZE[n.type].h / 2 + 20}
+              y={SIZE[n.type].h / 2 + 20 * tf}
               textAnchor="middle"
-              fontSize={13}
+              fontSize={13 * tf}
               fontWeight={700}
               fill={n.accent ?? 'var(--nq-text)'}
             >
@@ -558,9 +671,9 @@ export default function Topology({
             </text>
             {n.sub && (
               <text
-                y={SIZE[n.type].h / 2 + 36}
+                y={SIZE[n.type].h / 2 + 36 * tf}
                 textAnchor="middle"
-                fontSize={11}
+                fontSize={11 * tf}
                 fill="var(--nq-text-mute)"
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
@@ -584,9 +697,9 @@ export default function Topology({
               <path d="M -11 -9 L 0 0 L 11 -9" fill="none" stroke="var(--nq-on-accent)" strokeWidth={1.6} />
               {p.label && (
                 <text
-                  y={-19}
+                  y={-19 * tf}
                   textAnchor="middle"
-                  fontSize={11}
+                  fontSize={11 * tf}
                   fontWeight={700}
                   fill={colour}
                   style={{ fontFamily: 'var(--font-mono)' }}
