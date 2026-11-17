@@ -6,6 +6,7 @@ import StageLayout from './StageLayout'
 import { rich } from './Prose'
 import type { Network, PingFailure, PingResult } from '../engine/network'
 import LiveTable from './LiveTable'
+import PartsList from './PartsList'
 import { tablesFor } from '../lib/deviceTables'
 import { useT } from '../lib/i18n'
 import { useApp } from '../store/useApp'
@@ -370,6 +371,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
           height={spec.viewBox?.h ?? 300}
         />
       }
+      progress={<PartsList net={net} layout={spec.layout} />}
       controls={
         <div className="flex flex-wrap items-center gap-2">
           <span

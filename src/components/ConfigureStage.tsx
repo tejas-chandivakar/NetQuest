@@ -11,6 +11,7 @@ import CommandList from './CommandList'
 import Prose, { rich } from './Prose'
 import { CommandReferenceButton } from './CommandReference'
 import LiveTable from './LiveTable'
+import PartsList from './PartsList'
 import { describeChange, snapshot } from '../lib/netDiff'
 import { useApp } from '../store/useApp'
 import type { Network } from '../engine/network'
@@ -360,6 +361,7 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
           </>
         }
         progress={
+          <>
             <ol className="nq-panel space-y-1.5 p-5">
               {spec.tasks.map((task, i) => {
                 const ok = doneSet.has(task.id)
@@ -393,6 +395,8 @@ export default function ConfigureStage({ spec }: { spec: ConfigureSpec }) {
                 )
               })}
             </ol>
+            <PartsList net={net} layout={spec.layout} />
+          </>
         }
         surface={
           <>
