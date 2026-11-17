@@ -5,7 +5,8 @@ import type { ConfigDeviceLayout } from './ConfigureStage'
 import StageLayout from './StageLayout'
 import { rich } from './Prose'
 import type { Network, PingFailure, PingResult } from '../engine/network'
-import { cidr } from '../engine/ip'
+import LiveTable from './LiveTable'
+import { tablesFor } from '../lib/deviceTables'
 import { useT } from '../lib/i18n'
 import { useApp } from '../store/useApp'
 import { ease } from '../lib/useStepPlayer'
@@ -65,7 +66,11 @@ const L = {
   reached: { gu: 'પહોંચ્યું', en: 'delivered' },
   stopped: { gu: 'અહીં અટક્યું', en: 'stopped here' },
   replyBlocked: { gu: 'પહોંચ્યું, પણ જવાબ અટક્યો', en: 'arrived, reply blocked' },
-  tables: { gu: 'અસર પામેલું ટેબલ', en: 'Affected tables' },
+  tables: { gu: 'ઉપકરણનાં ટેબલ', en: 'Device tables' },
+  tablesHint: {
+    gu: 'દરેક ઉપકરણ પોતાની યાદી રાખે છે. ચકાસણી ચલાવો અને જુઓ કે એમાં શું લખાય છે.',
+    en: 'Every device keeps its own lists. Run a test and watch what gets written in.',
+  },
   on: { gu: 'ચાલુ', en: 'ON' },
   faultOn: { gu: 'ભૂલ ચાલુ', en: 'fault on' },
   faultsOn: { gu: 'ભૂલો ચાલુ', en: 'faults on' },
@@ -173,6 +178,28 @@ const FAILURE: Record<PingFailure, { beginner: Bi; exam: Bi }> = {
   },
 }
 
+/**
+ * Run something without letting it teach the network anything.
+ *
+ * The health chip pings every probe on every render, and a ping makes devices
+ * learn — so without this the ARP and MAC tables would already be full before
+ * the learner pressed a thing, and the one moment those tables exist to show
+ * would never happen on screen.
+ */
+function quietly<T>(net: Network, fn: () => T): T {
+  const saved = [...net.devices.values()].map(
+    (d) => [d, new Map(d.arp), new Map(d.macTable)] as const,
+  )
+  try {
+    return fn()
+  } finally {
+    for (const [d, arp, mac] of saved) {
+      d.arp = arp
+      d.macTable = mac
+    }
+  }
+}
+
 /* ───────────────────────── component ───────────────────────── */
 
 export default function BreakStage({ spec }: { spec: BreakSpec }) {
@@ -187,6 +214,14 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
   const [anim, setAnim] = useState<number | null>(null)
   const raf = useRef<number | null>(null)
 
+  /** whose tables are on show; null follows whatever was probed last */
+  const [who, setWho] = useState<string | null>(null)
+  const [tableRev, setTableRev] = useState(0)
+  /** the rows as they stood before the last action, so each table can diff itself */
+  const [base, setBase] = useState<Record<string, string[][]>>({})
+  const liveRef = useRef<Record<string, string[][]>>({})
+  const snapshot = () => setBase({ ...liveRef.current })
+
   const bump = () => forceRender((n) => n + 1)
 
   useEffect(() => () => {
@@ -194,6 +229,7 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
   }, [])
 
   const toggle = (action: BreakAction) => {
+    snapshot()
     const next = new Set(applied)
     if (next.has(action.id)) {
       action.revert(net)
@@ -213,9 +249,13 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
     setResult(null)
     setAnim(null)
     setNonce((n) => n + 1)
+    setWho(null)
+    setBase({})
+    setTableRev((n) => n + 1)
   }
 
   const runProbe = (probe: BreakProbe) => {
+    snapshot()
     const r = net.ping(probe.from, probe.destIp)
     setResult({ probe, r })
     const segments = Math.max(1, r.hops.length - 1)
@@ -304,12 +344,19 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
    * report and the fault count is shown beside it.
    */
   const expectedToFail = new Set(spec.startsFailing ?? [])
-  const showsDamage = spec.probes.some(
-    // damage in either direction: something that should reach no longer does,
-    // or something the rules were meant to stop is now getting through
-    (p) => !net.ping(p.from, p.destIp).ok !== expectedToFail.has(p.id),
+  const showsDamage = quietly(net, () =>
+    spec.probes.some(
+      // damage in either direction: something that should reach no longer does,
+      // or something the rules were meant to stop is now getting through
+      (p) => !net.ping(p.from, p.destIp).ok !== expectedToFail.has(p.id),
+    ),
   )
   const finished = result && anim !== null && anim >= Math.max(1, result.r.hops.length - 1)
+
+  const selected = who ?? result?.probe.from ?? spec.layout[0]?.id
+  const selDev = selected ? net.get(selected) : undefined
+  const tables = selDev ? tablesFor(selDev, net) : []
+  liveRef.current = Object.fromEntries(tables.map((tb) => [`${selected}:${tb.id}`, tb.spec.rows]))
 
   return (
     <StageLayout
@@ -512,39 +559,43 @@ export default function BreakStage({ spec }: { spec: BreakSpec }) {
             <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--nq-text-mute)]">
               {t(L.tables)}
             </h3>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              {spec.layout
-                .filter((d) => net.get(d.id)?.kind === 'router' || net.get(d.id)?.kind === 'switch')
-                .map((d) => {
-                  const dev = net.get(d.id)!
-                  const routes = dev.installedRoutes().filter((r) => r.source !== 'L')
-                  return (
-                    <div key={d.id}>
-                      <p className="nq-mono mb-1 text-[11px] font-bold text-[var(--nq-text-dim)]">
-                        {dev.name}
-                      </p>
-                      {routes.length === 0 ? (
-                        <p className="nq-mono text-[11px] text-[var(--nq-text-mute)]">(empty)</p>
-                      ) : (
-                        <table className="nq-mono w-full text-[11px]">
-                          <tbody>
-                            {routes.map((r, i) => (
-                              <tr key={i}>
-                                <td className="w-5 py-0.5" style={{ color: 'var(--nq-accent)' }}>
-                                  {r.source}
-                                </td>
-                                <td className="py-0.5 pr-2">{cidr(r.prefix, r.mask)}</td>
-                                <td className="py-0.5 text-right text-[var(--nq-text-mute)]">
-                                  {r.nextHop ?? r.iface}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      )}
-                    </div>
-                  )
-                })}
+            <p className="nq-prose mt-1.5 text-sm text-[var(--nq-text-dim)]">{t(L.tablesHint)}</p>
+
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {spec.layout.map((d) => {
+                const dev = net.get(d.id)
+                if (!dev) return null
+                const on = d.id === selected
+                return (
+                  <button
+                    key={d.id}
+                    onClick={() => {
+                      setWho(d.id)
+                      setBase({})
+                      setTableRev((n) => n + 1)
+                    }}
+                    className="nq-focus nq-mono rounded-lg border px-2.5 py-1 text-[11px] font-semibold transition"
+                    style={{
+                      borderColor: on ? 'var(--nq-accent)' : 'var(--nq-border)',
+                      color: on ? 'var(--nq-accent)' : 'var(--nq-text-mute)',
+                    }}
+                  >
+                    {dev.name}
+                  </button>
+                )
+              })}
+            </div>
+
+            <div className="mt-3 grid gap-3 lg:grid-cols-2">
+              {tables.map((tb) => (
+                <LiveTable
+                  key={`${selected}:${tb.id}`}
+                  spec={tb.spec}
+                  stepKey={tableRev}
+                  baseRows={base[`${selected}:${tb.id}`]}
+                  nodes={nodes}
+                />
+              ))}
             </div>
           </div>
         </>

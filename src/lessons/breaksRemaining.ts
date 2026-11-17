@@ -164,9 +164,10 @@ export const b2l5Break: BreakSpec = {
         'Mask `255.255.255.128`. Binary માં છેલ્લા byte ના **પહેલા bit** ચાલુ: `.1` થી `.127` એક શેરી, `.128` થી `.255` બીજી.',
         'Mask `255.255.255.128`. In binary the **first bit** of the last byte is on: `.1` to `.127` is one street, `.128` to `.255` another.',
       ),
+      silent: true,
       expect: H(
-        'PC1 (`.10`) હજી gateway (`.1`) ને અને WEB ને પહોંચે. પણ PC2 (`.200`) **ગુમ થઈ જશે** — PC1 ના mask પ્રમાણે `.200` બીજી શેરીમાં છે. **એક bit બદલવાથી અડધું નેટવર્ક ગાયબ.**',
-        'PC1 (`.10`) can still reach the gateway (`.1`) and WEB. But PC2 (`.200`) **vanishes** — according to PC1’s mask, `.200` is on another street. **One bit flipped, half the network gone.**',
+        'PC1 હજી PC2 ને પહોંચે છે — પણ **સીધું નહીં**. PC1 ના /25 mask પ્રમાણે `.200` બીજી શેરીમાં છે, એટલે એ packet gateway ને સોંપે છે અને router એને એ જ switch પર પાછો મોકલે છે. Ping લીલું રહે છે, પણ રસ્તો લાંબો થઈ ગયો. **ખોટો mask મદદગાર router ની પાછળ સંતાઈ જાય છે** — જે દિવસે router નહીં હોય, તે દિવસે ખબર પડશે.',
+        'PC1 still reaches PC2 — but **not directly**. By PC1’s /25 mask, `.200` sits on another street, so it hands the packet to the gateway and the router sends it straight back out to the same switch. The ping stays green while the path quietly got longer. **A wrong mask hides behind a helpful router** — the day the router is gone is the day you find out.',
       ),
       apply: (n) => addr(n, 'pc1', 'e0', '192.168.1.10', '255.255.255.128'),
       revert: (n) => addr(n, 'pc1', 'e0', '192.168.1.10', '255.255.255.0'),
@@ -402,23 +403,41 @@ export const b3l4Break: BreakSpec = {
   actions: [
     {
       id: 'web',
-      label: H('Port 80 (HTTP) બંધ કરો', 'Block port 80 (HTTP)'),
+      label: H('Website નું TCP traffic બંધ કરો', 'Block the website’s TCP traffic'),
       explain: H(
-        'Router ને કહો: port 80 પર જતા TCP traffic ને ન જવા દો.',
-        'Tell the router: do not let TCP traffic to port 80 through.',
+        'Router ને નિયમ આપો: TCP ને પસાર ન થવા દો. Website TCP પર ચાલે છે — ping નથી ચાલતું.',
+        'Give the router a rule: do not let TCP through. A website runs on TCP — a ping does not.',
       ),
+      silent: true,
       expect: H(
-        'Ping ચાલે (ICMP port વાપરતું નથી), SSH ચાલે (port 22), HTTPS ચાલે (port 443) — ફક્ત **HTTP** ગયું. ઘર ત્યાં જ છે, **એક દરવાજો** બંધ.',
-        'Ping works (ICMP does not use ports), SSH works (port 22), HTTPS works (port 443) — only **HTTP** is gone. The house is still there, **one door** is shut.',
+        'બધી ચકાસણી **લીલી જ રહે છે** — કારણ કે ping ICMP વાપરે છે અને આ નિયમ TCP માટે છે. Website બંધ થઈ ગઈ છે, પણ ping એ બતાવી શકતું નથી. **"Ping ચાલે છે" અને "સેવા ચાલે છે" એ બે જુદી વાત છે** — એટલે જ port અને protocol જોવા પડે.',
+        'Every probe **stays green** — because a ping is ICMP and this rule is about TCP. The website is shut, and the ping cannot see it. **"The ping works" and "the service works" are two different claims** — which is exactly why ports and protocols are worth reading.',
       ),
       apply: (n) => {
         const r = n.get('r1')!
+        const ANY = { ip: '0.0.0.0', wildcard: '255.255.255.255' }
         r.acls.set('100', {
           id: '100',
           extended: true,
           entries: [
-            { seq: 10, action: 'deny', protocol: 'tcp', src: 'any', dst: 'any', dstPort: 80 },
-            { seq: 20, action: 'permit', protocol: 'ip', src: 'any', dst: 'any' },
+            {
+              seq: 10,
+              action: 'deny',
+              protocol: 'tcp',
+              src: ANY.ip,
+              srcWildcard: ANY.wildcard,
+              dst: ANY.ip,
+              dstWildcard: ANY.wildcard,
+            },
+            {
+              seq: 20,
+              action: 'permit',
+              protocol: 'ip',
+              src: ANY.ip,
+              srcWildcard: ANY.wildcard,
+              dst: ANY.ip,
+              dstWildcard: ANY.wildcard,
+            },
           ],
         })
         r.iface('Gi0/0')!.aclIn = '100'

@@ -14,7 +14,7 @@ import LiveTable from './LiveTable'
 import { describeChange, snapshot } from '../lib/netDiff'
 import { useApp } from '../store/useApp'
 import type { Network } from '../engine/network'
-import { cidr } from '../engine/ip'
+import { tablesFor } from '../lib/deviceTables'
 import { useT } from '../lib/i18n'
 
 export interface ConfigDeviceLayout {
@@ -52,9 +52,6 @@ const L = {
   hint: { gu: 'મદદ', en: 'Hint' },
   allDone: { gu: 'બધું થઈ ગયું!', en: 'All done!' },
   reset: { gu: 'ફરી શરૂ', en: 'Reset' },
-  ifaces: { gu: 'Interfaces', en: 'Interfaces' },
-  routes: { gu: 'Routing Table', en: 'Routing Table' },
-  empty: { gu: '(ખાલી)', en: '(empty)' },
   typeHere: { gu: 'અહીં કમાન્ડ લખો…', en: 'type a command…' },
   tabHint: {
     gu: 'Tab = પૂરું કરો · ↑ = પાછલી કમાન્ડ · ? = મદદ',
@@ -74,40 +71,12 @@ const L = {
 function Tables({ net, deviceId, rev }: { net: Network; deviceId: string; rev: number }) {
   const dev = net.get(deviceId)
   if (!dev) return null
-  const routes = dev.installedRoutes().filter((r) => r.source !== 'L')
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      <LiveTable
-        stepKey={rev}
-        spec={{
-          title: L.ifaces,
-          owner: deviceId,
-          head: ['port', 'address', 'state'],
-          empty: { gu: 'કોઈ પોર્ટ નથી.', en: 'No ports on this device.' },
-          rows: dev.ifaces.map((i) => {
-            const up = !i.shutdown && (i.vlanId !== undefined || net.linkUp(dev.id, i.name))
-            return [
-              i.name,
-              i.ip ? cidr(i.ip, i.mask!) : '—',
-              i.shutdown ? 'admin down' : up ? 'up/up' : 'down',
-            ]
-          }),
-        }}
-      />
-      <LiveTable
-        stepKey={rev}
-        spec={{
-          title: L.routes,
-          owner: deviceId,
-          head: ['', 'network', 'via'],
-          empty: {
-            gu: 'એકેય રસ્તો નથી — એટલે બીજે ક્યાંય પહોંચાશે નહીં.',
-            en: 'No paths yet, so nothing elsewhere can be reached.',
-          },
-          rows: routes.map((r) => [r.source, cidr(r.prefix, r.mask), r.nextHop ? `via ${r.nextHop}` : (r.iface ?? '—')]),
-        }}
-      />
+      {tablesFor(dev, net).map((tb) => (
+        <LiveTable key={tb.id} stepKey={rev} spec={tb.spec} />
+      ))}
     </div>
   )
 }

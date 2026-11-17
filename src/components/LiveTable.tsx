@@ -114,21 +114,23 @@ export default function LiveTable({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sig])
 
+  // an empty table already explains itself in the box below, so it gets a
+  // caption only when emptying out is itself the news
   const caption = spec.caption
     ? t(spec.caption)
     : spec.rows.length === 0
-      ? t(spec.empty ?? L.nothingYet)
-      : emptied
+      ? emptied
         ? t(L.cleared)
-        : changed.size === 0
-          ? t(L.steady)
-          : grew
-            ? changed.size === 1
-              ? t(L.addedOne)
-              : t(L.addedMany)
-            : changed.size === 1
-              ? t(L.changedOne)
-              : t(L.changedMany)
+        : null
+      : changed.size === 0
+        ? t(L.steady)
+        : grew
+          ? changed.size === 1
+            ? t(L.addedOne)
+            : t(L.addedMany)
+          : changed.size === 1
+            ? t(L.changedOne)
+            : t(L.changedMany)
 
   return (
     <div
@@ -168,7 +170,9 @@ export default function LiveTable({
         )}
       </div>
 
-      <p className="nq-prose mt-1.5 text-[12.5px] text-[var(--nq-text-dim)]">{caption}</p>
+      {caption && (
+        <p className="nq-prose mt-1.5 text-[12.5px] text-[var(--nq-text-dim)]">{caption}</p>
+      )}
 
       {spec.rows.length === 0 ? (
         <p
