@@ -8,6 +8,7 @@ import type { Network, PingFailure, PingResult } from '../engine/network'
 import LiveTable from './LiveTable'
 import PartsList from './PartsList'
 import { tablesFor } from '../lib/deviceTables'
+import { quietly } from '../lib/netProbe'
 import { useT } from '../lib/i18n'
 import { useApp } from '../store/useApp'
 import { ease } from '../lib/useStepPlayer'
@@ -177,28 +178,6 @@ const FAILURE: Record<PingFailure, { beginner: Bi; exam: Bi }> = {
     beginner: { gu: 'એ સરનામા સુધી પહોંચવાનો કોઈ રસ્તો નથી.', en: 'There is no way to reach that address.' },
     exam: { gu: 'Destination unreachable.', en: 'Destination unreachable.' },
   },
-}
-
-/**
- * Run something without letting it teach the network anything.
- *
- * The health chip pings every probe on every render, and a ping makes devices
- * learn — so without this the ARP and MAC tables would already be full before
- * the learner pressed a thing, and the one moment those tables exist to show
- * would never happen on screen.
- */
-function quietly<T>(net: Network, fn: () => T): T {
-  const saved = [...net.devices.values()].map(
-    (d) => [d, new Map(d.arp), new Map(d.macTable)] as const,
-  )
-  try {
-    return fn()
-  } finally {
-    for (const [d, arp, mac] of saved) {
-      d.arp = arp
-      d.macTable = mac
-    }
-  }
 }
 
 /* ───────────────────────── component ───────────────────────── */

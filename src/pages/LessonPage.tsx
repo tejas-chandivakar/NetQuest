@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react'
 import { KIND_LABEL, allLessons, findLesson } from '../data/courses'
 import { useApp } from '../store/useApp'
 import { UI, useT } from '../lib/i18n'
-import { getBreak, getConfig, getLesson, getTool } from '../lessons/registry'
+import { getBreak, getBuild, getConfig, getLesson, getTool } from '../lessons/registry'
 import AnimatedLesson from '../components/AnimatedLesson'
 import ConfigureStage from '../components/ConfigureStage'
 import BreakStage from '../components/BreakStage'
+import BuildStage from '../components/BuildStage'
 
-type Stage = 'learn' | 'config' | 'break'
+type Stage = 'learn' | 'config' | 'break' | 'build'
 
 /**
  * Only the stages a lesson actually has. A greyed-out "soon" that never
@@ -33,6 +34,7 @@ function StageTabs({
     { k: 'learn', label: t(UI.stageLearn) },
     { k: 'config', label: configLabel },
     { k: 'break', label: t(UI.stageBreak) },
+    { k: 'build', label: t(UI.stageBuild) },
   ].filter((s) => available[s.k as Stage]) as { k: Stage; label: string }[]
 
   if (stages.length < 2) return null
@@ -102,11 +104,13 @@ export default function LessonPage() {
   const spec = getLesson(lesson.id)
   const config = getConfig(lesson.id)
   const brk = getBreak(lesson.id)
+  const build = getBuild(lesson.id)
   const Tool = getTool(lesson.id)
   const available: Record<Stage, boolean> = {
     learn: !!spec,
     config: !!config || !!Tool,
     break: !!brk,
+    build: !!build,
   }
   const done = !!completed[lesson.id]
   const activeStage: Stage = available[stage] ? stage : spec ? 'learn' : config ? 'config' : 'learn'
@@ -177,6 +181,8 @@ export default function LessonPage() {
           <ConfigureStage key={lesson.id} spec={config} />
         ) : activeStage === 'break' && brk ? (
           <BreakStage key={lesson.id} spec={brk} />
+        ) : activeStage === 'build' && build ? (
+          <BuildStage key={lesson.id} spec={build} />
         ) : spec ? (
           <AnimatedLesson key={lesson.id} spec={spec} />
         ) : (

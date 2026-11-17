@@ -1,4 +1,4 @@
-import { Fragment, type CSSProperties } from 'react'
+import { Fragment, type CSSProperties, type PointerEvent as ReactPointerEvent, type Ref } from 'react'
 
 export type DeviceType = 'pc' | 'laptop' | 'switch' | 'router' | 'server' | 'cloud' | 'firewall' | 'ap'
 
@@ -55,6 +55,13 @@ interface Props {
   className?: string
   style?: CSSProperties
   grid?: boolean
+  /** Build mode. A ring around the device being worked on. */
+  selected?: string
+  onNodeClick?: (id: string) => void
+  onNodePointerDown?: (id: string, e: ReactPointerEvent) => void
+  onLinkClick?: (id: string) => void
+  /** so an editor can turn pointer coordinates into viewBox coordinates */
+  svgRef?: Ref<SVGSVGElement>
 }
 
 /** What each icon actually measures once SCALE is applied — measured, not guessed. */
@@ -372,8 +379,14 @@ export default function Topology({
   className = '',
   style,
   grid = true,
+  selected,
+  onNodeClick,
+  onNodePointerDown,
+  onLinkClick,
+  svgRef,
 }: Props) {
   const byId = new Map(nodes.map((n) => [n.id, n]))
+  const handy = !!(onNodeClick || onNodePointerDown)
 
   /**
    * Where a packet sits along a link. The run is pulled in at both ends so an
@@ -405,10 +418,11 @@ export default function Topology({
 
   return (
     <svg
+      ref={svgRef}
       viewBox={`0 0 ${width} ${height}`}
       className={className}
       style={{ width: '100%', height: 'auto', maxHeight: '100%', display: 'block', ...style }}
-      role="img"
+      role={handy || onLinkClick ? undefined : 'img'}
     >
       {grid && (
         <>
@@ -452,6 +466,21 @@ export default function Topology({
                 strokeDasharray={down ? '7 7' : undefined}
                 className={l.flowing ? 'nq-flow' : undefined}
               />
+              {/* a 3px wire is far too thin to aim at, so the cable has its
+                  own invisible hit area when it is something you can act on */}
+              {onLinkClick && (
+                <line
+                  x1={a.x}
+                  y1={a.y}
+                  x2={b.x}
+                  y2={b.y}
+                  stroke="transparent"
+                  strokeWidth={20}
+                  strokeLinecap="round"
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => onLinkClick(l.id)}
+                />
+              )}
               {l.label && (
                 <>
                   <rect
@@ -488,8 +517,24 @@ export default function Topology({
             data-node-id={n.id}
             transform={`translate(${n.x},${n.y})`}
             opacity={n.dim ? 0.32 : n.faded ? 0.42 : 1}
-            style={{ transition: 'opacity 260ms' }}
+            onPointerDown={onNodePointerDown ? (e) => onNodePointerDown(n.id, e) : undefined}
+            onClick={onNodeClick ? () => onNodeClick(n.id) : undefined}
+            style={{
+              transition: 'opacity 260ms',
+              cursor: handy ? 'pointer' : undefined,
+              // without this a drag on a phone scrolls the page instead
+              touchAction: onNodePointerDown ? 'none' : undefined,
+            }}
           >
+            {selected === n.id && (
+              <circle
+                r={52}
+                fill="none"
+                stroke="var(--nq-accent)"
+                strokeWidth={2}
+                strokeDasharray="6 5"
+              />
+            )}
             {n.pulse && (
               <circle
                 r={46}

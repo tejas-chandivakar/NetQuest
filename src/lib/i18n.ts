@@ -28,6 +28,7 @@ export const UI = {
   /* Foundation promises no CLI, so its hands-on stage is not called Configure */
   stageTry: { gu: 'જાતે કરો', en: 'Try it' },
   stageBreak: { gu: 'તોડો', en: 'Break it' },
+  stageBuild: { gu: 'જાતે બનાવો', en: 'Build it' },
   comingSoon: { gu: 'ટૂંક સમયમાં', en: 'Coming soon' },
   comingSoonBody: {
     gu: 'આ પાઠ હજી બની રહ્યો છે. કોર્સનું માળખું તૈયાર છે — પાઠ એક પછી એક ઉમેરાતા જશે.',

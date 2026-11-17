@@ -2,6 +2,8 @@ import type { ComponentType } from 'react'
 import type { LessonSpec } from '../components/AnimatedLesson'
 import type { ConfigureSpec } from '../components/ConfigureStage'
 import type { BreakSpec } from '../components/BreakStage'
+import type { BuildSpec } from '../components/BuildStage'
+import { b2l1Build, b4l4Build } from './builds'
 import SubnetCalculator from '../components/SubnetCalculator'
 import BinaryBulbs from '../components/BinaryBulbs'
 import AddressExplorer from '../components/AddressExplorer'
@@ -188,9 +190,16 @@ export const TOOLS: Record<string, ComponentType> = {
   n1l5: SubnetCalculator,
 }
 
+/** Build-it challenges — a blank-ish canvas the learner fills in themselves. */
+export const BUILDS: Record<string, BuildSpec> = {
+  b2l1: b2l1Build,
+  b4l4: b4l4Build,
+}
+
 export const hasLesson = (id: string) =>
-  id in LESSONS || id in CONFIGS || id in BREAKS || id in TOOLS
+  id in LESSONS || id in CONFIGS || id in BREAKS || id in TOOLS || id in BUILDS
 export const getLesson = (id: string): LessonSpec | undefined => LESSONS[id]
 export const getConfig = (id: string): ConfigureSpec | undefined => CONFIGS[id]
 export const getBreak = (id: string): BreakSpec | undefined => BREAKS[id]
 export const getTool = (id: string): ComponentType | undefined => TOOLS[id]
+export const getBuild = (id: string): BuildSpec | undefined => BUILDS[id]
