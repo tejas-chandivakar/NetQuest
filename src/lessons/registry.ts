@@ -3,7 +3,7 @@ import type { LessonSpec } from '../components/AnimatedLesson'
 import type { ConfigureSpec } from '../components/ConfigureStage'
 import type { BreakSpec } from '../components/BreakStage'
 import type { BuildSpec } from '../components/BuildStage'
-import { b2l1Build, b4l4Build } from './builds'
+import { b1l5Build, b2l1Build, b2l3Build, b4l1Build, b4l4Build } from './builds'
 import SubnetCalculator from '../components/SubnetCalculator'
 import BinaryBulbs from '../components/BinaryBulbs'
 import AddressExplorer from '../components/AddressExplorer'
@@ -192,7 +192,10 @@ export const TOOLS: Record<string, ComponentType> = {
 
 /** Build-it challenges — a blank-ish canvas the learner fills in themselves. */
 export const BUILDS: Record<string, BuildSpec> = {
+  b1l5: b1l5Build,
   b2l1: b2l1Build,
+  b2l3: b2l3Build,
+  b4l1: b4l1Build,
   b4l4: b4l4Build,
 }
 

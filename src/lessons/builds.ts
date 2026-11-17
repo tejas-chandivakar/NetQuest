@@ -108,6 +108,179 @@ export const b2l1Build: BuildSpec = {
   ),
 }
 
+/* ═══════════ b1l5 · put together the right cast ═══════════ */
+
+export const b1l5Build: BuildSpec = {
+  brief: H(
+    'ખાલી canvas છે. **એક PC, એક server, અને એક switch** ઉમેરો. PC અને server ને switch સાથે cable કરો — switch જ વચ્ચે રહે છે, PC ને server સાથે સીધા ન જોડો.',
+    'The canvas is empty. Add **one PC, one server, and one switch**. Cable the PC and the server to the switch — the switch sits in the middle, don’t cable the PC directly to the server.',
+  ),
+  palette: ['pc', 'server', 'switch'],
+  goals: [
+    {
+      id: 'cast',
+      label: H(
+        'એક PC, એક server, અને એક switch કેનવાસ પર હોય',
+        'A PC, a server, and a switch on the canvas',
+      ),
+      check: (_net, d) =>
+        countKind(d, 'pc') >= 1 && countKind(d, 'server') >= 1 && countKind(d, 'switch') >= 1,
+    },
+    {
+      id: 'cabled',
+      label: H(
+        'PC અને server બંને switch સાથે જોડાયેલાં હોય',
+        'Both the PC and the server are cabled to the switch',
+      ),
+      check: (_net, d) => allCabledTo(d, 'switch'),
+    },
+  ],
+  success: H(
+    'PC માગે, server આપે, switch વચ્ચેથી ટ્રાફિક પહોંચાડે. **આ ત્રણ ભૂમિકા** — client, server, switch — દરેક network ના પાયામાં છે.',
+    'The PC asks, the server answers, and the switch carries the traffic. **These three roles** — client, server, switch — are at the foundation of every network.',
+  ),
+}
+
+/* ═══════════ b2l3 · three machines, one street ═══════════ */
+
+const threeHostsStart: BuildDesign = {
+  devices: [
+    { id: 'sw1', name: 'SW1', kind: 'switch', x: 440, y: 200, addrs: {} },
+  ],
+  links: [],
+}
+
+export const b2l3Build: BuildSpec = {
+  brief: H(
+    'એક switch કેનવાસ પર છે. **ત્રણ કમ્પ્યુટર** ઉમેરો, ત્રણેયને switch સાથે cable કરો, દરેકને **એક જ subnet** નું IP address આપો, અને ચકાસો કે ત્રણેય એકબીજા સુધી પહોંચે.',
+    'One switch is on the canvas. Add **three computers**, cable all three to the switch, give each an IP address from the **same subnet**, and verify that all three can reach each other.',
+  ),
+  start: threeHostsStart,
+  palette: ['pc', 'server', 'switch'],
+  goals: [
+    {
+      id: 'three',
+      label: H('ઓછામાં ઓછા ત્રણ host (PC/server) કેનવાસ પર હોય', 'At least three hosts on the canvas'),
+      check: (net) => hostsOf(net).length >= 3,
+    },
+    {
+      id: 'cabled',
+      label: H('દરેક host switch સાથે જોડાયેલું હોય', 'Every host is cabled to the switch'),
+      check: (_net, d) => allCabledTo(d, 'switch'),
+    },
+    {
+      id: 'same-subnet',
+      label: H('બધા host **એક જ subnet** પર હોય', 'All hosts sit on the **same subnet**'),
+      check: (net) => {
+        const subs = hostsOf(net).map(subnetOf).filter(Boolean)
+        return subs.length >= 3 && new Set(subs).size === 1
+      },
+    },
+    {
+      id: 'reach',
+      label: H('દરેક host બીજા દરેક સુધી પહોંચે', 'Every host can reach every other one'),
+      check: (net) => allReach(net),
+    },
+  ],
+  success: H(
+    'ત્રણ host, એક switch, એક subnet — **IP address અને MAC address બંને** કામ કરે છે, પણ **IP** આપણે નક્કી કર્યું, **MAC** hardware એ નક્કી કરેલું. એક street ના address share કરનારા પડોશી.',
+    'Three hosts, one switch, one subnet — **both IP and MAC** are at work, but **IP** is what you chose, **MAC** is what the hardware decided. Neighbours sharing an address range on one street.',
+  ),
+}
+
+/* ═══════════ b4l1 · the full journey ═══════════ */
+
+const fullJourneyStart: BuildDesign = {
+  devices: [
+    { id: 'pc1', name: 'PC1', kind: 'pc', x: 60, y: 200, addrs: {} },
+    { id: 'sw1', name: 'SW1', kind: 'switch', x: 240, y: 200, addrs: {} },
+    { id: 'r1', name: 'R1', kind: 'router', x: 440, y: 200, addrs: {} },
+    { id: 'sw2', name: 'SW2', kind: 'switch', x: 640, y: 200, addrs: {} },
+    { id: 'srv1', name: 'SRV1', kind: 'server', x: 820, y: 200, addrs: {} },
+  ],
+  links: [],
+}
+
+export const b4l1Build: BuildSpec = {
+  brief: H(
+    'પાંચ ઉપકરણ કેનવાસ પર છે: PC, switch, router, switch, server. **ડાબેથી જમણે** cable કરો — PC→SW1→R1→SW2→SRV1. PC ને `192.168.1.x` range, server ને `10.0.0.x` range આપો. Router ને **બંને બાજુ** address આપો અને gateway set કરો.',
+    'Five devices are on the canvas: PC, switch, router, switch, server. Cable them **left to right** — PC→SW1→R1→SW2→SRV1. Give the PC a `192.168.1.x` address, the server a `10.0.0.x` address. Give the router an address on **each side**, and set the gateways.',
+  ),
+  start: fullJourneyStart,
+  palette: ['pc', 'server', 'switch', 'router'],
+  viewBox: { w: 900, h: 420 },
+  goals: [
+    {
+      id: 'chain',
+      label: H('PC થી server સુધી cable ની સાંકળ હોય', 'A chain of cables connects PC to server'),
+      check: (_net, d) => {
+        // BFS from any PC to any server through cables
+        const pcs = d.devices.filter((x) => x.kind === 'pc').map((x) => x.id)
+        const servers = new Set(d.devices.filter((x) => x.kind === 'server').map((x) => x.id))
+        const adj = new Map<string, string[]>()
+        for (const l of d.links) {
+          if (!adj.has(l.a.device)) adj.set(l.a.device, [])
+          if (!adj.has(l.b.device)) adj.set(l.b.device, [])
+          adj.get(l.a.device)!.push(l.b.device)
+          adj.get(l.b.device)!.push(l.a.device)
+        }
+        return pcs.some((pc) => {
+          const visited = new Set([pc])
+          const queue = [pc]
+          while (queue.length) {
+            const cur = queue.shift()!
+            if (servers.has(cur)) return true
+            for (const nb of adj.get(cur) ?? []) {
+              if (!visited.has(nb)) { visited.add(nb); queue.push(nb) }
+            }
+          }
+          return false
+        })
+      },
+    },
+    {
+      id: 'router',
+      label: H('chain માં router હોય', 'The chain goes through a router'),
+      check: (_net, d) => countKind(d, 'router') >= 1 && d.links.some(
+        (l) => d.devices.find((x) => x.id === l.a.device)?.kind === 'router' ||
+               d.devices.find((x) => x.id === l.b.device)?.kind === 'router',
+      ),
+    },
+    {
+      id: 'two-subnets',
+      label: H('PC અને server **જુદા subnet** પર હોય', 'PC and server sit on **different subnets**'),
+      check: (net) => {
+        const subs = hostsOf(net).map(subnetOf).filter(Boolean) as string[]
+        return subs.length >= 2 && new Set(subs).size >= 2
+      },
+    },
+    {
+      id: 'gateways',
+      label: H('દરેક host નો gateway **એની બાજુનું** router address હોય', 'Each host’s gateway is the router’s address **on its own side**'),
+      check: (net) => {
+        const hs = hostsOf(net)
+        if (hs.length < 2) return false
+        return hs.every((h) => {
+          const gw = h.defaultGateway
+          const i = h.activeIfaces()[0]
+          if (!gw || !i?.ip || !i.mask) return false
+          if (networkOf(gw, i.mask) !== networkOf(i.ip, i.mask)) return false
+          return [...net.devices.values()].some((d) => d.kind === 'router' && d.ownsIp(gw))
+        })
+      },
+    },
+    {
+      id: 'reach',
+      label: H('PC server સુધી પહોંચે', 'The PC can reach the server'),
+      check: (net) => allReach(net),
+    },
+  ],
+  success: H(
+    'PC → switch → router → switch → server. **આ જ google.com ટાઈપ કરો ત્યારે થાય છે** — ફક્ત router ના ઘણા step. એક LAN છોડો, બીજા LAN માં પહોંચો, router જ વચ્ચેનો દરવાજો.',
+    'PC → switch → router → switch → server. **This is what happens when you type google.com** — just more routers in between. Leave one LAN, arrive at another, with the router as the door between them.',
+  ),
+}
+
 /* ═══════════ b4l4 · two streets and the way between ═══════════ */
 
 const twoNetworkStart: BuildDesign = {

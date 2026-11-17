@@ -104,6 +104,68 @@ const DEFAULT_PALETTE: DeviceKind[] = ['pc', 'server', 'switch', 'router']
 
 type Sel = { kind: 'device'; id: string } | { kind: 'link'; id: string } | null
 
+/**
+ * The engine's ping skips L2 devices (switches) — it hops directly from one
+ * L3 endpoint to the next.  That is correct for routing, but the visual
+ * animation must follow the physical cables so the learner sees the packet
+ * pass through every device it really touches.
+ *
+ * This function expands L3 hops into the full physical path by doing a BFS
+ * on the network's link graph between consecutive hops.
+ */
+function physicalPath(net: Network, hops: { device: string; deviceName: string }[]) {
+  if (hops.length < 2) return hops
+
+  // adjacency from physical links
+  const adj = new Map<string, string[]>()
+  for (const link of net.links) {
+    const a = link.a.device
+    const b = link.b.device
+    if (!adj.has(a)) adj.set(a, [])
+    if (!adj.has(b)) adj.set(b, [])
+    adj.get(a)!.push(b)
+    adj.get(b)!.push(a)
+  }
+
+  const out: { device: string; deviceName: string }[] = [hops[0]]
+
+  for (let i = 0; i < hops.length - 1; i++) {
+    const fromId = hops[i].device
+    const toId = hops[i + 1].device
+
+    // BFS shortest physical path
+    const queue: string[][] = [[fromId]]
+    const visited = new Set([fromId])
+    let path: string[] | null = null
+    while (queue.length) {
+      const cur = queue.shift()!
+      const last = cur[cur.length - 1]
+      if (last === toId) {
+        path = cur
+        break
+      }
+      for (const nb of adj.get(last) ?? []) {
+        if (!visited.has(nb)) {
+          visited.add(nb)
+          queue.push([...cur, nb])
+        }
+      }
+    }
+
+    if (path) {
+      // skip index 0 — it is already in `out`
+      for (let j = 1; j < path.length; j++) {
+        const dev = net.get(path[j])
+        if (dev) out.push({ device: dev.id, deviceName: dev.name })
+      }
+    } else {
+      out.push(hops[i + 1])
+    }
+  }
+
+  return out
+}
+
 export default function BuildStage({ spec }: { spec: BuildSpec }) {
   const t = useT()
   const W = spec.viewBox?.w ?? 880
@@ -121,6 +183,8 @@ export default function BuildStage({ spec }: { spec: BuildSpec }) {
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
   const [result, setResult] = useState<PingResult | null>(null)
+  /** L3 hops expanded to include every physical device (switches) */
+  const [fullPath, setFullPath] = useState<{ device: string; deviceName: string }[]>([])
   const [anim, setAnim] = useState<number | null>(null)
   const raf = useRef<number | null>(null)
   const svgRef = useRef<SVGSVGElement | null>(null)
@@ -142,6 +206,7 @@ export default function BuildStage({ spec }: { spec: BuildSpec }) {
     setPast((p) => [...p.slice(-29), design])
     setDesign(next)
     setResult(null)
+    setFullPath([])
     setAnim(null)
   }
 
@@ -153,6 +218,7 @@ export default function BuildStage({ spec }: { spec: BuildSpec }) {
     })
     setSel(null)
     setResult(null)
+    setFullPath([])
     setAnim(null)
   }
 
@@ -231,7 +297,9 @@ export default function BuildStage({ spec }: { spec: BuildSpec }) {
     if (!from || !destIp) return
     const r = net.ping(from, destIp)
     setResult(r)
-    const segments = Math.max(1, r.hops.length - 1)
+    const expanded = physicalPath(net, r.hops)
+    setFullPath(expanded)
+    const segments = Math.max(1, expanded.length - 1)
     if (raf.current !== null) cancelAnimationFrame(raf.current)
     const started = performance.now()
     const tick = (now: number) => {
@@ -271,8 +339,8 @@ export default function BuildStage({ spec }: { spec: BuildSpec }) {
   }))
 
   const packets: PacketSpec[] = []
-  if (result && anim !== null) {
-    const hops = result.hops
+  if (result && anim !== null && fullPath.length >= 2) {
+    const hops = fullPath
     const idx = Math.min(Math.floor(anim), Math.max(0, hops.length - 2))
     const a = hops[idx]
     const b = hops[idx + 1]
@@ -593,8 +661,8 @@ export default function BuildStage({ spec }: { spec: BuildSpec }) {
                   {t(L.path)}
                 </h4>
                 <ol className="mt-2 space-y-1">
-                  {result.hops.map((h, i) => {
-                    const last = i === result.hops.length - 1
+                  {fullPath.map((h, i) => {
+                    const last = i === fullPath.length - 1
                     const bad = !result.ok && last
                     return (
                       <li key={i} className="nq-mono flex items-center gap-2 text-[12px]">
