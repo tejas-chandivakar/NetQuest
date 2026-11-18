@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export type Mode = 'beginner' | 'exam'
-export type Lang = 'gu' | 'en'
+export type Lang = 'gu' | 'en' | 'hi'
 export type TrackId = 'beginner' | 'ccna' | 'ccnp'
 
 interface AppState {
@@ -30,7 +30,8 @@ export const useApp = create<AppState>()(
       setMode: (mode) => set({ mode }),
       toggleMode: () => set((s) => ({ mode: s.mode === 'beginner' ? 'exam' : 'beginner' })),
       setLang: (lang) => set({ lang }),
-      toggleLang: () => set((s) => ({ lang: s.lang === 'gu' ? 'en' : 'gu' })),
+      toggleLang: () =>
+        set((s) => ({ lang: s.lang === 'en' ? 'gu' : s.lang === 'gu' ? 'hi' : 'en' })),
       complete: (id) => set((s) => ({ completed: { ...s.completed, [id]: true } })),
       uncomplete: (id) =>
         set((s) => {

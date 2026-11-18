@@ -104,9 +104,10 @@ export default function Layout() {
             />
             <Toggle
               value={lang}
-              onChange={(v) => setLang(v as 'gu' | 'en')}
+              onChange={(v) => setLang(v as 'gu' | 'en' | 'hi')}
               options={[
                 { v: 'gu', label: 'ગુજ' },
+                { v: 'hi', label: 'हि' },
                 { v: 'en', label: 'EN' },
               ]}
             />
