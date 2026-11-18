@@ -434,15 +434,18 @@ export default function Topology({
     let y1 = -Infinity
     for (const n of nodes) {
       const s = SIZE[n.type]
-      x0 = Math.min(x0, n.x - s.w / 2)
-      x1 = Math.max(x1, n.x + s.w / 2)
+      // text labels can be wider than the icon — estimate their reach
+      const nameW = n.label.length * 3.8
+      const subW = n.sub?.length ? n.sub.length * 3.2 : 0
+      const halfW = Math.max(s.w / 2, nameW, subW)
+      x0 = Math.min(x0, n.x - halfW)
+      x1 = Math.max(x1, n.x + halfW)
       y0 = Math.min(y0, n.y - s.h / 2)
-      // the name, and the address under it, hang below the icon
       y1 = Math.max(y1, n.y + s.h / 2 + (n.sub ? 44 : 28))
     }
     if (!Number.isFinite(x0)) return full
 
-    const pad = 26
+    const pad = 36
     x0 -= pad
     y0 -= pad
     x1 += pad
