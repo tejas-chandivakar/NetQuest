@@ -28,35 +28,40 @@ const IP_B = '192.168.1.20'
 export const b1l1: LessonSpec = {
   why: {
     gu: 'આખું ઈન્ટરનેટ — દુનિયાના કરોડો કમ્પ્યુટર — આ એક જ વાત પર ઊભું છે: બે મશીન એકબીજાને સંદેશ મોકલે. એ એક વાત સમજાઈ જાય, પછી બાકીનું બધું એનું જ મોટું સ્વરૂપ છે.',
+    hi: 'पूरा Internet — दुनिया के करोड़ों कंप्यूटर — एक ही बात पर टिका है: दो मशीनें एक-दूसरे को संदेश भेजती हैं। यह एक बात समझ में आ जाए, तो बाकी सब उसी का बड़ा रूप है।',
     en: 'The entire internet — hundreds of millions of machines — rests on one idea: two machines sending each other a message. Understand that one thing and everything else is just a bigger version of it.',
   },
   steps: [
     {
       ms: 2200,
-      label: { gu: 'બે કમ્પ્યુટર, પણ એકલાં', en: 'Two computers, alone' },
+      label: { gu: 'બે કમ્પ્યુટર, પણ એકલાં', hi: 'दो कंप्यूटर, लेकिन अकेले', en: 'Two computers, alone' },
       text: {
         beginner: {
           gu: 'અહીં બે કમ્પ્યુટર છે. બંને ચાલુ છે, બંને કામ કરે છે — પણ એકબીજા વિશે કશું જ જાણતાં નથી. વચ્ચે કોઈ રસ્તો નથી, એટલે કોઈ વાત થઈ શકતી નથી. આ સ્થિતિને આપણે "network નથી" કહીએ.',
+          hi: 'यहां दो कंप्यूटर हैं। दोनों चालू हैं, दोनों काम कर रहे हैं — पर एक-दूसरे के बारे में कुछ नहीं जानते। बीच में कोई रास्ता नहीं है, इसलिए कोई बातचीत नहीं हो सकती। इसी स्थिति को "network नहीं" कहते हैं।',
           en: 'Here are two computers. Both are powered on and working — but neither knows the other exists. There is no path between them, so no conversation can happen. This is what "no network" looks like.',
         },
         exam: {
           gu: 'બે end devices (hosts), બંને પાસે NIC છે, પણ કોઈ shared medium નથી. Layer 1 (Physical) ગેરહાજર છે, એટલે ઉપરનો કોઈ પણ layer કામ કરી શકે નહીં.',
+          hi: 'दो end devices (hosts), दोनों के पास NIC है, पर कोई shared medium नहीं है। Layer 1 (Physical) अनुपस्थित है, इसलिए उसके ऊपर का कोई भी layer काम नहीं कर सकता।',
           en: 'Two end devices (hosts), each with a NIC, but no shared medium. Layer 1 (Physical) is absent, so no layer above it can function.',
         },
       },
       scene: () => ({ nodes: [A(), B()], links: [] }),
-      say: () => ({ nodeId: 'a', text: { gu: 'મને B વિશે કશી ખબર નથી', en: 'I have no idea B exists' } }),
+      say: () => ({ nodeId: 'a', text: { gu: 'મને B વિશે કશી ખબર નથી', hi: 'मुझे B के बारे में कुछ नहीं पता', en: 'I have no idea B exists' } }),
     },
     {
       ms: 2400,
-      label: { gu: 'એક વાયર જોડો', en: 'Connect one cable' },
+      label: { gu: 'એક વાયર જોડો', hi: 'एक तार जोड़ें', en: 'Connect one cable' },
       text: {
         beginner: {
           gu: 'હવે બંને વચ્ચે એક વાયર જોડ્યો. બસ આટલું જ — અને તકનીકી રીતે તમારું પહેલું network બની ગયું! વાયર એ રસ્તો છે; સંદેશ હજી મોકલ્યો નથી, પણ હવે મોકલી શકાય એમ છે.',
+          hi: 'अब दोनों के बीच एक तार जोड़ दिया। बस इतना ही — और तकनीकी रूप से आपका पहला network बन गया! तार ही रास्ता है; संदेश अभी भेजा नहीं, पर अब भेजा जा सकता है।',
           en: 'Now we connect one cable between them. That is all it takes — technically, you have just built your first network. The cable is the road; nothing has been sent yet, but now it can be.',
         },
         exam: {
           gu: 'Physical layer સ્થાપિત થયું. બે hosts વચ્ચે direct link એ સૌથી નાનું possible LAN છે. Link ઉપર electrical signalling શરૂ થાય અને interface state up/up થાય.',
+          hi: 'Physical layer स्थापित हो गया। दो hosts के बीच direct link ही सबसे छोटा संभव LAN है। Link पर electrical signalling शुरू होती है और interface state up/up हो जाती है।',
           en: 'The physical layer is established. A direct link between two hosts is the smallest possible LAN. Signalling begins and the interface state goes up/up.',
         },
       },
@@ -75,14 +80,16 @@ export const b1l1: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'દરેકને સરનામું જોઈએ', en: 'Each one needs an address' },
+      label: { gu: 'દરેકને સરનામું જોઈએ', hi: 'हर एक को पता चाहिए', en: 'Each one needs an address' },
       text: {
         beginner: {
           gu: 'રસ્તો તો બન્યો, પણ સંદેશ કોને આપવો? એટલે દરેક કમ્પ્યુટરને એક સરનામું આપીએ છીએ — જેમ દરેક ઘરને નંબર હોય છે. એને IP address કહે છે. હવે A જાણે છે કે B નું સરનામું 192.168.1.20 છે.',
+          hi: 'रास्ता तो बन गया, पर संदेश किसे दें? इसलिए हर कंप्यूटर को एक पता देते हैं — जैसे हर घर का एक नंबर होता है। इसे IP address कहते हैं। अब A जानता है कि B का पता 192.168.1.20 है।',
           en: 'The road exists, but who do we hand the message to? So we give each computer an address — just as every house has a number. This is the IP address. Now A knows B lives at 192.168.1.20.',
         },
         exam: {
           gu: 'દરેક host ને એક જ subnet માંથી IPv4 address અપાયું (192.168.1.0/24). એક જ subnet હોવાથી traffic local રહે છે — કોઈ router કે default gateway ની જરૂર નથી.',
+          hi: 'हर host को एक ही subnet (192.168.1.0/24) से IPv4 address दिया गया है। एक ही subnet में होने से traffic local रहता है — किसी router या default gateway की जरूरत नहीं।',
           en: 'Each host is addressed from the same subnet (192.168.1.0/24). Because they share a subnet the traffic stays local — no router or default gateway is required.',
         },
       },
@@ -96,14 +103,16 @@ export const b1l1: LessonSpec = {
     },
     {
       ms: 2600,
-      label: { gu: 'સંદેશ packet બને', en: 'The message becomes a packet' },
+      label: { gu: 'સંદેશ packet બને', hi: 'संदेश packet बनता है', en: 'The message becomes a packet' },
       text: {
         beginner: {
           gu: 'A ને "Hello" મોકલવું છે. એ સીધો શબ્દ નથી મોકલતો — એને એક પરબીડિયામાં મૂકે છે. પરબીડિયા પર બે વસ્તુ લખેલી હોય છે: કોના તરફથી (192.168.1.10) અને કોના માટે (192.168.1.20). આ પરબીડિયાને packet કહે છે.',
+          hi: 'A को "Hello" भेजना है। वह सीधा शब्द नहीं भेजता — उसे एक लिफाफे में रखता है। लिफाफे पर दो चीज़ें लिखी होती हैं: किसकी तरफ से (192.168.1.10) और किसके लिए (192.168.1.20)। इसी लिफाफे को packet कहते हैं।',
           en: 'A wants to send "Hello". It does not send the bare word — it puts it inside an envelope. The envelope carries two things: who it is from (192.168.1.10) and who it is for (192.168.1.20). That envelope is a packet.',
         },
         exam: {
           gu: 'Data ને encapsulate કરાય છે: payload ઉપર IP header ચઢે જેમાં source અને destination address હોય, અને એની ઉપર Ethernet frame header (source/destination MAC) ચઢે.',
+          hi: 'Data को encapsulate किया जाता है: payload पर IP header चढ़ता है जिसमें source और destination address होते हैं, और उसके ऊपर Ethernet frame header (source/destination MAC) चढ़ता है।',
           en: 'The data is encapsulated: an IP header carrying source and destination addresses is added to the payload, and an Ethernet frame header with source and destination MAC wraps that.',
         },
       },
@@ -115,18 +124,20 @@ export const b1l1: LessonSpec = {
             ? [{ id: 'p', from: 'a', to: 'b', t: 0.055, color: 'var(--nq-pkt-data)', label: 'Hello →' }]
             : [],
       }),
-      say: () => ({ nodeId: 'a', text: { gu: 'પરબીડિયા પર B નું સરનામું લખું છું', en: 'Writing B’s address on the envelope' } }),
+      say: () => ({ nodeId: 'a', text: { gu: 'પરબીડિયા પર B નું સરનામું લખું છું', hi: 'लिफाफे पर B का पता लिख रहा हूं', en: 'Writing B’s address on the envelope' } }),
     },
     {
       ms: 3000,
-      label: { gu: 'Packet મુસાફરી કરે', en: 'The packet travels' },
+      label: { gu: 'Packet મુસાફરી કરે', hi: 'Packet यात्रा करता है', en: 'The packet travels' },
       text: {
         beginner: {
           gu: 'પરબીડિયું વાયર પર નીકળ્યું અને B તરફ દોડે છે. વાયરમાં એ વીજળીના સંકેત રૂપે જાય છે — એટલું ઝડપી કે આંખે દેખાય નહીં. અહીં આપણે એને ધીમું કરીને જોઈએ છીએ.',
+          hi: 'लिफाफा तार पर निकला और B की तरफ दौड़ रहा है। तार में वह बिजली के संकेत के रूप में जाता है — इतना तेज़ कि आंखों से दिखे नहीं। यहां हमने उसे धीमा करके दिखाया है।',
           en: 'The envelope is on the wire now, racing toward B. Inside the cable it travels as electrical signals — far too fast to see. Here we have slowed it right down.',
         },
         exam: {
           gu: 'Frame bits તરીકે medium પર transmit થાય છે. B નું NIC destination MAC પોતાનું છે કે નહીં એ જુએ છે; મેળ ખાય તો frame ઉપરના layers સુધી પહોંચે, નહીંતર drop થાય.',
+          hi: 'Frame bits के रूप में medium पर transmit होता है। B का NIC देखता है कि destination MAC उसी का है या नहीं; मेल खाए तो frame ऊपर के layers तक पहुंचता है, वरना drop हो जाता है।',
           en: 'The frame is transmitted onto the medium as bits. B’s NIC checks whether the destination MAC is its own; on a match the frame is passed up the stack, otherwise it is dropped.',
         },
       },
@@ -140,14 +151,16 @@ export const b1l1: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'B જવાબ આપે', en: 'B answers back' },
+      label: { gu: 'B જવાબ આપે', hi: 'B जवाब देता है', en: 'B answers back' },
       text: {
         beginner: {
           gu: 'B ને પરબીડિયું મળ્યું, ખોલ્યું, અને "Hello" વાંચ્યું. હવે એ એ જ રસ્તે જવાબ મોકલે છે — પણ આ વખતે પરબીડિયા પરના બે સરનામાં ઊલટાં થઈ જાય છે. નેટવર્કિંગમાં લગભગ દરેક વાત આવી જ હોય છે: એક પૂછે, બીજો જવાબ આપે.',
+          hi: 'B को लिफाफा मिला, खोला, और "Hello" पढ़ा। अब वह उसी रास्ते से जवाब भेजता है — पर इस बार लिफाफे के दोनों पते उलटे हो जाते हैं। Networking में लगभग हर बात ऐसी ही होती है: एक पूछता है, दूसरा जवाब देता है।',
           en: 'B received the envelope, opened it, and read "Hello". Now it sends a reply back along the same road — except the two addresses on the envelope are swapped. Almost everything in networking looks like this: one side asks, the other answers.',
         },
         exam: {
           gu: 'Return traffic માં source અને destination fields ઊલટાં થાય છે. આ request/response જોડી TCP થી HTTP સુધી દરેક protocol નો પાયો છે.',
+          hi: 'Return traffic में source और destination fields उलटे हो जाते हैं। यह request/response जोड़ी TCP से HTTP तक हर protocol की नींव है।',
           en: 'In the return traffic the source and destination fields are swapped. This request/response pair is the basis of every protocol from TCP up to HTTP.',
         },
       },
@@ -162,21 +175,24 @@ export const b1l1: LessonSpec = {
   ],
   takeaway: {
     gu: 'Network એટલે ખાસ કશું નહીં — એક રસ્તો, બે સરનામાં, અને એક પરબીડિયું. આગળ જે પણ આવશે (switch, router, OSPF, BGP) એ બધું આ ત્રણ વસ્તુને મોટા પાયે ગોઠવવાની રીતો જ છે.',
+    hi: 'Network कोई खास चीज़ नहीं है — एक रास्ता, दो पते, और एक लिफाफा। आगे जो भी आएगा (switch, router, OSPF, BGP) वह सब इन्हीं तीन चीज़ों को बड़े पैमाने पर गोठने के तरीके हैं।',
     en: 'A network is nothing exotic — a path, two addresses, and an envelope. Everything that follows (switches, routers, OSPF, BGP) is just a way of arranging those same three things at a larger scale.',
   },
   check: {
     q: {
       gu: 'વાયર જોડ્યા પછી પણ સંદેશ ન પહોંચે તો સૌથી પહેલાં શું તપાસશો?',
+      hi: 'तार जोड़ने के बाद भी संदेश न पहुंचे तो सबसे पहले क्या जांचेंगे?',
       en: 'The cable is connected but the message still does not arrive. What do you check first?',
     },
     options: [
-      { gu: 'બંને કમ્પ્યુટરનાં IP સરનામાં', en: 'The IP addresses on both computers' },
-      { gu: 'કમ્પ્યુટરનો રંગ', en: 'The colour of the computers' },
-      { gu: 'વાયરની લંબાઈ બરાબર 3 મીટર છે કે નહીં', en: 'Whether the cable is exactly 3 metres long' },
+      { gu: 'બંને કમ્પ્યુટરનાં IP સરનામાં', hi: 'दोनों कंप्यूटर के IP पते', en: 'The IP addresses on both computers' },
+      { gu: 'કમ્પ્યુટરનો રંગ', hi: 'कंप्यूटर का रंग', en: 'The colour of the computers' },
+      { gu: 'વાયરની લંબાઈ બરાબર 3 મીટર છે કે નહીં', hi: 'तार की लंबाई ठीक 3 मीटर है या नहीं', en: 'Whether the cable is exactly 3 metres long' },
     ],
     answer: 0,
     explain: {
       gu: 'રસ્તો હોવો પૂરતું નથી — પરબીડિયા પર સાચું સરનામું પણ જોઈએ. બંને એક જ network ના સરનામાં ધરાવે છે કે નહીં એ પહેલી તપાસ છે.',
+      hi: 'रास्ता होना ही काफी नहीं — लिफाफे पर सही पता भी चाहिए। दोनों एक ही network के पते रखते हैं या नहीं यह पहली जांच है।',
       en: 'A path alone is not enough — the envelope also needs the right address. Checking whether both sit in the same network is the first thing to do.',
     },
   },
