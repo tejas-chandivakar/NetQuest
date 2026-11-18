@@ -55,6 +55,21 @@ import {
   p2l4Config,
 } from './protocols'
 import { n7l1Config, n7l2Config } from './projects'
+import {
+  n1l1Break,
+  n1l2Break,
+  n1l3Break,
+  n2l1Break,
+  n2l3Break,
+  n2l4Break,
+  n3l1Break,
+  n3l2Break,
+  n3l4Break,
+  n4l1Break,
+  n5l1Break,
+  n7l1Break,
+  n7l2Break,
+} from './breaksCCNA'
 
 /** Learn-stage animations that are built. */
 export const LESSONS: Record<string, LessonSpec> = {
@@ -152,12 +167,25 @@ export const BREAKS: Record<string, BreakSpec> = {
   b4l3: b4l3Break,
   b4l4: b4l4Break,
   b4l5: b4l5Break,
+  n1l1: n1l1Break,
+  n1l2: n1l2Break,
+  n1l3: n1l3Break,
+  n2l1: n2l1Break,
   n2l2: n2l2Break,
+  n2l3: n2l3Break,
+  n2l4: n2l4Break,
+  n3l1: n3l1Break,
+  n3l2: n3l2Break,
   n3l3: n3l3Break,
+  n3l4: n3l4Break,
   n3l5: n3l5Break,
   n3l6: n3l6Break,
+  n4l1: n4l1Break,
   n4l2: n4l2Break,
+  n5l1: n5l1Break,
   n5l2: n5l2Break,
+  n7l1: n7l1Break,
+  n7l2: n7l2Break,
 }
 
 /**
