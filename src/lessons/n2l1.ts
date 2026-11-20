@@ -36,25 +36,28 @@ const wires = (flowing: string[] = []) =>
   }))
 
 const EMPTY = { head: ['VLAN', 'MAC Address', 'Type', 'Port'], rows: [] as string[][] }
-const TITLE = { gu: 'SW1 નું MAC Address Table', en: 'MAC address table on SW1' }
+const TITLE = { gu: 'SW1 નું MAC Address Table', hi: 'SW1 की MAC Address Table', en: 'MAC address table on SW1' }
 
 export const n2l1: LessonSpec = {
   viewBox: { w: 860, h: 430 },
   why: {
     gu: 'Switch કોઈ નકશો લઈને નથી આવતું — એ ખાલી ટેબલ સાથે જન્મે છે અને વપરાશમાંથી જ શીખે છે. આ "શીખવાની" પ્રક્રિયા સમજાય એટલે VLAN, STP અને port security — બધું સહેલું થઈ જાય.',
+    hi: 'Switch कोई नक्शा लेकर नहीं आता — वह खाली table के साथ जन्म लेता है और उपयोग से ही सीखता है। यह "सीखने" की प्रक्रिया समझ में आ जाए तो VLAN, STP और port security — सब आसान हो जाते हैं।',
     en: 'A switch does not arrive with a map. It is born with an empty table and learns purely from the traffic it sees. Once this learning sinks in, VLANs, STP and port security all become easy.',
   },
   steps: [
     {
       ms: 2400,
-      label: { gu: 'ખાલી ટેબલ સાથે શરૂઆત', en: 'It starts out knowing nothing' },
+      label: { gu: 'ખાલી ટેબલ સાથે શરૂઆત', hi: 'खाली table से शुरुआत', en: 'It starts out knowing nothing' },
       text: {
         beginner: {
           gu: 'Switch હમણાં જ ચાલુ થયું. ચાર કમ્પ્યુટર જોડાયેલાં છે, પણ switch ને ખબર નથી કે કયો કમ્પ્યુટર કયા પોર્ટ પાછળ બેઠો છે. એનું ટેબલ તદ્દન ખાલી છે.',
+          hi: 'Switch अभी-अभी चालू हुआ। चार कंप्यूटर जुड़े हैं, पर switch को नहीं पता कि कौन सा कंप्यूटर किस port के पीछे बैठा है। उसकी table बिल्कुल खाली है।',
           en: 'The switch has just been powered on. Four computers are plugged in, but it has no idea which computer sits behind which port. Its table is completely empty.',
         },
         exam: {
           gu: 'CAM table ખાલી છે. દરેક host પાસે પોતાનું burned-in MAC છે, પણ switch એ ત્યારે જ શીખે જ્યારે એ host પાસેથી frame આવે.',
+          hi: 'CAM table खाली है। हर host के पास अपना burned-in MAC है, पर switch तभी सीखता है जब उस host से frame आता है।',
           en: 'The CAM table is empty. Each host has its own burned-in MAC, but the switch only learns one when a frame arrives from that host.',
         },
       },
@@ -63,14 +66,16 @@ export const n2l1: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'PC1 એક frame મોકલે', en: 'PC1 sends a frame' },
+      label: { gu: 'PC1 એક frame મોકલે', hi: 'PC1 एक frame भेजता है', en: 'PC1 sends a frame' },
       text: {
         beginner: {
           gu: 'PC1 ને PC3 સાથે વાત કરવી છે. એ frame મોકલે છે — જેના પર "કોના તરફથી: PC1" અને "કોના માટે: PC3" લખેલું છે. Frame Fa0/1 પોર્ટ થઈને switch માં ઘૂસે છે.',
+          hi: 'PC1 को PC3 से बात करनी है। वह frame भेजता है — जिस पर "किसकी तरफ से: PC1" और "किसके लिए: PC3" लिखा है। Frame Fa0/1 port से होकर switch में घुसता है।',
           en: 'PC1 wants to talk to PC3, so it sends a frame marked "from PC1, to PC3". The frame enters the switch through port Fa0/1.',
         },
         exam: {
           gu: 'Frame Fa0/1 પર ingress થાય છે. Source MAC 001a.1111.0001, destination MAC 001a.3333.0003.',
+          hi: 'Frame Fa0/1 पर ingress होता है। Source MAC 001a.1111.0001, destination MAC 001a.3333.0003।',
           en: 'The frame ingresses on Fa0/1 with source MAC 001a.1111.0001 and destination MAC 001a.3333.0003.',
         },
       },
@@ -83,14 +88,16 @@ export const n2l1: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'Switch મોકલનારને શીખે', en: 'The switch learns the sender' },
+      label: { gu: 'Switch મોકલનારને શીખે', hi: 'Switch भेजने वाले को सीखता है', en: 'The switch learns the sender' },
       text: {
         beginner: {
           gu: 'અહીં જાદુ થાય છે. Switch વિચારે છે: "આ frame Fa0/1 પરથી આવ્યું, અને એના પર લખ્યું છે કે PC1 તરફથી. એટલે PC1 ચોક્કસ Fa0/1 પાછળ જ હશે." — અને એ ટેબલમાં લખી લે છે. કોઈએ એને કહ્યું નહીં; એ જાતે શીખ્યું.',
+          hi: 'यहां जादू होता है। Switch सोचता है: "यह frame Fa0/1 से आया, और इस पर लिखा है कि PC1 की तरफ से। तो PC1 जरूर Fa0/1 के पीछे ही होगा।" — और वह table में लिख लेता है। किसी ने उसे नहीं बताया; उसने खुद सीखा।',
           en: 'Here is the trick. The switch reasons: "this frame came in on Fa0/1 and says it is from PC1, so PC1 must live behind Fa0/1" — and writes that down. Nobody told it; it worked it out.',
         },
         exam: {
           gu: 'Source MAC learning: switch ingress port સામે source MAC ને CAM table માં નોંધે છે, VLAN સાથે. Entry નો aging timer સામાન્ય રીતે 300 સેકન્ડનો હોય છે.',
+          hi: 'Source MAC learning: switch ingress port के सामने source MAC को CAM table में दर्ज करता है, VLAN के साथ। Entry का aging timer आमतौर पर 300 सेकंड का होता है।',
           en: 'Source MAC learning: the switch records the source MAC against the ingress port in the CAM table, together with the VLAN. The entry ages out after 300 seconds by default.',
         },
       },
@@ -106,14 +113,16 @@ export const n2l1: LessonSpec = {
     },
     {
       ms: 3400,
-      label: { gu: 'મેળવનાર અજાણ્યો — બધે મોકલો', en: 'Receiver unknown — flood it' },
+      label: { gu: 'મેળવનાર અજાણ્યો — બધે મોકલો', hi: 'पाने वाला अज्ञात — सब जगह भेजो', en: 'Receiver unknown — flood it' },
       text: {
         beginner: {
           gu: 'પણ PC3 ક્યાં છે એ હજી ખબર નથી. તો switch શું કરે? એ frame ને બાકીના **બધા** પોર્ટ પર મોકલી દે છે — "જેનું હોય એ લઈ લે". PC2 અને PC4 જોશે કે આ એમના માટે નથી અને ફેંકી દેશે. ફક્ત PC3 એને સ્વીકારશે.',
+          hi: 'पर PC3 कहां है यह अभी पता नहीं। तो switch क्या करे? वह frame को बाकी **सभी** ports पर भेज देता है — "जिसका हो वह ले ले"। PC2 और PC4 देखेंगे कि यह उनके लिए नहीं और फेंक देंगे। केवल PC3 इसे स्वीकारेगा।',
           en: 'But it still does not know where PC3 is. So what does it do? It sends the frame out of **every** other port — "whoever this belongs to, take it". PC2 and PC4 will see it is not for them and discard it. Only PC3 keeps it.',
         },
         exam: {
           gu: 'Unknown unicast flooding: destination MAC CAM table માં ન હોય તો frame એ જ VLAN ના બાકીના બધા ports પર મોકલાય છે (ingress port સિવાય).',
+          hi: 'Unknown unicast flooding: destination MAC CAM table में न हो तो frame उसी VLAN के बाकी सभी ports पर भेजा जाता है (ingress port को छोड़कर)।',
           en: 'Unknown unicast flooding: when the destination MAC is not in the CAM table the frame goes out of every other port in the same VLAN, excluding the ingress port.',
         },
       },
@@ -137,14 +146,16 @@ export const n2l1: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'PC3 જવાબ આપે — અને શીખાય છે', en: 'PC3 replies — and gets learned' },
+      label: { gu: 'PC3 જવાબ આપે — અને શીખાય છે', hi: 'PC3 जवाब देता है — और सीखा जाता है', en: 'PC3 replies — and gets learned' },
       text: {
         beginner: {
           gu: 'PC3 જવાબ મોકલે છે. એ frame Fa0/3 પરથી આવે છે, એટલે switch હવે PC3 ને પણ ટેબલમાં લખી લે છે. એક જ વાતચીતમાં એણે બે વસ્તુ શીખી લીધી.',
+          hi: 'PC3 जवाब भेजता है। वह frame Fa0/3 से आता है, इसलिए switch अब PC3 को भी table में लिख लेता है। एक ही बातचीत में उसने दो चीजें सीख लीं।',
           en: 'PC3 sends its reply. That frame arrives on Fa0/3, so the switch now writes PC3 into the table too. One short exchange and it has learned two things.',
         },
         exam: {
           gu: 'Return frame નું source MAC learning થાય છે. હવે બંને entries CAM table માં છે, એટલે આ જોડી વચ્ચેનું traffic unicast forwarding તરીકે જ જશે.',
+          hi: 'Return frame का source MAC learning होता है। अब दोनों entries CAM table में हैं, इसलिए इस जोड़ी के बीच का traffic unicast forwarding के रूप में ही जाएगा।',
           en: 'Source MAC learning happens on the return frame. With both entries now in the CAM table, traffic between this pair is forwarded as unicast from here on.',
         },
       },
@@ -167,14 +178,16 @@ export const n2l1: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'હવે સીધું જ — કોઈ flooding નહીં', en: 'Now it goes straight there' },
+      label: { gu: 'હવે સીધું જ — કોઈ flooding નહીં', hi: 'अब सीधा ही — कोई flooding नहीं', en: 'Now it goes straight there' },
       text: {
         beginner: {
           gu: 'PC1 ફરી PC3 ને મોકલે છે. આ વખતે switch ટેબલ જુએ છે, PC3 ને Fa0/3 પર શોધે છે, અને frame **ફક્ત ત્યાં જ** મોકલે છે. PC2 અને PC4 ને હવે કંઈ દેખાતું જ નથી. આ જ switch ની ખૂબી છે — hub બધાને બધું સંભળાવતો, switch ફક્ત જેને જોઈએ એને જ આપે છે.',
+          hi: 'PC1 फिर PC3 को भेजता है। इस बार switch table देखता है, PC3 को Fa0/3 पर ढूंढता है, और frame **केवल वहीं** भेजता है। PC2 और PC4 को अब कुछ दिखता ही नहीं। यही switch की खासियत है — hub सबको सब सुनाता था, switch केवल जिसे चाहिए उसी को देता है।',
           en: 'PC1 sends to PC3 again. This time the switch checks the table, finds PC3 on Fa0/3, and sends the frame **only there**. PC2 and PC4 see nothing at all. That is the whole point of a switch — a hub shouted at everybody, a switch delivers only to the one who needs it.',
         },
         exam: {
           gu: 'Known unicast forwarding. એટલે જ switch દરેક port ને પોતાનું collision domain આપે છે, જ્યારે broadcast domain આખા VLAN માટે એક જ રહે છે.',
+          hi: 'Known unicast forwarding। इसीलिए switch हर port को अपना collision domain देता है, जबकि broadcast domain पूरे VLAN के लिए एक ही रहता है।',
           en: 'Known unicast forwarding. This is why a switch gives every port its own collision domain, while the broadcast domain stays shared across the VLAN.',
         },
       },
@@ -204,21 +217,24 @@ export const n2l1: LessonSpec = {
   ],
   takeaway: {
     gu: 'Switch એક જ નિયમથી ચાલે છે: "આવતા frame પરથી મોકલનાર શીખો; જતા frame માટે ટેબલ જુઓ — ન મળે તો બધે મોકલો." આટલું જ. એના પર જ VLAN, STP અને port security ઊભાં છે.',
+    hi: 'Switch एक ही नियम से चलता है: "आने वाले frame से भेजने वाले को सीखो; जाने वाले frame के लिए table देखो — न मिले तो सब जगह भेजो।" बस इतना ही। इसी पर VLAN, STP और port security खड़े हैं।',
     en: 'A switch runs on one rule: learn the sender from what comes in; look up the receiver for what goes out, and flood it if you cannot find it. That is all. VLANs, STP and port security are all built on top of it.',
   },
   check: {
     q: {
       gu: 'Switch ને PC3 નું સરનામું ટેબલમાં ન મળે તો એ frame નું શું કરે?',
+      hi: 'Switch को PC3 का पता table में न मिले तो वह frame का क्या करे?',
       en: 'When the switch cannot find PC3 in its table, what does it do with the frame?',
     },
     options: [
-      { gu: 'બાકીના બધા પોર્ટ પર મોકલી દે', en: 'Sends it out of every other port' },
-      { gu: 'Frame ફેંકી દે', en: 'Drops the frame' },
-      { gu: 'PC1 ને પાછું મોકલે', en: 'Sends it back to PC1' },
+      { gu: 'બાકીના બધા પોર્ટ પર મોકલી દે', hi: 'बाकी सभी ports पर भेज दे', en: 'Sends it out of every other port' },
+      { gu: 'Frame ફેંકી દે', hi: 'Frame फेंक दे', en: 'Drops the frame' },
+      { gu: 'PC1 ને પાછું મોકલે', hi: 'PC1 को वापस भेजे', en: 'Sends it back to PC1' },
     ],
     answer: 0,
     explain: {
       gu: 'એને unknown unicast flooding કહે છે. Switch ફેંકી દેવાને બદલે બધે મોકલે છે — અને જવાબ આવે એટલે આગલી વખતે એને ખબર હોય છે.',
+      hi: 'इसे unknown unicast flooding कहते हैं। Switch फेंकने के बजाय सब जगह भेजता है — और जवाब आने पर अगली बार उसे पता होता है।',
       en: 'This is called unknown unicast flooding. Rather than drop it, the switch sends it everywhere — and once the reply comes back, next time it knows.',
     },
   },
