@@ -21,19 +21,22 @@ const copperPc = (id: string, x: number, label: string, sub?: string): NodeSpec 
 export const b1l2: LessonSpec = {
   why: {
     gu: 'ડેટા જાદુથી નથી જતો — એ કશાકમાં થઈને જાય છે. તાંબાના વાયરમાં વીજળી, કાચના તારમાં પ્રકાશ, હવામાં રેડિયો તરંગ. કયું માધ્યમ ક્યાં વાપરવું એ ખબર હોય તો અડધી network design ત્યાં જ નક્કી થઈ જાય છે.',
+    hi: 'डेटा जादू से नहीं जाता — वह किसी न किसी में होकर जाता है। तांबे के तार में बिजली, कांच के तार में प्रकाश, हवा में रेडियो तरंगें। कौन सा माध्यम कहां उपयोग करना है यह पता हो तो आधी network design वहीं तय हो जाती है।',
     en: 'Data does not travel by magic — it travels through something. Electricity in copper, light in glass, radio waves in air. Knowing which medium goes where settles half of any network design before you start.',
   },
   steps: [
     {
       ms: 2600,
-      label: { gu: 'તાંબાનો વાયર — વીજળી', en: 'Copper — electricity' },
+      label: { gu: 'તાંબાનો વાયર — વીજળી', hi: 'तांबे का तार — बिजली', en: 'Copper — electricity' },
       text: {
         beginner: {
           gu: 'સૌથી સામાન્ય વાયર તાંબાનો હોય છે, જેને Ethernet cable કહે છે. એની અંદર વીજળીના નાના ધક્કા જાય છે. એક ધક્કો = 1, ધક્કો નહીં = 0. બસ આ રીતે આખી ફિલ્મ, આખું ગીત, આખું ઈન્ટરનેટ વહે છે.',
+          hi: 'सबसे आम तार तांबे का होता है, जिसे Ethernet cable कहते हैं। उसके अंदर बिजली के छोटे धक्के जाते हैं। एक धक्का = 1, धक्का नहीं = 0। बस इसी तरह पूरी फिल्म, पूरा गाना, पूरा Internet बहता है।',
           en: 'The most common cable is copper — the Ethernet cable. Tiny pulses of electricity run inside it. A pulse means 1, no pulse means 0. That is how an entire film, an entire song, the entire internet flows.',
         },
         exam: {
           gu: 'Twisted-pair copper (Cat5e/Cat6) વીજળીના voltage transitions વડે bits મોકલે છે. 100 મીટર સુધી ભરોસાપાત્ર; એથી વધુ અંતરે attenuation અને crosstalk વધે છે.',
+          hi: 'Twisted-pair copper (Cat5e/Cat6) voltage transitions के जरिए bits भेजता है। 100 मीटर तक भरोसेमंद; उससे ज्यादा दूरी पर attenuation और crosstalk बढ़ जाते हैं।',
           en: 'Twisted-pair copper (Cat5e/Cat6) carries bits as voltage transitions. Reliable to 100 m; beyond that attenuation and crosstalk take over.',
         },
       },
@@ -48,14 +51,16 @@ export const b1l2: LessonSpec = {
     },
     {
       ms: 2600,
-      label: { gu: 'તાંબાની હદ — 100 મીટર', en: 'Copper runs out at 100 m' },
+      label: { gu: 'તાંબાની હદ — 100 મીટર', hi: 'तांबे की सीमा — 100 मीटर', en: 'Copper runs out at 100 m' },
       text: {
         beginner: {
           gu: 'તાંબાની એક મર્યાદા છે: લગભગ 100 મીટર. એથી લાંબો વાયર કરો તો સંકેત એટલો નબળો પડી જાય કે સામેના છેડે 1 અને 0 ઓળખાય જ નહીં. એક બિલ્ડિંગના માળ માટે પૂરતું, પણ બે શહેર જોડવા માટે નકામું.',
+          hi: 'तांबे की एक सीमा है: लगभग 100 मीटर। उससे लंबा तार करें तो संकेत इतना कमजोर हो जाता है कि दूसरे सिरे पर 1 और 0 पहचाने ही नहीं जाते। एक बिल्डिंग की मंजिल के लिए काफी, पर दो शहर जोड़ने के लिए बेकार।',
           en: 'Copper has a limit: about 100 metres. Run it longer and the signal fades until the far end can no longer tell a 1 from a 0. Fine for one floor of a building, useless for joining two cities.',
         },
         exam: {
           gu: '802.3 standards માં twisted-pair માટે 100 m નો maximum segment length છે. એથી વધુ માટે fibre અથવા intermediate repeater/switch જોઈએ.',
+          hi: '802.3 standards में twisted-pair के लिए 100 m का maximum segment length है। उससे ज्यादा के लिए fibre या intermediate repeater/switch चाहिए।',
           en: 'The 802.3 standards cap twisted-pair at a 100 m maximum segment length. Beyond that you need fibre or an intermediate repeater/switch.',
         },
       },
@@ -79,14 +84,16 @@ export const b1l2: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'કાચનો તાર — પ્રકાશ', en: 'Glass — light' },
+      label: { gu: 'કાચનો તાર — પ્રકાશ', hi: 'कांच का तार — प्रकाश', en: 'Glass — light' },
       text: {
         beginner: {
           gu: 'લાંબા અંતર માટે કાચનો પાતળો તાર વપરાય છે — fibre optic. એમાં વીજળી નહીં, પ્રકાશનો ઝબકારો જાય છે. પ્રકાશ નબળો પડ્યા વગર કિલોમીટરો સુધી દોડે છે, એટલે સમુદ્ર નીચેના કેબલ પણ fibre ના જ હોય છે.',
+          hi: 'लंबी दूरी के लिए कांच का पतला तार इस्तेमाल होता है — fibre optic। उसमें बिजली नहीं, प्रकाश की चमक जाती है। प्रकाश कमजोर हुए बिना किलोमीटरों तक दौड़ता है, इसीलिए समुद्र के नीचे के cable भी fibre के ही होते हैं।',
           en: 'For long distances we use a thin strand of glass — fibre optic. Not electricity but flashes of light travel inside. Light runs for kilometres without fading, which is why undersea cables are fibre too.',
         },
         exam: {
           gu: 'Single-mode fibre 1310/1550 nm લેસર વાપરે અને 10–80 km સુધી પહોંચે; multi-mode LED/VCSEL વાપરે અને campus અંતર (~550 m) માટે સસ્તું પડે.',
+          hi: 'Single-mode fibre 1310/1550 nm laser इस्तेमाल करता है और 10–80 km तक पहुंचता है; multi-mode LED/VCSEL इस्तेमाल करता है और campus दूरी (~550 m) के लिए सस्ता पड़ता है।',
           en: 'Single-mode fibre uses 1310/1550 nm lasers and reaches 10–80 km; multi-mode uses LEDs/VCSELs and is cheaper for campus distances (~550 m).',
         },
       },
@@ -104,14 +111,16 @@ export const b1l2: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'હવા — રેડિયો તરંગ (WiFi)', en: 'Air — radio waves (WiFi)' },
+      label: { gu: 'હવા — રેડિયો તરંગ (WiFi)', hi: 'हवा — रेडियो तरंग (WiFi)', en: 'Air — radio waves (WiFi)' },
       text: {
         beginner: {
           gu: 'ત્રીજું માધ્યમ કોઈ વાયર જ નથી — હવા. WiFi એ જ છે: Access Point રેડિયો તરંગ હવામાં છોડે, તમારો ફોન એ પકડે. વાયર નહીં એટલે સગવડ વધુ, પણ દીવાલ, અંતર અને બીજા લોકોના WiFi થી ખલેલ પણ વધુ.',
+          hi: 'तीसरा माध्यम कोई तार ही नहीं — हवा। WiFi यही है: Access Point रेडियो तरंगें हवा में छोड़ता है, आपका फोन उन्हें पकड़ता है। तार नहीं तो सुविधा ज्यादा, पर दीवार, दूरी और दूसरों के WiFi से बाधा भी ज्यादा।',
           en: 'The third medium is no cable at all — air. That is WiFi: an Access Point pushes radio waves into the air and your phone catches them. No wire means more convenience, but also more interference from walls, distance and the neighbours.',
         },
         exam: {
           gu: '802.11 2.4 GHz (દૂર પહોંચે, ધીમું, ભીડભાડ) અને 5/6 GHz (ઝડપી, ઓછું અંતર) વાપરે છે. Medium shared છે એટલે CSMA/CA થી collisions ટાળાય છે.',
+          hi: '802.11 2.4 GHz (दूर पहुंचे, धीमा, भीड़भाड़) और 5/6 GHz (तेज, कम दूरी) इस्तेमाल करता है। Medium shared है इसलिए CSMA/CA से collisions टाले जाते हैं।',
           en: '802.11 uses 2.4 GHz (further, slower, crowded) and 5/6 GHz (faster, shorter range). The medium is shared, so CSMA/CA is used to avoid collisions.',
         },
       },
@@ -133,14 +142,16 @@ export const b1l2: LessonSpec = {
     },
     {
       ms: 2600,
-      label: { gu: 'ત્રણેય સાથે વપરાય', en: 'All three, together' },
+      label: { gu: 'ત્રણેય સાથે વપરાય', hi: 'तीनों साथ में इस्तेमाल होते हैं', en: 'All three, together' },
       text: {
         beginner: {
           gu: 'સાચી દુનિયામાં ત્રણેય એકસાથે વપરાય છે. તમારો ફોન WiFi થી router સુધી, router તાંબાના વાયરથી બિલ્ડિંગના switch સુધી, અને ત્યાંથી fibre પર આખી દુનિયા સુધી. એક જ સંદેશ ત્રણ અલગ માધ્યમ બદલે છે — અને એને ખબર પણ નથી પડતી.',
+          hi: 'असली दुनिया में तीनों एक साथ इस्तेमाल होते हैं। आपका फोन WiFi से router तक, router तांबे के तार से बिल्डिंग के switch तक, और वहां से fibre पर पूरी दुनिया तक। एक ही संदेश तीन अलग माध्यम बदलता है — और उसे पता भी नहीं चलता।',
           en: 'In the real world all three work together. Your phone reaches the router over WiFi, the router reaches the building switch over copper, and from there fibre carries it to the world. One message changes medium three times — and never notices.',
         },
         exam: {
           gu: 'Physical layer દરેક hop પર બદલાઈ શકે; upper layers ને એનો ફરક પડતો નથી. એ જ તો layered model નો મુખ્ય ફાયદો છે.',
+          hi: 'Physical layer हर hop पर बदल सकता है; upper layers को उससे कोई फर्क नहीं पड़ता। यही तो layered model का मुख्य फायदा है।',
           en: 'The physical layer can change at every hop and the upper layers are unaffected. That independence is the whole point of a layered model.',
         },
       },
@@ -168,21 +179,24 @@ export const b1l2: LessonSpec = {
   ],
   takeaway: {
     gu: 'તાંબુ = સસ્તું, 100 મીટર સુધી, ઓફિસની અંદર. Fibre = મોંઘું, કિલોમીટરો સુધી, બિલ્ડિંગ અને શહેર જોડવા. WiFi = વાયર વગર, સગવડ માટે, પણ ખલેલ સાથે. એક જ packet આ ત્રણેયમાં થઈને જઈ શકે.',
+    hi: 'तांबा = सस्ता, 100 मीटर तक, ऑफिस के अंदर। Fibre = महंगा, किलोमीटरों तक, बिल्डिंग और शहर जोड़ने के लिए। WiFi = बिना तार के, सुविधा के लिए, पर बाधा के साथ। एक ही packet इन तीनों में से होकर जा सकता है।',
     en: 'Copper = cheap, up to 100 m, inside an office. Fibre = costly, kilometres, joining buildings and cities. WiFi = no wire, convenient, but noisy. One packet can cross all three.',
   },
   check: {
     q: {
       gu: 'બે બિલ્ડિંગ 2 કિલોમીટર દૂર છે અને જોડવાં છે. શું વાપરશો?',
+      hi: 'दो बिल्डिंग 2 किलोमीटर दूर हैं और जोड़नी हैं। क्या इस्तेमाल करेंगे?',
       en: 'Two buildings 2 km apart need to be connected. What do you use?',
     },
     options: [
-      { gu: 'Fibre optic', en: 'Fibre optic' },
-      { gu: 'લાંબો Ethernet વાયર', en: 'A very long Ethernet cable' },
-      { gu: 'WiFi', en: 'WiFi' },
+      { gu: 'Fibre optic', hi: 'Fibre optic', en: 'Fibre optic' },
+      { gu: 'લાંબો Ethernet વાયર', hi: 'लंबा Ethernet तार', en: 'A very long Ethernet cable' },
+      { gu: 'WiFi', hi: 'WiFi', en: 'WiFi' },
     ],
     answer: 0,
     explain: {
       gu: 'તાંબુ 100 મીટર પછી કામ ન કરે અને સામાન્ય WiFi આટલે દૂર ન પહોંચે. 2 કિમી માટે fibre એ એકમાત્ર ભરોસાપાત્ર જવાબ છે.',
+      hi: 'तांबा 100 मीटर के बाद काम नहीं करता और सामान्य WiFi इतनी दूर नहीं पहुंचता। 2 km के लिए fibre ही एकमात्र भरोसेमंद जवाब है।',
       en: 'Copper gives up after 100 m and ordinary WiFi will not reach. At 2 km fibre is the only dependable answer.',
     },
   },
@@ -193,19 +207,22 @@ export const b1l2: LessonSpec = {
 export const b1l3: LessonSpec = {
   why: {
     gu: 'LAN, WAN, Internet — આ ત્રણ શબ્દો રોજ સંભળાય છે પણ ફરક ધૂંધળો રહી જાય છે. ફરક ખરેખર એક જ વાતનો છે: નેટવર્ક કેટલું મોટું છે અને એનો માલિક કોણ છે.',
+    hi: 'LAN, WAN, Internet — ये तीन शब्द रोज सुनाई देते हैं पर फर्क धुंधला रह जाता है। फर्क असल में एक ही बात का है: network कितना बड़ा है और उसका मालिक कौन है।',
     en: 'LAN, WAN, Internet — three words you hear daily with a blurry line between them. The difference comes down to one thing: how big the network is and who owns it.',
   },
   steps: [
     {
       ms: 2600,
-      label: { gu: 'LAN — એક જગ્યાનું નેટવર્ક', en: 'LAN — one place' },
+      label: { gu: 'LAN — એક જગ્યાનું નેટવર્ક', hi: 'LAN — एक जगह का network', en: 'LAN — one place' },
       text: {
         beginner: {
           gu: 'LAN એટલે Local Area Network — એક જ ઘર, એક ઓફિસ કે એક માળનું નેટવર્ક. બધા વાયર અને switch તમારા પોતાના હોય છે, કોઈને ભાડું આપવું પડતું નથી. તમારા ઘરનું WiFi એ LAN જ છે.',
+          hi: 'LAN यानी Local Area Network — एक ही घर, एक ऑफिस या एक मंजिल का network। सभी तार और switch आपके अपने होते हैं, किसी को किराया नहीं देना पड़ता। आपके घर का WiFi भी LAN ही है।',
           en: 'A LAN is a Local Area Network — one home, one office, one floor. The cables and switches are yours; you pay no one rent for them. Your home WiFi is a LAN.',
         },
         exam: {
           gu: 'LAN એક single broadcast domain (અથવા VLAN દીઠ એક) હોય છે, high bandwidth અને low latency સાથે, અને સંપૂર્ણપણે organisation ની માલિકીનું હોય છે.',
+          hi: 'LAN एक single broadcast domain (या प्रति VLAN एक) होता है, high bandwidth और low latency के साथ, और पूरी तरह organisation की मालिकी का होता है।',
           en: 'A LAN is a single broadcast domain (or one per VLAN), high bandwidth, low latency, and entirely owned by the organisation.',
         },
       },
@@ -225,14 +242,16 @@ export const b1l3: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'WAN — બે જગ્યા જોડાય', en: 'WAN — two places joined' },
+      label: { gu: 'WAN — બે જગ્યા જોડાય', hi: 'WAN — दो जगह जुड़ती हैं', en: 'WAN — two places joined' },
       text: {
         beginner: {
           gu: 'તમારી કંપનીની બીજી ઓફિસ બીજા શહેરમાં છે. બે LAN ને જોડતી લાંબી લાઈનને WAN કહે છે — Wide Area Network. આ લાઈન તમારી પોતાની નથી હોતી; ટેલિકોમ કંપની પાસેથી ભાડે લેવી પડે છે, અને એનું માસિક બિલ આવે છે.',
+          hi: 'आपकी कंपनी का दूसरा ऑफिस दूसरे शहर में है। दो LAN को जोड़ती लंबी लाइन को WAN कहते हैं — Wide Area Network। यह लाइन आपकी अपनी नहीं होती; telecom कंपनी से किराए पर लेनी पड़ती है, और उसका मासिक बिल आता है।',
           en: 'Your company has another office in another city. The long line joining the two LANs is a WAN — a Wide Area Network. That line is not yours; you rent it from a telecom provider and a bill arrives every month.',
         },
         exam: {
           gu: 'WAN link service provider ની માલિકીની હોય છે (MPLS, leased line, broadband). LAN કરતાં ઓછું bandwidth અને વધુ latency — એટલે WAN પર શું મોકલવું એ કાળજીથી નક્કી થાય.',
+          hi: 'WAN link service provider की मालिकी का होता है (MPLS, leased line, broadband)। LAN की तुलना में कम bandwidth और ज्यादा latency — इसलिए WAN पर क्या भेजना है यह सावधानी से तय होता है।',
           en: 'The WAN link is owned by a service provider (MPLS, leased line, broadband). Lower bandwidth and higher latency than a LAN, so what you send across it is chosen carefully.',
         },
       },
@@ -256,14 +275,16 @@ export const b1l3: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'Internet — બધાનાં નેટવર્કનું નેટવર્ક', en: 'Internet — a network of networks' },
+      label: { gu: 'Internet — બધાનાં નેટવર્કનું નેટવર્ક', hi: 'Internet — सबके networks का network', en: 'Internet — a network of networks' },
       text: {
         beginner: {
           gu: 'Internet કોઈ એક કંપનીનું નથી. એ દુનિયાભરનાં લાખો નેટવર્ક એકબીજા સાથે જોડાઈને બનેલું છે. તમારું ઘર, તમારી ઓફિસ, Google નો datacenter — બધાં પોતપોતાનાં નેટવર્ક છે, અને બધાં એકબીજા સાથે જોડાયેલાં છે.',
+          hi: 'Internet किसी एक कंपनी का नहीं है। यह दुनिया भर के लाखों networks एक-दूसरे से जुड़कर बना है। आपका घर, आपका ऑफिस, Google का datacenter — सबके अपने-अपने networks हैं, और सब एक-दूसरे से जुड़े हुए हैं।',
           en: 'The internet belongs to no single company. It is millions of separate networks worldwide, joined to each other. Your home, your office, a Google datacenter — each its own network, all interconnected.',
         },
         exam: {
           gu: 'Internet એ autonomous systems (AS) નો સમૂહ છે જે BGP વડે એકબીજા સાથે routes exchange કરે છે. દરેક AS નો પોતાનો માલિક અને પોતાની policy હોય છે.',
+          hi: 'Internet autonomous systems (AS) का समूह है जो BGP के जरिए एक-दूसरे से routes exchange करते हैं। हर AS का अपना मालिक और अपनी policy होती है।',
           en: 'The internet is a set of autonomous systems (AS) exchanging routes with each other over BGP. Each AS has its own owner and its own policy.',
         },
       },
@@ -291,14 +312,16 @@ export const b1l3: LessonSpec = {
     },
     {
       ms: 2600,
-      label: { gu: 'ત્રણેયનો નકશો', en: 'The map of all three' },
+      label: { gu: 'ત્રણેયનો નકશો', hi: 'तीनों का नक्शा', en: 'The map of all three' },
       text: {
         beginner: {
           gu: 'એક ચિત્રમાં ત્રણેય: અંદર LAN (તમારું), વચ્ચે WAN (ભાડે લીધેલું), બહાર Internet (બધાનું). ઘરથી શહેર અને શહેરથી દુનિયા — આ જ નકશો છે.',
+          hi: 'एक चित्र में तीनों: अंदर LAN (आपका), बीच में WAN (किराए पर लिया हुआ), बाहर Internet (सबका)। घर से शहर और शहर से दुनिया — यही नक्शा है।',
           en: 'All three in one picture: the LAN inside (yours), the WAN in between (rented), the internet outside (everyone’s). Home to city to world — that is the whole map.',
         },
         exam: {
           gu: 'Classic enterprise hierarchy: access/distribution LAN → WAN edge router → service provider → internet. દરેક સીમા પર એક નવી administrative boundary આવે છે.',
+          hi: 'Classic enterprise hierarchy: access/distribution LAN → WAN edge router → service provider → Internet. हर सीमा पर एक नई administrative boundary आती है।',
           en: 'The classic enterprise hierarchy: access/distribution LAN → WAN edge router → service provider → internet. Each boundary is a new administrative domain.',
         },
       },
@@ -319,21 +342,24 @@ export const b1l3: LessonSpec = {
   ],
   takeaway: {
     gu: 'LAN = એક જગ્યા, તમારી માલિકીનું, ઝડપી. WAN = બે જગ્યા જોડતી ભાડાની લાઈન, ધીમી અને ખર્ચાળ. Internet = બધાનાં નેટવર્ક એકબીજા સાથે જોડાયેલાં. ફરક કદનો છે અને માલિકીનો.',
+    hi: 'LAN = एक जगह, आपकी मालिकी का, तेज। WAN = दो जगह जोड़ने वाली किराए की लाइन, धीमी और महंगी। Internet = सबके networks एक-दूसरे से जुड़े हुए। फर्क आकार का है और मालिकी का।',
     en: 'LAN = one place, owned by you, fast. WAN = a rented line joining two places, slower and costly. Internet = everyone’s networks joined together. The difference is size and ownership.',
   },
   check: {
     q: {
       gu: 'તમારી કંપનીની Surat અને Mumbai ઓફિસ જોડતી લાઈનને શું કહેવાય?',
+      hi: 'आपकी कंपनी की Surat और Mumbai ऑफिस को जोड़ने वाली लाइन को क्या कहते हैं?',
       en: 'What do you call the line joining your company’s Surat and Mumbai offices?',
     },
     options: [
-      { gu: 'WAN link', en: 'A WAN link' },
-      { gu: 'LAN cable', en: 'A LAN cable' },
-      { gu: 'Internet', en: 'The internet' },
+      { gu: 'WAN link', hi: 'WAN link', en: 'A WAN link' },
+      { gu: 'LAN cable', hi: 'LAN cable', en: 'A LAN cable' },
+      { gu: 'Internet', hi: 'Internet', en: 'The internet' },
     ],
     answer: 0,
     explain: {
       gu: 'બે અલગ જગ્યાનાં LAN ને જોડતી, સામાન્ય રીતે ભાડે લીધેલી લાંબી લાઈન એ WAN link છે.',
+      hi: 'दो अलग जगहों के LAN को जोड़ने वाली, आमतौर पर किराए पर ली गई लंबी लाइन WAN link है।',
       en: 'A long, usually rented line joining LANs in two separate places is a WAN link.',
     },
   },
@@ -344,19 +370,22 @@ export const b1l3: LessonSpec = {
 export const b1l4: LessonSpec = {
   why: {
     gu: 'દરેક વાતચીતમાં એક માગનાર હોય અને એક આપનાર. તમે browser ખોલો એ ક્ષણે તમે client બનો છો અને સામેનું મશીન server. આ એક જોડી સમજાઈ જાય પછી વેબ, email, DNS — બધું એક જ ઢાંચામાં બેસી જાય છે.',
+    hi: 'हर बातचीत में एक मांगने वाला होता है और एक देने वाला। आप browser खोलते ही client बन जाते हैं और सामने की मशीन server। यह एक जोड़ी समझ में आ जाए तो वेब, email, DNS — सब एक ही ढांचे में बैठ जाते हैं।',
     en: 'Every conversation has one side asking and one side answering. The moment you open a browser you are the client and the far machine is the server. Grasp that pairing and the web, email and DNS all fall into the same shape.',
   },
   steps: [
     {
       ms: 2400,
-      label: { gu: 'Client — માગનાર', en: 'The client — who asks' },
+      label: { gu: 'Client — માગનાર', hi: 'Client — मांगने वाला', en: 'The client — who asks' },
       text: {
         beginner: {
           gu: 'Client એ મશીન છે જે કશુંક માગે છે. તમારો લેપટોપ, તમારો ફોન, તમારું TV — બધાં clients છે. એમનું કામ છે: પૂછવું, અને જવાબની રાહ જોવી. એ આખો દિવસ ચાલુ રહેવા જરૂરી નથી.',
+          hi: 'Client वह मशीन है जो कुछ मांगती है। आपका laptop, आपका फोन, आपका TV — सब clients हैं। उनका काम है: पूछना, और जवाब की प्रतीक्षा करना। उन्हें पूरे दिन चालू रहने की जरूरत नहीं।',
           en: 'A client is the machine that asks for something. Your laptop, your phone, your TV — all clients. Their job is to ask and wait for an answer. They do not need to stay on all day.',
         },
         exam: {
           gu: 'Client TCP connection initiate કરે છે — એ ephemeral source port (49152–65535) વાપરે છે અને server ના well-known port તરફ જાય છે.',
+          hi: 'Client TCP connection initiate करता है — वह ephemeral source port (49152–65535) इस्तेमाल करता है और server के well-known port की तरफ जाता है।',
           en: 'The client initiates the TCP connection, using an ephemeral source port (49152–65535) toward the server’s well-known port.',
         },
       },
@@ -370,14 +399,16 @@ export const b1l4: LessonSpec = {
     },
     {
       ms: 2600,
-      label: { gu: 'Server — આપનાર', en: 'The server — who answers' },
+      label: { gu: 'Server — આપનાર', hi: 'Server — देने वाला', en: 'The server — who answers' },
       text: {
         beginner: {
           gu: 'Server એ મશીન છે જે જવાબ આપે છે. એ ક્યારેય બંધ થતું નથી — રાત-દિવસ ચાલુ રહે છે, કારણ કે ક્યારે કોણ પૂછશે એની ખબર નથી. એક server હજારો clients ને એકસાથે જવાબ આપી શકે છે.',
+          hi: 'Server वह मशीन है जो जवाब देती है। वह कभी बंद नहीं होती — रात-दिन चलती रहती है, क्योंकि कब कौन पूछेगा यह पता नहीं। एक server हजारों clients को एक साथ जवाब दे सकता है।',
           en: 'A server is the machine that answers. It never switches off — it runs day and night, because there is no telling when someone will ask. One server can answer thousands of clients at once.',
         },
         exam: {
           gu: 'Server એક known port પર listen કરે છે (HTTP 80, HTTPS 443) અને દરેક client ને અલગ socket આપે છે. એક જ port હજારો concurrent sessions સંભાળે છે.',
+          hi: 'Server एक known port पर listen करता है (HTTP 80, HTTPS 443) और हर client को अलग socket देता है। एक ही port हजारों concurrent sessions संभालता है।',
           en: 'The server listens on a known port (HTTP 80, HTTPS 443) and gives each client its own socket. A single port handles thousands of concurrent sessions.',
         },
       },
@@ -391,14 +422,16 @@ export const b1l4: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'Request જાય', en: 'The request goes out' },
+      label: { gu: 'Request જાય', hi: 'Request जाता है', en: 'The request goes out' },
       text: {
         beginner: {
           gu: 'તમે browser માં સરનામું લખીને Enter દબાવો — એ ક્ષણે client એક request મોકલે છે: "મને આ પાનું આપો". એ request server સુધી પહોંચે છે અને client રાહ જુએ છે.',
+          hi: 'आप browser में पता लिखकर Enter दबाते हैं — उस क्षण client एक request भेजता है: "मुझे यह page दो"। वह request server तक पहुंचती है और client प्रतीक्षा करता है।',
           en: 'You type an address and press Enter — at that moment the client sends a request: "give me this page". It reaches the server and the client waits.',
         },
         exam: {
           gu: 'HTTP GET request server ના port 443 પર મોકલાય છે. Client નો ephemeral port જવાબ ક્યાં પાછો આવવો જોઈએ એ નક્કી કરે છે.',
+          hi: 'HTTP GET request server के port 443 पर भेजा जाता है। Client का ephemeral port यह तय करता है कि जवाब कहां वापस आना चाहिए।',
           en: 'An HTTP GET is sent to the server’s port 443. The client’s ephemeral port decides where the answer must come back to.',
         },
       },
@@ -415,14 +448,16 @@ export const b1l4: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'Response પાછો આવે', en: 'The response comes back' },
+      label: { gu: 'Response પાછો આવે', hi: 'Response वापस आता है', en: 'The response comes back' },
       text: {
         beginner: {
           gu: 'Server પાનું શોધે છે અને પાછું મોકલે છે. તમારા screen પર website દેખાય એ આ જવાબ જ છે. પૂછવું અને જવાબ મળવો — આખો વેબ આના પર જ ચાલે છે, સેકન્ડમાં કરોડો વાર.',
+          hi: 'Server page ढूंढता है और वापस भेजता है। आपके screen पर website दिखना यही जवाब है। पूछना और जवाब मिलना — पूरा वेब इसी पर चलता है, एक सेकंड में करोड़ों बार।',
           en: 'The server finds the page and sends it back. The website appearing on your screen is that answer. Ask and answer — the entire web runs on this, millions of times a second.',
         },
         exam: {
           gu: 'Server HTTP 200 OK અને body મોકલે છે. Source/destination ports ઊલટાં થાય છે, એટલે client નું OS જાણે કે આ જવાબ કઈ application નો છે.',
+          hi: 'Server HTTP 200 OK और body भेजता है। Source/destination ports उलटे हो जाते हैं, इसलिए client का OS जानता है कि यह जवाब किस application का है।',
           en: 'The server replies HTTP 200 OK with a body. Source and destination ports are swapped so the client OS knows which application the answer belongs to.',
         },
       },
@@ -439,14 +474,16 @@ export const b1l4: LessonSpec = {
     },
     {
       ms: 2600,
-      label: { gu: 'એક server, ઘણા clients', en: 'One server, many clients' },
+      label: { gu: 'એક server, ઘણા clients', hi: 'एक server, कई clients', en: 'One server, many clients' },
       text: {
         beginner: {
           gu: 'એક જ server એકસાથે હજારો લોકોને જવાબ આપી શકે છે. એટલે જ Google નો એક server તમને, મને અને બીજા લાખો લોકોને એકસાથે સંભાળે છે — દરેકને પોતાનો અલગ જવાબ મળે છે.',
+          hi: 'एक ही server एक साथ हजारों लोगों को जवाब दे सकता है। इसीलिए Google का एक server आपको, मुझे और लाखों लोगों को एक साथ संभालता है — हर एक को अपना अलग जवाब मिलता है।',
           en: 'One server can answer thousands of people at once. That is how a Google server handles you, me and a million others simultaneously — each getting their own answer.',
         },
         exam: {
           gu: 'દરેક session ને unique 5-tuple ઓળખે છે: source IP, source port, destination IP, destination port, protocol. એ જ કારણે એક listening port પર હજારો sessions ગૂંચવાતી નથી.',
+          hi: 'हर session को unique 5-tuple पहचानता है: source IP, source port, destination IP, destination port, protocol। इसी कारण एक listening port पर हजारों sessions उलझती नहीं।',
           en: 'Each session is identified by a unique 5-tuple: source IP, source port, destination IP, destination port, protocol. That is why thousands of sessions on one listening port never get confused.',
         },
       },
@@ -472,21 +509,24 @@ export const b1l4: LessonSpec = {
   ],
   takeaway: {
     gu: 'Client પૂછે, server જવાબ આપે. Client ગમે ત્યારે બંધ થઈ શકે; server હંમેશા ચાલુ રહે. વેબ, email, DNS, file sharing — બધી સેવાઓ આ એક જ જોડીની ઉપર બનેલી છે.',
+    hi: 'Client पूछता है, server जवाब देता है। Client कभी भी बंद हो सकता है; server हमेशा चालू रहता है। वेब, email, DNS, file sharing — सभी सेवाएं इसी एक जोड़ी पर बनी हैं।',
     en: 'The client asks, the server answers. A client may switch off any time; a server stays up. The web, email, DNS, file sharing — every service is built on that one pairing.',
   },
   check: {
     q: {
       gu: 'Server ની સૌથી અગત્યની ખાસિયત કઈ છે?',
+      hi: 'Server की सबसे महत्वपूर्ण खासियत क्या है?',
       en: 'What is the defining trait of a server?',
     },
     options: [
-      { gu: 'એ હંમેશા ચાલુ રહીને request ની રાહ જુએ છે', en: 'It stays on, waiting for requests' },
-      { gu: 'એ ક્યારેય internet સાથે જોડાતું નથી', en: 'It never connects to the internet' },
-      { gu: 'એની પાસે screen મોટું હોય છે', en: 'It has a bigger screen' },
+      { gu: 'એ હંમેશા ચાલુ રહીને request ની રાહ જુએ છે', hi: 'वह हमेशा चालू रहकर request की प्रतीक्षा करता है', en: 'It stays on, waiting for requests' },
+      { gu: 'એ ક્યારેય internet સાથે જોડાતું નથી', hi: 'वह कभी Internet से नहीं जुड़ता', en: 'It never connects to the internet' },
+      { gu: 'એની પાસે screen મોટું હોય છે', hi: 'उसके पास बड़ा screen होता है', en: 'It has a bigger screen' },
     ],
     answer: 0,
     explain: {
       gu: 'Server નું કામ જ જવાબ આપવાનું છે, એટલે એ હંમેશા ચાલુ રહીને listen કરતું હોવું જોઈએ — ક્યારે request આવશે એની ખબર નથી.',
+      hi: 'Server का काम ही जवाब देना है, इसलिए उसे हमेशा चालू रहकर listen करना चाहिए — कब request आएगी यह पता नहीं।',
       en: 'A server exists to answer, so it must stay up and listening — there is no telling when a request will arrive.',
     },
   },
@@ -497,19 +537,22 @@ export const b1l4: LessonSpec = {
 export const b1l5: LessonSpec = {
   why: {
     gu: 'દરેક નેટવર્કમાં એક જ પાંચ-છ પ્રકારનાં ઉપકરણ ફરી ફરી દેખાય છે. દરેકનું કામ એક વાક્યમાં ખબર હોય તો કોઈ પણ network diagram જોઈને તરત સમજાઈ જાય કે ક્યાં શું થઈ રહ્યું છે.',
+    hi: 'हर network में वही पांच-छह तरह के उपकरण बार-बार दिखते हैं। हर एक का काम एक वाक्य में पता हो तो कोई भी network diagram देखते ही समझ आ जाता है कि कहां क्या हो रहा है।',
     en: 'Every network is built from the same five or six kinds of device. Know each one’s job in a sentence and you can read any network diagram at a glance.',
   },
   steps: [
     {
       ms: 2400,
-      label: { gu: 'PC — વાત કરનાર', en: 'The PC — who talks' },
+      label: { gu: 'PC — વાત કરનાર', hi: 'PC — बात करने वाला', en: 'The PC — who talks' },
       text: {
         beginner: {
           gu: 'શરૂઆત end device થી: PC, લેપટોપ, ફોન, પ્રિન્ટર. આ એ મશીનો છે જે ખરેખર વાત કરે છે — બાકીનાં બધાં ઉપકરણો તો ફક્ત એમની વાત પહોંચાડવા માટે જ છે.',
+          hi: 'शुरुआत end device से: PC, laptop, फोन, printer। ये वे मशीनें हैं जो असल में बात करती हैं — बाकी सभी उपकरण तो केवल उनकी बात पहुंचाने के लिए ही हैं।',
           en: 'Start with the end devices: PCs, laptops, phones, printers. These are the machines that actually talk — every other device exists only to carry their conversation.',
         },
         exam: {
           gu: 'End devices (hosts) traffic ના source અને destination હોય છે. દરેક પાસે NIC, એક IP address અને એક default gateway હોય છે.',
+          hi: 'End devices (hosts) traffic के source और destination होते हैं। हर एक के पास NIC, एक IP address और एक default gateway होता है।',
           en: 'End devices (hosts) are the source and destination of traffic. Each has a NIC, an IP address and a default gateway.',
         },
       },
@@ -523,14 +566,16 @@ export const b1l5: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'Switch — ઓફિસની અંદરનો ટપાલી', en: 'The switch — the local postman' },
+      label: { gu: 'Switch — ઓફિસની અંદરનો ટપાલી', hi: 'Switch — ऑफिस के अंदर का डाकिया', en: 'The switch — the local postman' },
       text: {
         beginner: {
           gu: 'Switch એક જ ઓફિસનાં બધાં મશીનોને જોડે છે. એનું કામ એક જ છે: જે frame આવે એને સાચા port પર મોકલવો — બધા પર નહીં, ફક્ત જેના માટે છે એના પર. એ ઓફિસની અંદરનો ટપાલી છે.',
+          hi: 'Switch एक ही ऑफिस की सभी मशीनों को जोड़ता है। उसका काम एक ही है: जो frame आए उसे सही port पर भेजना — सभी पर नहीं, केवल जिसके लिए है उस पर। वह ऑफिस के अंदर का डाकिया है।',
           en: 'A switch joins all the machines in one office. Its one job: send each frame out of the right port — not every port, only the one it belongs to. It is the postman inside the building.',
         },
         exam: {
           gu: 'Switch Layer 2 પર કામ કરે છે, MAC address table શીખે છે અને frames ને destination MAC પ્રમાણે forward કરે છે. દરેક port એક separate collision domain છે.',
+          hi: 'Switch Layer 2 पर काम करता है, MAC address table सीखता है और frames को destination MAC के अनुसार forward करता है। हर port एक separate collision domain है।',
           en: 'A switch works at Layer 2, learns a MAC address table and forwards frames by destination MAC. Every port is its own collision domain.',
         },
       },
@@ -558,14 +603,16 @@ export const b1l5: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'Router — બહાર જવાનો દરવાજો', en: 'The router — the way out' },
+      label: { gu: 'Router — બહાર જવાનો દરવાજો', hi: 'Router — बाहर जाने का दरवाजा', en: 'The router — the way out' },
       text: {
         beginner: {
           gu: 'Switch ઓફિસની અંદર કામ કરે છે. પણ બીજા નેટવર્કમાં જવું હોય તો? ત્યાં router આવે છે. એ બે અલગ નેટવર્ક વચ્ચે ઊભો રહે છે અને નક્કી કરે છે કે packet કયા રસ્તે આગળ જાય. એ તમારું બહાર જવાનું બારણું છે.',
+          hi: 'Switch ऑफिस के अंदर काम करता है। पर दूसरे network में जाना हो तो? वहां router आता है। वह दो अलग networks के बीच खड़ा होता है और तय करता है कि packet किस रास्ते आगे जाए। वह आपका बाहर जाने का दरवाजा है।',
           en: 'A switch works inside the office. But to reach another network? That is the router. It stands between two different networks and decides which way a packet goes next. It is your door to the outside.',
         },
         exam: {
           gu: 'Router Layer 3 પર કામ કરે છે, routing table માં longest-prefix match કરીને next hop નક્કી કરે છે, અને દરેક interface એક separate broadcast domain હોય છે.',
+          hi: 'Router Layer 3 पर काम करता है, routing table में longest-prefix match करके next hop तय करता है, और हर interface एक separate broadcast domain होता है।',
           en: 'A router works at Layer 3, picks the next hop by longest-prefix match in the routing table, and each interface is its own broadcast domain.',
         },
       },
@@ -593,14 +640,16 @@ export const b1l5: LessonSpec = {
     },
     {
       ms: 2600,
-      label: { gu: 'Firewall — દરવાજા પરનો ચોકીદાર', en: 'The firewall — the guard' },
+      label: { gu: 'Firewall — દરવાજા પરનો ચોકીદાર', hi: 'Firewall — दरवाजे पर खड़ा पहरेदार', en: 'The firewall — the guard' },
       text: {
         beginner: {
           gu: 'Router બધું બહાર-અંદર જવા દે છે. Firewall એની બાજુમાં ઊભો રહીને જુએ છે કે કોને અંદર આવવા દેવું અને કોને નહીં. અંદરથી બહાર જવું સામાન્ય રીતે છૂટ; બહારથી અંદર આવવું ફક્ત પરવાનગી સાથે.',
+          hi: 'Router सब कुछ बाहर-अंदर जाने देता है। Firewall उसके बगल में खड़ा होकर देखता है कि किसे अंदर आने देना है और किसे नहीं। अंदर से बाहर जाना आमतौर पर छूट; बाहर से अंदर आना केवल अनुमति के साथ।',
           en: 'A router lets everything in and out. A firewall stands beside it deciding who may come in and who may not. Outbound is usually allowed; inbound only with permission.',
         },
         exam: {
           gu: 'Firewall stateful inspection કરે છે: outbound session ની entry યાદ રાખે અને એના જ return traffic ને પાછું આવવા દે. Unsolicited inbound traffic default માં deny થાય.',
+          hi: 'Firewall stateful inspection करता है: outbound session की entry याद रखता है और उसी के return traffic को वापस आने देता है। Unsolicited inbound traffic default में deny होता है।',
           en: 'A firewall does stateful inspection: it remembers the outbound session and permits only its return traffic. Unsolicited inbound traffic is denied by default.',
         },
       },
@@ -622,14 +671,16 @@ export const b1l5: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'બધાં સાથે — એક સાચું નેટવર્ક', en: 'All together — a real network' },
+      label: { gu: 'બધાં સાથે — એક સાચું નેટવર્ક', hi: 'सब साथ — एक असली network', en: 'All together — a real network' },
       text: {
         beginner: {
           gu: 'હવે બધાં સાથે ગોઠવો: PC → Switch → Router → Firewall → Internet, અને ક્યાંક એક Server. દુનિયાનું લગભગ દરેક ઓફિસ નેટવર્ક આ જ આકારનું હોય છે. CCNA ની આખી પરીક્ષા આ ચિત્રને સમજવા અને ગોઠવવા વિશે જ છે.',
+          hi: 'अब सबको साथ में रखें: PC → Switch → Router → Firewall → Internet, और कहीं एक Server। दुनिया का लगभग हर ऑफिस network इसी आकार का होता है। CCNA की पूरी परीक्षा इसी चित्र को समझने और सेट करने के बारे में है।',
           en: 'Now put them together: PC → Switch → Router → Firewall → Internet, with a server somewhere. Nearly every office network in the world has this shape. The whole CCNA exam is about understanding and configuring this picture.',
         },
         exam: {
           gu: 'આ standard enterprise edge design છે: access switch, distribution/core, edge router, firewall, અને DMZ માં servers. આગળના દરેક પાઠ આ ઢાંચાના એક ટુકડા પર ઊંડે જશે.',
+          hi: 'यह standard enterprise edge design है: access switch, distribution/core, edge router, firewall, और DMZ में servers। आगे का हर पाठ इसी ढांचे के एक टुकड़े पर गहराई में जाएगा।',
           en: 'This is the standard enterprise edge design: access switch, distribution/core, edge router, firewall, and servers in a DMZ. Every later lesson goes deeper into one piece of this frame.',
         },
       },
@@ -666,21 +717,24 @@ export const b1l5: LessonSpec = {
   ],
   takeaway: {
     gu: 'PC વાત કરે. Switch એક જ નેટવર્કની અંદર પહોંચાડે. Router બે નેટવર્ક વચ્ચે રસ્તો કાઢે. Firewall કોને આવવા દેવું એ નક્કી કરે. Server જવાબ આપે. બસ, આખા નેટવર્કમાં આ પાંચ જ પાત્રો છે.',
+    hi: 'PC बात करता है। Switch एक ही network के अंदर पहुंचाता है। Router दो networks के बीच रास्ता निकालता है। Firewall तय करता है कि किसे आने देना है। Server जवाब देता है। बस, पूरे network में यही पांच पात्र हैं।',
     en: 'A PC talks. A switch delivers inside one network. A router finds a path between networks. A firewall decides who may enter. A server answers. Those five are the entire cast.',
   },
   check: {
     q: {
       gu: 'તમારે બે અલગ નેટવર્ક જોડવાં છે. કયું ઉપકરણ જોઈએ?',
+      hi: 'आपको दो अलग networks जोड़ने हैं। कौन सा उपकरण चाहिए?',
       en: 'You need to join two different networks. Which device do you need?',
     },
     options: [
-      { gu: 'Router', en: 'A router' },
-      { gu: 'Switch', en: 'A switch' },
-      { gu: 'બીજો એક PC', en: 'Another PC' },
+      { gu: 'Router', hi: 'Router', en: 'A router' },
+      { gu: 'Switch', hi: 'Switch', en: 'A switch' },
+      { gu: 'બીજો એક PC', hi: 'एक और PC', en: 'Another PC' },
     ],
     answer: 0,
     explain: {
       gu: 'Switch એક જ નેટવર્કની અંદર કામ કરે છે. બે અલગ નેટવર્ક વચ્ચે રસ્તો કાઢવાનું કામ router નું છે.',
+      hi: 'Switch एक ही network के अंदर काम करता है। दो अलग networks के बीच रास्ता निकालने का काम router का है।',
       en: 'A switch works inside one network. Finding a path between two different networks is the router’s job.',
     },
   },
