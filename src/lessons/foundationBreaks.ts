@@ -1,7 +1,7 @@
 import type { BreakSpec } from '../components/BreakStage'
 import { Network } from '../engine/network'
 
-const H = (gu: string, en: string) => ({ gu, en })
+const H = (gu: string, hi: string, en: string) => ({ gu, hi, en })
 
 function addr(n: Network, id: string, ifn: string, ip: string, mask: string) {
   const i = n.get(id)!.iface(ifn)!
@@ -43,19 +43,22 @@ export const b2l3Break: BreakSpec = {
   ],
   intro: H(
     'ત્રણ મશીન એક જ switch પર છે અને એકબીજાને ઓળખે છે. હવે એમની યાદશક્તિ અને વાયર સાથે રમો — અને જુઓ કે IP હોવા છતાં MAC વગર કશું પહોંચતું નથી.',
+    'तीन मशीनें एक ही switch पर हैं और एक-दूसरे को पहचानती हैं। अब उनकी याददाश्त और तारों के साथ खेलें — और देखें कि IP होने पर भी MAC के बिना कुछ नहीं पहुंचता।',
     'Three machines on one switch, all of which know each other. Now play with their memory and their cables — and watch how an IP alone gets you nowhere without a MAC.',
   ),
   actions: [
     {
       id: 'forget',
       silent: true,
-      label: H('બધાંની યાદશક્તિ ભૂંસો', 'Wipe what everyone has learnt'),
+      label: H('બધાંની યાદશક્તિ ભૂંસો', 'सबकी याददाश्त मिटाओ', 'Wipe what everyone has learnt'),
       explain: H(
         'દરેક મશીને યાદ રાખેલું છે કે કયા IP નું કયું MAC. એ નોંધ ભૂંસી નાખો.',
+        'हर मशीन ने याद रखा है कि कौन से IP का कौन सा MAC है। उस नोट को मिटा दें।',
         'Each machine remembers which MAC goes with which IP. Erase those notes.',
       ),
       expect: H(
         'Ping તોય ચાલશે — કારણ કે મશીન ફરી પૂછી લેશે. ભૂલી જવું એ ભાંગવું નથી, ફક્ત ધીમું પડવું છે.',
+        'Ping फिर भी चलेगा — क्योंकि मशीन फिर से पूछ लेगी। भूलना टूटना नहीं, केवल थोड़ी देर है।',
         'The ping still works, because the machine simply asks again. Forgetting is not breaking — only a small delay.',
       ),
       apply: (n) => {
@@ -65,13 +68,15 @@ export const b2l3Break: BreakSpec = {
     },
     {
       id: 'unplug2',
-      label: H('PC2 નો વાયર કાઢો', 'Unplug PC2'),
+      label: H('PC2 નો વાયર કાઢો', 'PC2 का तार निकालो', 'Unplug PC2'),
       explain: H(
         'PC2 નું સરનામું તો એ જ રહેશે — પણ એ હવે બૂમનો જવાબ આપી શકશે નહીં.',
+        'PC2 का पता तो वही रहेगा — पर वह अब आवाज का जवाब नहीं दे सकता।',
         'PC2 keeps its address, but it can no longer answer when someone calls.',
       ),
       expect: H(
         'PC1 થી PC2 ને ping નિષ્ફળ — અને કારણ "સરનામું ખોટું" નહીં, "કોઈએ જવાબ આપ્યો નહીં" હશે.',
+        'PC1 से PC2 को ping असफल — और कारण "पता गलत" नहीं, "किसी ने जवाब नहीं दिया" होगा।',
         'PC1 to PC2 fails — and the reason is not a wrong address but that nobody answered.',
       ),
       apply: (n) => {
@@ -85,13 +90,15 @@ export const b2l3Break: BreakSpec = {
     },
     {
       id: 'wrongip',
-      label: H('PC3 ને બીજી શેરીમાં ખસેડો', 'Move PC3 to another street'),
+      label: H('PC3 ને બીજી શેરીમાં ખસેડો', 'PC3 को दूसरी गली में ले जाओ', 'Move PC3 to another street'),
       explain: H(
         'PC3 નું સરનામું 10.0.0.13 કરી દો — વાયર એ જ, switch એ જ, ફક્ત સરનામું બીજા નેટવર્કનું.',
+        'PC3 का पता 10.0.0.13 कर दो — तार वही, switch वही, केवल पता दूसरे network का।',
         'Give PC3 the address 10.0.0.13 — same cable, same switch, just an address from another network.',
       ),
       expect: H(
         'PC1 હવે PC3 ને શોધવાની કોશિશ પણ નહીં કરે — એ માનશે કે એ બીજી શેરીમાં છે અને gateway ને આપશે.',
+        'PC1 अब PC3 को ढूंढने की कोशिश भी नहीं करेगा — वह मानेगा कि वह दूसरी गली में है और gateway को दे देगा।',
         'PC1 will not even look for PC3 any more — it decides PC3 is on another street and hands the packet to the gateway.',
       ),
       apply: (n) => {
@@ -105,8 +112,8 @@ export const b2l3Break: BreakSpec = {
     },
   ],
   probes: [
-    { id: 'p12', from: 'pc1', to: 'pc2', destIp: '192.168.1.12', label: H('PC1 → PC2', 'PC1 → PC2') },
-    { id: 'p13', from: 'pc1', to: 'pc3', destIp: '192.168.1.13', label: H('PC1 → PC3', 'PC1 → PC3') },
+    { id: 'p12', from: 'pc1', to: 'pc2', destIp: '192.168.1.12', label: H('PC1 → PC2', 'PC1 → PC2', 'PC1 → PC2') },
+    { id: 'p13', from: 'pc1', to: 'pc3', destIp: '192.168.1.13', label: H('PC1 → PC3', 'PC1 → PC3', 'PC1 → PC3') },
   ],
 }
 
@@ -143,18 +150,21 @@ export const b4l3Break: BreakSpec = {
   ],
   intro: H(
     'PC1 ને DHCP થી સરનામું મળી ગયું છે અને બધું ચાલે છે. હવે એ સરનામું છીનવી લો, કે gateway બગાડો — અને જુઓ કે દરેક ખામી અલગ રીતે દેખાય છે.',
+    'PC1 को DHCP से पता मिल गया है और सब चल रहा है। अब वह पता छीन लो, या gateway बिगाड़ो — और देखो कि हर खराबी अलग तरीके से दिखती है।',
     'PC1 has its address from DHCP and everything works. Now take that address away, or spoil the gateway — and notice that each fault looks different.',
   ),
   actions: [
     {
       id: 'noaddr',
-      label: H('PC1 નું સરનામું છીનવી લો', 'Take PC1’s address away'),
+      label: H('PC1 નું સરનામું છીનવી લો', 'PC1 का पता छीन लो', 'Take PC1’s address away'),
       explain: H(
         'જાણે DHCP server જવાબ જ ન આપ્યો હોય. PC1 પાસે કોઈ સરનામું નથી.',
+        'जैसे DHCP server ने जवाब ही न दिया हो। PC1 के पास कोई पता नहीं।',
         'As though no DHCP server ever answered. PC1 has no address at all.',
       ),
       expect: H(
         'કશે પણ ping નહીં જાય. સરનામા વગર જવાબ પાછો ક્યાં આવે?',
+        'कहीं भी ping नहीं जाएगा। पते के बिना जवाब वापस कहां आए?',
         'Nothing reaches anywhere. Without an address, where would a reply even come back to?',
       ),
       apply: (n) => {
@@ -170,13 +180,15 @@ export const b4l3Break: BreakSpec = {
     },
     {
       id: 'badgw',
-      label: H('ખોટું gateway આપો', 'Hand out the wrong gateway'),
+      label: H('ખોટું gateway આપો', 'गलत gateway दो', 'Hand out the wrong gateway'),
       explain: H(
         'DHCP એ gateway 192.168.10.99 કહ્યું — પણ ત્યાં કોઈ છે જ નહીં.',
+        'DHCP ने gateway 192.168.10.99 कहा — पर वहां कोई है ही नहीं।',
         'DHCP said the gateway is 192.168.10.99 — but nothing lives at that address.',
       ),
       expect: H(
         'એક જ શેરીમાં ping ચાલશે, પણ બહાર કશે નહીં. ખોટું gateway એટલે આ જ દેખાય.',
+        'एक ही गली में ping चलेगा, पर बाहर कहीं नहीं। गलत gateway मतलब यही दिखता है।',
         'Pings inside the street still work, but nothing leaves it. A wrong gateway looks exactly like this.',
       ),
       apply: (n) => {
@@ -190,13 +202,15 @@ export const b4l3Break: BreakSpec = {
     },
     {
       id: 'dup',
-      label: H('બે મશીનને એક જ સરનામું', 'Give two machines one address'),
+      label: H('બે મશીનને એક જ સરનામું', 'दो मशीनों को एक ही पता', 'Give two machines one address'),
       explain: H(
         'Server ને પણ 192.168.10.10 આપી દો — બરાબર એ જ જે PC1 પાસે છે.',
+        'Server को भी 192.168.10.10 दे दो — बिल्कुल वही जो PC1 के पास है।',
         'Give the server 192.168.10.10 as well — exactly what PC1 already has.',
       ),
       expect: H(
         'આ જ કારણે DHCP ની જરૂર પડી. હાથે સરનામાં આપો ત્યારે આવું થાય, અને શોધવું અઘરું પડે.',
+        'इसी कारण DHCP की जरूरत पड़ी। हाथ से पते देने पर ऐसा होता है, और ढूंढना मुश्किल होता है।',
         'This is the very reason DHCP exists. Hand addresses out by hand and this happens, and it is painful to track down.',
       ),
       apply: (n) => {
@@ -210,7 +224,7 @@ export const b4l3Break: BreakSpec = {
     },
   ],
   probes: [
-    { id: 'psrv', from: 'pc1', to: 'srv', destIp: '192.168.10.50', label: H('PC1 → Server', 'PC1 → Server') },
-    { id: 'pweb', from: 'pc1', to: 'web', destIp: '203.0.113.9', label: H('PC1 → બહાર', 'PC1 → outside') },
+    { id: 'psrv', from: 'pc1', to: 'srv', destIp: '192.168.10.50', label: H('PC1 → Server', 'PC1 → Server', 'PC1 → Server') },
+    { id: 'pweb', from: 'pc1', to: 'web', destIp: '203.0.113.9', label: H('PC1 → બહાર', 'PC1 → बाहर', 'PC1 → outside') },
   ],
 }

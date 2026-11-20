@@ -11,7 +11,7 @@ import { Network } from '../engine/network'
  * shapes, and the probe tells you which one you are looking at.
  */
 
-const H = (gu: string, en: string) => ({ gu, en })
+const H = (gu: string, hi: string, en: string) => ({ gu, hi, en })
 
 function addr(n: Network, id: string, ifn: string, ip: string, mask: string) {
   const i = n.get(id)!.iface(ifn)!
@@ -55,18 +55,21 @@ export const b1l1Break: BreakSpec = {
   ],
   intro: H(
     'બે કમ્પ્યુટર, એક switch, અને વાત ચાલે છે. હવે એને **ત્રણ જુદી રીતે** તોડો — અને જુઓ કે દરેક વખતે નિષ્ફળતાનું કારણ **જુદું** હોય છે. "ચાલતું નથી" એક જવાબ નથી.',
+    'दो कंप्यूटर, एक switch, और बातचीत चल रही है। अब इसे **तीन अलग तरीकों से** तोड़ें — और देखें कि हर बार असफलता का कारण **अलग** होता है। "नहीं चल रहा" एक जवाब नहीं है।',
     'Two computers, one switch, and a working conversation. Now break it **three different ways** — and notice the reason is **different each time**. "It does not work" is not one answer.',
   ),
   actions: [
     {
       id: 'cut',
-      label: H('PC2 નો વાયર કાઢો', 'Pull out PC2’s cable'),
+      label: H('PC2 નો વાયર કાઢો', 'PC2 का तार निकालो', 'Pull out PC2’s cable'),
       explain: H(
         'PC2 ચાલુ છે, એનું સરનામું પણ એ જ છે — ફક્ત વાયર નીકળી ગયો.',
+        'PC2 चालू है, उसका पता भी वही है — केवल तार निकल गया।',
         'PC2 is still on and still has its address — the cable is simply out.',
       ),
       expect: H(
         'PC1 બૂમ પાડશે "192.168.1.12 કોણ છે?" — અને **કોઈ જવાબ નહીં આપે**. કારણ "સરનામું ખોટું" નહીં, "કોઈ ત્યાં નથી" હશે.',
+        'PC1 आवाज लगाएगा "192.168.1.12 कौन है?" — और **कोई जवाब नहीं देगा**। कारण "पता गलत" नहीं, "कोई वहां नहीं है" होगा।',
         'PC1 will call out "who is 192.168.1.12?" and **nobody answers**. The reason is not a wrong address, it is that nobody is there.',
       ),
       apply: (n) => down(n, 'pc2', 'e0', true),
@@ -74,13 +77,15 @@ export const b1l1Break: BreakSpec = {
     },
     {
       id: 'noip',
-      label: H('PC1 નું સરનામું ભૂંસો', 'Erase PC1’s address'),
+      label: H('PC1 નું સરનામું ભૂંસો', 'PC1 का पता मिटाओ', 'Erase PC1’s address'),
       explain: H(
         'PC1 નું IP કાઢી નાખો. વાયર જોડાયેલો છે, switch ચાલુ છે, બસ સરનામું નથી.',
+        'PC1 का IP हटा दें। तार जुड़ा है, switch चालू है, बस पता नहीं है।',
         'Take PC1’s IP away. The cable is in and the switch is on — there is just no address.',
       ),
       expect: H(
         'હવે નિષ્ફળતા **બીજા છેડે** નહીં, **અહીં** જ છે: પરબીડિયા પર "કોના તરફથી" લખવા માટે કશું જ નથી, એટલે એ નીકળતું જ નથી.',
+        'अब असफलता **दूसरे छोर पर** नहीं, **यहीं** है: लिफाफे पर "किसकी तरफ से" लिखने के लिए कुछ ही नहीं, इसलिए वह निकलता ही नहीं।',
         'Now the failure is not at the far end but **right here**: there is nothing to write in the "from" box, so it never leaves at all.',
       ),
       apply: (n) => {
@@ -94,13 +99,15 @@ export const b1l1Break: BreakSpec = {
     },
     {
       id: 'street',
-      label: H('PC2 ને બીજી શેરીમાં ખસેડો', 'Move PC2 to another street'),
+      label: H('PC2 ને બીજી શેરીમાં ખસેડો', 'PC2 को दूसरी गली में ले जाओ', 'Move PC2 to another street'),
       explain: H(
         'PC2 નું સરનામું `10.0.0.12` કરો. વાયર એ જ, switch એ જ — ફક્ત સરનામું બીજા નેટવર્કનું.',
+        'PC2 का पता `10.0.0.12` करें। तार वही, switch वही — केवल पता दूसरे network का।',
         'Give PC2 the address `10.0.0.12`. Same cable, same switch — the address just belongs to a different network.',
       ),
       expect: H(
         'સૌથી કપટી ભૂલ: બંને **ચાલુ** છે અને **જોડાયેલા** છે, તોય વાત થતી નથી. PC1 માને છે કે PC2 બીજા નેટવર્કમાં છે અને એને gateway પાસે મોકલે — પણ અહીં gateway છે જ નહીં.',
+        'सबसे चालाक गलती: दोनों **चालू** हैं और **जुड़े** हैं, फिर भी बात नहीं होती। PC1 मानता है कि PC2 दूसरे network में है और उसे gateway के पास भेजता है — पर यहां gateway है ही नहीं।',
         'The sneakiest one: both are **on** and **plugged in**, and still nothing passes. PC1 decides PC2 lives on another network and hands the packet to the gateway — and there is no gateway here.',
       ),
       apply: (n) => {
@@ -112,8 +119,8 @@ export const b1l1Break: BreakSpec = {
     },
   ],
   probes: [
-    { id: 'a', from: 'pc1', to: 'pc2', destIp: '192.168.1.12', label: H('PC1 → PC2', 'PC1 → PC2') },
-    { id: 'b', from: 'pc2', to: 'pc1', destIp: '192.168.1.11', label: H('PC2 → PC1', 'PC2 → PC1') },
+    { id: 'a', from: 'pc1', to: 'pc2', destIp: '192.168.1.12', label: H('PC1 → PC2', 'PC1 → PC2', 'PC1 → PC2') },
+    { id: 'b', from: 'pc2', to: 'pc1', destIp: '192.168.1.11', label: H('PC2 → PC1', 'PC2 → PC1', 'PC2 → PC1') },
   ],
 }
 
@@ -150,18 +157,21 @@ export const b1l2Break: BreakSpec = {
   ],
   intro: H(
     'ત્રણ જુદાં માધ્યમ એક જ નેટવર્કમાં: ટેબલ સુધી **તાંબુ**, ઇમારતો વચ્ચે **કાચ**, અને લેપટોપ માટે **હવા**. એક એક તોડો અને જુઓ કે **કોને વાગે છે** — બધાને નહીં, દર વખતે જુદાને.',
+    'तीन अलग माध्यम एक ही network में: टेबल तक **तांबा**, इमारतों के बीच **कांच**, और laptop के लिए **हवा**। एक-एक तोड़ें और देखें **किसे लगता है** — सबको नहीं, हर बार अलग को।',
     'Three different media on one network: **copper** to the desk, **glass** between the buildings, **air** for the laptop. Break them one at a time and watch **who it hits** — not everyone, and somebody different each time.',
   ),
   actions: [
     {
       id: 'fibre',
-      label: H('ઇમારતો વચ્ચેનું fibre કાપો', 'Cut the fibre between the buildings'),
+      label: H('ઇમારતો વચ્ચેનું fibre કાપો', 'इमारतों के बीच का fibre काटो', 'Cut the fibre between the buildings'),
       explain: H(
         'SW1 અને SW2 ને જોડતી કાચની લિંક — 400 મીટર લાંબી, એટલે જ ત્યાં તાંબુ ન ચાલે.',
+        'SW1 और SW2 को जोड़ने वाली कांच की link — 400 मीटर लंबी, इसीलिए वहां तांबा नहीं चलता।',
         'The glass link joining SW1 and SW2 — 400 metres, which is exactly why copper could not be used there.',
       ),
       expect: H(
         'Server બીજી ઇમારતમાં છે, એટલે **બંને** client એને ગુમાવે. પણ PC1 અને લેપટોપ **એકબીજાને** હજી પહોંચે છે — એ બંને આ બાજુ છે.',
+        'Server दूसरी इमारत में है, इसलिए **दोनों** client उसे खो देते हैं। पर PC1 और laptop **एक-दूसरे तक** अभी भी पहुंचते हैं — वे दोनों इस तरफ हैं।',
         'The server is in the other building, so **both** clients lose it. But PC1 and the laptop can still reach **each other** — they are both on this side.',
       ),
       apply: (n) => down(n, 'sw1', 'Gi0/1', true),
@@ -169,13 +179,15 @@ export const b1l2Break: BreakSpec = {
     },
     {
       id: 'copper',
-      label: H('PC1 નું તાંબાનું વાયર કાઢો', 'Unplug PC1’s copper cable'),
+      label: H('PC1 નું તાંબાનું વાયર કાઢો', 'PC1 का तांबे का तार निकालो', 'Unplug PC1’s copper cable'),
       explain: H(
         'ટેબલ સુધીનો સામાન્ય Ethernet વાયર — 30 મીટર, સસ્તો, અને સૌથી સહેલાઈથી નીકળી જતો.',
+        'टेबल तक का आम Ethernet तार — 30 मीटर, सस्ता, और सबसे आसानी से निकलने वाला।',
         'The ordinary Ethernet cable to the desk — 30 metres, cheap, and the easiest thing in the room to knock out.',
       ),
       expect: H(
         'ફક્ત **PC1** નેટવર્કની બહાર. લેપટોપ અને server ને કશો ફરક નથી — એક વાયર એક જ મશીનનો હોય છે.',
+        'केवल **PC1** network के बाहर। Laptop और server को कोई फर्क नहीं — एक तार एक ही मशीन का होता है।',
         'Only **PC1** drops off. The laptop and the server do not notice at all — one cable belongs to one machine.',
       ),
       apply: (n) => down(n, 'pc1', 'e0', true),
@@ -183,13 +195,15 @@ export const b1l2Break: BreakSpec = {
     },
     {
       id: 'ap',
-      label: H('AP નું વાયર કાઢો', 'Unplug the AP'),
+      label: H('AP નું વાયર કાઢો', 'AP का तार निकालो', 'Unplug the AP'),
       explain: H(
         'AP નો radio ચાલુ જ રહેશે — ફક્ત એને નેટવર્ક સાથે જોડતો **તાંબાનો** વાયર કાઢો.',
+        'AP का radio चालू ही रहेगा — केवल उसे network से जोड़ने वाला **तांबे का** तार निकालें।',
         'The AP’s radio keeps running — only the **copper** cable that joins it to the network comes out.',
       ),
       expect: H(
         'લેપટોપ ને Wi-Fi તો દેખાશે, પણ ક્યાંય પહોંચાશે નહીં. એ જ "Wi-Fi જોડાયેલું છે પણ ઇન્ટરનેટ નથી" — AP એ **તારનો પુલ** છે, મંઝિલ નહીં.',
+        'Laptop को Wi-Fi तो दिखेगा, पर कहीं पहुंचा नहीं जा सकेगा। यही "Wi-Fi जुड़ा है पर internet नहीं" — AP **तार का पुल** है, मंजिल नहीं।',
         'The laptop still sees Wi-Fi but reaches nothing. This is exactly "connected, no internet" — the AP is a **bridge to the wire**, not a destination.',
       ),
       apply: (n) => down(n, 'ap', 'e0', true),
@@ -197,9 +211,9 @@ export const b1l2Break: BreakSpec = {
     },
   ],
   probes: [
-    { id: 'a', from: 'pc1', to: 'srv', destIp: '192.168.5.50', label: H('PC1 → Server', 'PC1 → Server') },
-    { id: 'b', from: 'lap', to: 'srv', destIp: '192.168.5.50', label: H('લેપટોપ → Server', 'Laptop → Server') },
-    { id: 'c', from: 'pc1', to: 'lap', destIp: '192.168.5.12', label: H('PC1 → લેપટોપ', 'PC1 → Laptop') },
+    { id: 'a', from: 'pc1', to: 'srv', destIp: '192.168.5.50', label: H('PC1 → Server', 'PC1 → Server', 'PC1 → Server') },
+    { id: 'b', from: 'lap', to: 'srv', destIp: '192.168.5.50', label: H('લેપટોપ → Server', 'Laptop → Server', 'Laptop → Server') },
+    { id: 'c', from: 'pc1', to: 'lap', destIp: '192.168.5.12', label: H('PC1 → લેપટોપ', 'PC1 → Laptop', 'PC1 → Laptop') },
   ],
 }
 
@@ -233,18 +247,21 @@ export const b1l3Break: BreakSpec = {
   ],
   intro: H(
     'ડાબી બાજુ તમારું **LAN** — એક જગ્યા, તમારા વાયર. જમણી બાજુ **WAN** — બહારની દુનિયા. હવે તોડો અને જુઓ કે **બેમાંથી એક તૂટે ત્યારે બીજું ચાલતું રહે છે**. એ જ તો એને બે જુદી વસ્તુ બનાવે છે.',
+    'बाईं तरफ आपका **LAN** — एक जगह, आपके तार। दाईं तरफ **WAN** — बाहर की दुनिया। अब तोड़ें और देखें कि **दोनों में से एक टूटे तो दूसरा चलता रहता है**। यही तो इन्हें दो अलग चीजें बनाता है।',
     'On the left your **LAN** — one place, your own cables. On the right the **WAN** — the outside world. Break things and watch how **one can fail while the other keeps working**. That is what makes them two different things.',
   ),
   actions: [
     {
       id: 'wan',
-      label: H('ISP ની લાઇન કાપો', 'Cut the line to the ISP'),
+      label: H('ISP ની લાઇન કાપો', 'ISP की line काटो', 'Cut the line to the ISP'),
       explain: H(
         'Router નો બહારનો port બંધ. ઘરનું બધું જેમનું તેમ — ફક્ત બહાર જવાનો રસ્તો ગયો.',
+        'Router का बाहर वाला port बंद। घर का सब कुछ वैसा ही — केवल बाहर जाने का रास्ता गया।',
         'The router’s outside port goes down. Everything indoors is untouched — only the way out is gone.',
       ),
       expect: H(
         'ઇન્ટરનેટ ગયું, પણ **PC1 અને PC2 હજી એકબીજાને પહોંચે છે**. એટલે જ ઘરનું printer ત્યારે પણ ચાલે છે જ્યારે ઇન્ટરનેટ બંધ હોય.',
+        'Internet गया, पर **PC1 और PC2 अभी भी एक-दूसरे तक पहुंचते हैं**। इसीलिए घर का printer तब भी चलता है जब internet बंद होता है।',
         'The internet is gone, but **PC1 and PC2 still reach each other**. Which is why the printer at home still works when the internet is down.',
       ),
       apply: (n) => down(n, 'r1', 'Gi0/1', true),
@@ -252,13 +269,15 @@ export const b1l3Break: BreakSpec = {
     },
     {
       id: 'gw',
-      label: H('PC1 નો gateway ભૂંસો', 'Erase PC1’s gateway'),
+      label: H('PC1 નો gateway ભૂંસો', 'PC1 का gateway मिटाओ', 'Erase PC1’s gateway'),
       explain: H(
         'PC1 ને કહેવાનું બંધ કરો કે "બહાર જવા માટે router પાસે જજે". બાકી બધું એ જ.',
+        'PC1 को बताना बंद करें कि "बाहर जाने के लिए router के पास जाओ"। बाकी सब वही।',
         'Stop telling PC1 "hand anything outside to the router". Everything else stays as it is.',
       ),
       expect: H(
         'હવે ફક્ત **PC1** બહાર નહીં જઈ શકે — PC2 આરામથી જશે. અને PC1 **LAN માં તો ચાલે જ છે**: gateway ફક્ત બહાર જવા માટે જોઈએ, પાડોશી માટે નહીં.',
+        'अब केवल **PC1** बाहर नहीं जा सकेगा — PC2 आराम से जाएगा। और PC1 **LAN में तो चलता ही है**: gateway केवल बाहर जाने के लिए चाहिए, पड़ोसी के लिए नहीं।',
         'Now only **PC1** cannot get out, while PC2 carries on fine. And PC1 is still **happy on the LAN**: a gateway is only needed to leave, never to reach a neighbour.',
       ),
       apply: (n) => {
@@ -272,13 +291,15 @@ export const b1l3Break: BreakSpec = {
     },
     {
       id: 'lan',
-      label: H('Switch નું uplink કાઢો', 'Unplug the switch’s uplink'),
+      label: H('Switch નું uplink કાઢો', 'Switch का uplink निकालो', 'Unplug the switch’s uplink'),
       explain: H(
         'Switch ને router સાથે જોડતો વાયર કાઢો. બંને PC switch પર જ છે.',
+        'Switch को router से जोड़ने वाला तार निकालें। दोनों PC switch पर ही हैं।',
         'Remove the cable joining the switch to the router. Both PCs stay on the switch.',
       ),
       expect: H(
         'હવે **આખું LAN** બહારથી કપાઈ ગયું — બંને PC ઇન્ટરનેટ ગુમાવે. પણ અંદરોઅંદર? હજી બરાબર. LAN ને બહારની જરૂર જ નથી.',
+        'अब **पूरा LAN** बाहर से कट गया — दोनों PC internet खो देते हैं। पर आपस में? अभी भी ठीक। LAN को बाहर की जरूरत ही नहीं।',
         'Now the **whole LAN** is cut off — both PCs lose the internet. But among themselves? Still fine. A LAN does not need the outside at all.',
       ),
       apply: (n) => down(n, 'sw', 'Fa0/3', true),
@@ -286,9 +307,9 @@ export const b1l3Break: BreakSpec = {
     },
   ],
   probes: [
-    { id: 'lan', from: 'pc1', to: 'pc2', destIp: '192.168.1.12', label: H('PC1 → PC2 (LAN)', 'PC1 → PC2 (LAN)') },
-    { id: 'wan1', from: 'pc1', to: 'web', destIp: '203.0.113.9', label: H('PC1 → બહાર (WAN)', 'PC1 → outside (WAN)') },
-    { id: 'wan2', from: 'pc2', to: 'web', destIp: '203.0.113.9', label: H('PC2 → બહાર (WAN)', 'PC2 → outside (WAN)') },
+    { id: 'lan', from: 'pc1', to: 'pc2', destIp: '192.168.1.12', label: H('PC1 → PC2 (LAN)', 'PC1 → PC2 (LAN)', 'PC1 → PC2 (LAN)') },
+    { id: 'wan1', from: 'pc1', to: 'web', destIp: '203.0.113.9', label: H('PC1 → બહાર (WAN)', 'PC1 → बाहर (WAN)', 'PC1 → outside (WAN)') },
+    { id: 'wan2', from: 'pc2', to: 'web', destIp: '203.0.113.9', label: H('PC2 → બહાર (WAN)', 'PC2 → बाहर (WAN)', 'PC2 → outside (WAN)') },
   ],
 }
 
@@ -317,15 +338,17 @@ export const b1l4Break: BreakSpec = {
   ],
   intro: H(
     'બે client અને એક server. તોડતાં પહેલાં **અનુમાન કરો**: એક client પડે તો કેટલાને વાગે? અને server પડે તો? **એ જ ફરક** server ને server બનાવે છે.',
+    'दो client और एक server। तोड़ने से पहले **अनुमान लगाओ**: एक client गिरे तो कितनों को लगे? और server गिरे तो? **यही फर्क** server को server बनाता है।',
     'Two clients and one server. Before you break anything, **make a guess**: if one client falls over, how many people notice? And if the server does? **That difference** is what makes a server a server.',
   ),
   actions: [
     {
       id: 'client',
-      label: H('PC1 બંધ કરો', 'Take PC1 down'),
-      explain: H('એક client નો વાયર કાઢો. Server અને બીજો client ચાલુ.', 'Pull one client’s cable. The server and the other client stay up.'),
+      label: H('PC1 બંધ કરો', 'PC1 बंद करो', 'Take PC1 down'),
+      explain: H('એક client નો વાયર કાઢો. Server અને બીજો client ચાલુ.', 'एक client का तार निकालो। Server और दूसरा client चालू।', 'Pull one client’s cable. The server and the other client stay up.'),
       expect: H(
         'ફક્ત **એક વ્યક્તિ**ને વાગ્યું. PC2 ને ખબર પણ નહીં પડે. Client ની નિષ્ફળતા એક ટેબલ પૂરતી હોય છે.',
+        'केवल **एक व्यक्ति** को लगा। PC2 को पता भी नहीं चलेगा। Client की असफलता एक टेबल तक सीमित होती है।',
         'Exactly **one person** is affected. PC2 will not even notice. A client failing is a one-desk problem.',
       ),
       apply: (n) => down(n, 'pc1', 'e0', true),
@@ -333,10 +356,11 @@ export const b1l4Break: BreakSpec = {
     },
     {
       id: 'server',
-      label: H('Server બંધ કરો', 'Take the server down'),
-      explain: H('એ જ એક વાયર — પણ આ વખતે server નો.', 'The same single cable — but this time it is the server’s.'),
+      label: H('Server બંધ કરો', 'Server बंद करो', 'Take the server down'),
+      explain: H('એ જ એક વાયર — પણ આ વખતે server નો.', 'वही एक तार — पर इस बार server का।', 'The same single cable — but this time it is the server’s.'),
       expect: H(
         'એક જ વાયર, અને **બંને** client ને વાગ્યું. એટલે જ server ને બે વીજળી, બે વાયર અને backup અપાય છે — એના પર ઘણા લોકો ટકેલા હોય છે.',
+        'एक ही तार, और **दोनों** client को लगा। इसीलिए server को दो बिजली, दो तार और backup दिए जाते हैं — उस पर कई लोग टिके होते हैं।',
         'One cable, and **both** clients are hit. This is why servers get two power supplies, two cables and a backup — a lot of people are resting on them.',
       ),
       apply: (n) => down(n, 'srv', 'e0', true),
@@ -344,13 +368,15 @@ export const b1l4Break: BreakSpec = {
     },
     {
       id: 'moved',
-      label: H('Server નું સરનામું બદલો', 'Change the server’s address'),
+      label: H('Server નું સરનામું બદલો', 'Server का पता बदलो', 'Change the server’s address'),
       explain: H(
         'Server ચાલુ છે, વાયર જોડાયેલો છે — ફક્ત એનું સરનામું `192.168.2.60` થઈ ગયું.',
+        'Server चालू है, तार जुड़ा है — केवल उसका पता `192.168.2.60` हो गया।',
         'The server is up and plugged in — its address just became `192.168.2.60`.',
       ),
       expect: H(
         'Client જૂના સરનામે બૂમ પાડે છે અને કોઈ જવાબ આપતું નથી. Server **ચાલુ** છે, છતાં "server down" લાગે છે — એટલે જ server ને કદી DHCP થી સરનામું ન અપાય.',
+        'Client पुराने पते पर आवाज लगाते हैं और कोई जवाब नहीं देता। Server **चालू** है, फिर भी "server down" लगता है — इसीलिए server को कभी DHCP से पता नहीं दिया जाता।',
         'The clients keep calling the old address and nobody answers. The server is **up** and it still looks down — which is why a server never takes its address from DHCP.',
       ),
       apply: (n) => addr(n, 'srv', 'e0', '192.168.2.60', '255.255.255.0'),
@@ -358,8 +384,8 @@ export const b1l4Break: BreakSpec = {
     },
   ],
   probes: [
-    { id: 'a', from: 'pc1', to: 'srv', destIp: '192.168.2.50', label: H('PC1 → Server', 'PC1 → Server') },
-    { id: 'b', from: 'pc2', to: 'srv', destIp: '192.168.2.50', label: H('PC2 → Server', 'PC2 → Server') },
+    { id: 'a', from: 'pc1', to: 'srv', destIp: '192.168.2.50', label: H('PC1 → Server', 'PC1 → Server', 'PC1 → Server') },
+    { id: 'b', from: 'pc2', to: 'srv', destIp: '192.168.2.50', label: H('PC2 → Server', 'PC2 → Server', 'PC2 → Server') },
   ],
 }
 
@@ -401,15 +427,17 @@ export const b1l5Break: BreakSpec = {
   ],
   intro: H(
     'આખી ટોળી એકસાથે: switch, router, AP અને server. એક એક કરીને કાઢો — અને **કેટલાને વાગે** એના પરથી જ ખબર પડશે કે **કોનું કામ શું હતું**.',
+    'पूरी टोली एक साथ: switch, router, AP और server। एक-एक करके हटाएं — और **कितनों को लगे** इसी से पता चलेगा कि **किसका काम क्या था**।',
     'The whole cast at once: switch, router, AP and server. Take them out one at a time — and **how many people are hit** will tell you **what each one was for**.',
   ),
   actions: [
     {
       id: 'ap',
-      label: H('AP કાઢો', 'Remove the AP'),
-      explain: H('તાર વગરનાં ઉપકરણોને નેટવર્કમાં લાવનારો પુલ.', 'The bridge that brings wireless devices onto the network.'),
+      label: H('AP કાઢો', 'AP हटाओ', 'Remove the AP'),
+      explain: H('તાર વગરનાં ઉપકરણોને નેટવર્કમાં લાવનારો પુલ.', 'बिना तार के उपकरणों को network में लाने वाला पुल।', 'The bridge that brings wireless devices onto the network.'),
       expect: H(
         'ફક્ત **લેપટોપ** ગયું. તારવાળાં બધાં જેમનાં તેમ — AP ફક્ત હવા અને તાર વચ્ચેનો અનુવાદક છે.',
+        'केवल **laptop** गया। तार वाले सभी वैसे ही — AP केवल हवा और तार के बीच का अनुवादक है।',
         'Only the **laptop** goes. Everything on a cable is untouched — the AP only translates between air and wire.',
       ),
       apply: (n) => down(n, 'ap', 'e0', true),
@@ -417,10 +445,11 @@ export const b1l5Break: BreakSpec = {
     },
     {
       id: 'router',
-      label: H('Router કાઢો', 'Remove the router'),
-      explain: H('બહાર જવાનો એકમાત્ર દરવાજો.', 'The one and only door to the outside.'),
+      label: H('Router કાઢો', 'Router हटाओ', 'Remove the router'),
+      explain: H('બહાર જવાનો એકમાત્ર દરવાજો.', 'बाहर जाने का एकमात्र दरवाजा।', 'The one and only door to the outside.'),
       expect: H(
         '**બધાંનું ઇન્ટરનેટ ગયું**, પણ અંદરનું બધું — PC, લેપટોપ, server — એકબીજાને પહોંચે છે. Router નું કામ બહાર જવાનું જ હતું.',
+        '**सबका internet गया**, पर अंदर का सब कुछ — PC, laptop, server — एक-दूसरे तक पहुंचते हैं। Router का काम बाहर जाना ही था।',
         '**Everyone loses the internet**, yet everything inside — PC, laptop, server — still reaches each other. Getting out was the router’s only job.',
       ),
       apply: (n) => down(n, 'sw', 'Fa0/4', true),
@@ -428,10 +457,11 @@ export const b1l5Break: BreakSpec = {
     },
     {
       id: 'switch',
-      label: H('Switch કાઢો', 'Remove the switch'),
-      explain: H('બધાં જેના પર જોડાયેલાં છે એ જ ઉપકરણ. ચારેય port બંધ.', 'The box everything else is plugged into. All four ports go down.'),
+      label: H('Switch કાઢો', 'Switch हटाओ', 'Remove the switch'),
+      explain: H('બધાં જેના પર જોડાયેલાં છે એ જ ઉપકરણ. ચારેય port બંધ.', 'सब जिसपर जुड़े हैं वही उपकरण। चारों port बंद।', 'The box everything else is plugged into. All four ports go down.'),
       expect: H(
         '**બધું જ ગયું** — અંદરનું પણ, બહારનું પણ. Switch પોતે કશું નક્કી નથી કરતું, પણ એના વગર કોઈ કોઈને અડી શકતું નથી.',
+        '**सब कुछ रुक गया** — अंदर का भी, बाहर का भी। Switch खुद कुछ तय नहीं करता, पर उसके बिना कोई किसी को छू नहीं सकता।',
         '**Everything stops** — inside and out. A switch decides nothing at all, and yet without it nobody can touch anybody.',
       ),
       apply: (n) => {
@@ -443,8 +473,8 @@ export const b1l5Break: BreakSpec = {
     },
   ],
   probes: [
-    { id: 'a', from: 'pc1', to: 'srv', destIp: '192.168.3.50', label: H('PC1 → Server (અંદર)', 'PC1 → Server (inside)') },
-    { id: 'b', from: 'lap', to: 'srv', destIp: '192.168.3.50', label: H('લેપટોપ → Server', 'Laptop → Server') },
-    { id: 'c', from: 'pc1', to: 'web', destIp: '203.0.113.9', label: H('PC1 → બહાર', 'PC1 → outside') },
+    { id: 'a', from: 'pc1', to: 'srv', destIp: '192.168.3.50', label: H('PC1 → Server (અંદર)', 'PC1 → Server (अंदर)', 'PC1 → Server (inside)') },
+    { id: 'b', from: 'lap', to: 'srv', destIp: '192.168.3.50', label: H('લેપટોપ → Server', 'Laptop → Server', 'Laptop → Server') },
+    { id: 'c', from: 'pc1', to: 'web', destIp: '203.0.113.9', label: H('PC1 → બહાર', 'PC1 → बाहर', 'PC1 → outside') },
   ],
 }
