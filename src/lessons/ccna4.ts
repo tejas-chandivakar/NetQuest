@@ -29,20 +29,23 @@ const p1Links = (stage: number) => [
 export const n7l1: LessonSpec = {
   why: {
     gu: 'અત્યાર સુધી તમે એક એક વસ્તુ અલગ શીખી — IP, routing, DHCP, NAT. હવે પહેલી વાર કોઈ ગ્રાહક આવીને કહે છે "મારી ઓફિસનું નેટવર્ક બનાવી આપો". કયા ક્રમે શું કરવું એ જ ખરી કુશળતા છે.',
+    hi: 'अभी तक आपने हर चीज अलग सीखी — IP, routing, DHCP, NAT। अब पहली बार कोई ग्राहक आकर कहता है "मेरा ऑफिस network बना दो"। किस क्रम में क्या करना है यही असली कुशलता है।',
     en: 'So far you have learnt each piece on its own — addressing, routing, DHCP, NAT. Now, for the first time, a client walks in and says "build my office network". Knowing what to do in which order is the real skill.',
   },
   viewBox: { w: 920, h: 380 },
   steps: [
     {
       ms: 3000,
-      label: { gu: 'ગ્રાહકનું કહેવું', en: 'The client brief' },
+      label: { gu: 'ગ્રાહકનું કહેવું', hi: 'ग्राहक का कहना', en: 'The client brief' },
       text: {
         beginner: {
           gu: '"અમે દસ જણ છીએ. બધાને internet જોઈએ, અને બધાને એકબીજાની ફાઈલ શેર કરવી છે. કોઈને સરનામાં હાથે લખવાં નથી — બધું આપોઆપ થવું જોઈએ. ISP એ એક જ જાહેર સરનામું આપ્યું છે." આટલું જ. હવે આને નેટવર્કમાં બદલો.',
+          hi: '"हम दस लोग हैं। सबको internet चाहिए, और सबको एक-दूसरे की file share करनी है। किसी को पते हाथ से लिखने नहीं हैं — सब अपने आप होना चाहिए। ISP ने केवल एक सार्वजनिक पता दिया है।" बस इतना ही। अब इसे network में बदलें।',
           en: '"There are ten of us. Everyone needs internet and everyone shares files. Nobody wants to type addresses — it should all be automatic. The ISP gave us one public address." That is the whole brief. Now turn it into a network.',
         },
         exam: {
           gu: 'Requirements: એક LAN subnet, dynamic addressing, default route બહાર, અને એક public IP પાછળ PAT. આ એક small-office edge design છે.',
+          hi: 'Requirements: एक LAN subnet, dynamic addressing, default route बाहर, और एक public IP के पीछे PAT। यह small-office edge design है।',
           en: 'Requirements: one LAN subnet, dynamic addressing, a default route outward, and PAT behind a single public IP. This is a small-office edge design.',
         },
       },
@@ -51,7 +54,7 @@ export const n7l1: LessonSpec = {
         links: p1Links(0),
       }),
       aside: () => ({
-        title: { gu: 'શું જોઈએ', en: 'What is needed' },
+        title: { gu: 'શું જોઈએ', hi: 'क्या चाहिए', en: 'What is needed' },
         head: ['need', 'answer'],
         rows: [
           ['ten users on one network', 'a switch + one subnet'],
@@ -63,14 +66,16 @@ export const n7l1: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: '1 · અંદરનું નેટવર્ક', en: '1 · The inside network' },
+      label: { gu: '1 · અંદરનું નેટવર્ક', hi: '1 · अंदर का network', en: '1 · The inside network' },
       text: {
         beginner: {
           gu: 'શરૂઆત હંમેશા અંદરથી. દસ માણસ એટલે એક /24 પૂરતું છે — 192.168.1.0/24, 254 સરનામાં. બધાં PC switch સાથે જોડાય, અને એ બધાં એક જ નેટવર્કમાં હોવાથી અત્યારે જ એકબીજાની ફાઈલ જોઈ શકે છે.',
+          hi: 'शुरुआत हमेशा अंदर से। दस लोग यानी एक /24 काफी है — 192.168.1.0/24, 254 पते। सभी PC switch से जुड़ते हैं, और वे सब एक ही network में होने से अभी ही एक-दूसरे की file देख सकते हैं।',
           en: 'Always start inside. Ten people fit comfortably in a /24 — 192.168.1.0/24, 254 addresses. Every PC plugs into the switch, and since they share one network they can already see each other’s files.',
         },
         exam: {
           gu: 'Access switch default VLAN 1 પર કામ કરે છે; અહીં VLAN segmentation ની જરૂર નથી કારણ કે એક જ user group છે.',
+          hi: 'Access switch default VLAN 1 पर काम करता है; यहां VLAN segmentation की जरूरत नहीं क्योंकि एक ही user group है।',
           en: 'The access switch works on the default VLAN 1; no VLAN segmentation is needed here because there is only one user group.',
         },
       },
@@ -85,14 +90,16 @@ export const n7l1: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: '2 · Gateway ઊભો કરો', en: '2 · Stand up the gateway' },
+      label: { gu: '2 · Gateway ઊભો કરો', hi: '2 · Gateway खड़ा करें', en: '2 · Stand up the gateway' },
       text: {
         beginner: {
           gu: 'બહાર જવા માટે દરવાજો જોઈએ. Router ના અંદરના interface પર 192.168.1.1 મૂકો — એ જ દરેક PC નું default gateway બનશે. અને interface ચાલુ કરવાનું ભૂલતા નહીં: Cisco router ના બધા interfaces default માં બંધ હોય છે.',
+          hi: 'बाहर जाने के लिए दरवाजा चाहिए। Router के अंदर वाले interface पर 192.168.1.1 रखें — वही हर PC का default gateway बनेगा। और interface चालू करना न भूलें: Cisco router के सभी interfaces default में बंद होते हैं।',
           en: 'Getting out needs a door. Put 192.168.1.1 on the router’s inside interface — that becomes every PC’s default gateway. And remember to switch the interface on: every interface on a Cisco router starts shut down.',
         },
         exam: {
           gu: '`interface Gi0/0` → `ip address 192.168.1.1 255.255.255.0` → `no shutdown`. એ વગર interface administratively down રહે છે.',
+          hi: '`interface Gi0/0` → `ip address 192.168.1.1 255.255.255.0` → `no shutdown`। इसके बिना interface administratively down रहता है।',
           en: '`interface Gi0/0`, then `ip address 192.168.1.1 255.255.255.0`, then `no shutdown`. Without the last line the interface stays administratively down.',
         },
       },
@@ -107,14 +114,16 @@ export const n7l1: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: '3 · ISP તરફ રસ્તો', en: '3 · The road to the ISP' },
+      label: { gu: '3 · ISP તરફ રસ્તો', hi: '3 · ISP की तरफ रास्ता', en: '3 · The road to the ISP' },
       text: {
         beginner: {
           gu: 'ISP એ તમને એક WAN સરનામું આપ્યું છે. એ બહારના interface પર મૂકો, અને પછી એક default route લખો: 0.0.0.0/0 → ISP. આ એક લીટી કહે છે "જે કશું ઓળખાતું ન હોય એ બધું ISP ને આપી દે" — એટલે આખું internet.',
+          hi: 'ISP ने आपको एक WAN पता दिया है। उसे बाहर वाले interface पर रखें, फिर एक default route लिखें: 0.0.0.0/0 → ISP। यह एक लाइन कहती है "जो कुछ पहचाना न जाए वह सब ISP को दे दो" — यानी पूरा internet।',
           en: 'The ISP gave you a WAN address. Put it on the outside interface, then write one default route: 0.0.0.0/0 toward the ISP. That line says "anything I do not recognise, hand to the ISP" — which is the whole internet.',
         },
         exam: {
           gu: '`ip route 0.0.0.0 0.0.0.0 203.0.113.1`. Enterprise edge પર એક જ upstream હોય ત્યારે static default એ BGP કરતાં સરળ અને પૂરતો છે.',
+          hi: '`ip route 0.0.0.0 0.0.0.0 203.0.113.1`। Enterprise edge पर एक ही upstream हो तब static default BGP से सरल और पर्याप्त है।',
           en: '`ip route 0.0.0.0 0.0.0.0 203.0.113.1`. With a single upstream at the edge a static default is simpler than BGP and entirely sufficient.',
         },
       },
@@ -129,14 +138,16 @@ export const n7l1: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: '4 · DHCP — સરનામાં આપોઆપ', en: '4 · DHCP — addresses without typing' },
+      label: { gu: '4 · DHCP — સરનામાં આપોઆપ', hi: '4 · DHCP — पते अपने आप', en: '4 · DHCP — addresses without typing' },
       text: {
         beginner: {
           gu: 'ગ્રાહકે કહ્યું હતું "હાથે લખવું નથી". એટલે router પર DHCP pool બનાવો. પણ પહેલાં .1 થી .9 અનામત રાખો — gateway, printer અને server માટે. પછી pool માં network, gateway અને DNS ત્રણેય આપો.',
+          hi: 'ग्राहक ने कहा था "हाथ से लिखना नहीं"। इसलिए router पर DHCP pool बनाएं। पर पहले .1 से .9 आरक्षित रखें — gateway, printer और server के लिए। फिर pool में network, gateway और DNS तीनों दें।',
           en: 'The client said "no typing". So build a DHCP pool on the router. But first reserve .1 to .9 for the gateway, the printer and the server. Then give the pool a network, a gateway and a DNS server.',
         },
         exam: {
           gu: 'Router પોતે DHCP server છે એટલે helper-address ની જરૂર નથી — pool એ જ subnet માં છે જેના પર interface બેઠું છે.',
+          hi: 'Router खुद DHCP server है इसलिए helper-address की जरूरत नहीं — pool उसी subnet में है जिस पर interface बैठा है।',
           en: 'The router is itself the DHCP server, so no helper-address is needed — the pool sits in the same subnet as the interface.',
         },
       },
@@ -149,7 +160,7 @@ export const n7l1: LessonSpec = {
             : [{ id: 'a', from: 'r1', to: 'pc1', t: 0.06 + ease((t - 0.6) / 0.4) * 0.84, color: 'var(--nq-ok)', label: 'ACK · .10 ✓' }],
       }),
       aside: (t) => ({
-        title: { gu: 'DHCP pool', en: 'DHCP pool' },
+        title: { gu: 'DHCP pool', hi: 'DHCP pool', en: 'DHCP pool' },
         head: ['setting', 'value'],
         rows: [
           ['excluded', '192.168.1.1 – .9'],
@@ -161,14 +172,16 @@ export const n7l1: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: '5 · NAT — છેલ્લો ટુકડો', en: '5 · NAT — the last piece' },
+      label: { gu: '5 · NAT — છેલ્લો ટુકડો', hi: '5 · NAT — आखिरी टुकड़ा', en: '5 · NAT — the last piece' },
       text: {
         beginner: {
           gu: 'બધું તૈયાર લાગે છે, પણ ping હજી નિષ્ફળ જશે! કારણ કે PC નું 192.168.1.10 internet પર ચાલતું નથી. એટલે PAT ઉમેરો: અંદરનાં બધાં સરનામાં router ના એક જ જાહેર સરનામા પાછળ છુપાવો. અને `ip nat inside`/`outside` ભૂલશો નહીં.',
+          hi: 'सब तैयार लगता है, पर ping अभी भी असफल होगा! क्योंकि PC का 192.168.1.10 internet पर नहीं चलता। इसलिए PAT जोड़ें: अंदर के सभी पते router के एक ही सार्वजनिक पते के पीछे छुपाएं। और `ip nat inside`/`outside` न भूलें।',
           en: 'It all looks finished, yet the ping will still fail — because 192.168.1.10 does not work on the internet. So add PAT: hide every inside address behind the router’s one public address. And do not forget `ip nat inside` and `outside`.',
         },
         exam: {
           gu: 'ACL થી inside addresses match કરો, પછી `ip nat inside source list 1 interface Gi0/1 overload`. Interfaces પર inside/outside markings ફરજિયાત.',
+          hi: 'ACL से inside addresses match करें, फिर `ip nat inside source list 1 interface Gi0/1 overload`। Interfaces पर inside/outside markings अनिवार्य।',
           en: 'Match the inside addresses with an ACL, then `ip nat inside source list 1 interface Gi0/1 overload`. The inside/outside interface markings are mandatory.',
         },
       },
@@ -183,14 +196,16 @@ export const n7l1: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: '6 · ચકાસો — ગ્રાહકની દરેક માગણી', en: '6 · Verify — every line of the brief' },
+      label: { gu: '6 · ચકાસો — ગ્રાહકની દરેક માગણી', hi: '6 · जांचें — ग्राहक की हर मांग', en: '6 · Verify — every line of the brief' },
       text: {
         beginner: {
           gu: 'છેલ્લું પગલું હંમેશા ચકાસણી, અને એ ગ્રાહકના શબ્દો સામે જ કરો. PC એકબીજાને ping કરે છે? ✓ સરનામું આપોઆપ મળ્યું? ✓ Internet પહોંચે છે? ✓ એક જ જાહેર સરનામું વપરાય છે? ✓ ત્રણેય માગણી પૂરી — કામ પૂરું.',
+          hi: 'आखिरी कदम हमेशा जांच, और वह ग्राहक के शब्दों के खिलाफ ही करें। PC एक-दूसरे को ping करते हैं? ✓ पता अपने आप मिला? ✓ Internet पहुंचता है? ✓ एक ही सार्वजनिक पता इस्तेमाल होता है? ✓ तीनों मांगें पूरी — काम पूरा।',
           en: 'The last step is always verification, measured against the client’s own words. Do the PCs ping each other? Yes. Did they get addresses automatically? Yes. Does the internet work? Yes. Is one public address serving everyone? Yes. The brief is met.',
         },
         exam: {
           gu: 'Verification commands: `show ip interface brief`, `show ip route`, `show ip dhcp binding`, `show ip nat translations`, અને end-to-end ping.',
+          hi: 'Verification commands: `show ip interface brief`, `show ip route`, `show ip dhcp binding`, `show ip nat translations`, और end-to-end ping।',
           en: 'Verification commands: `show ip interface brief`, `show ip route`, `show ip dhcp binding`, `show ip nat translations`, plus an end-to-end ping.',
         },
       },
@@ -202,7 +217,7 @@ export const n7l1: LessonSpec = {
         ],
       }),
       aside: () => ({
-        title: { gu: 'ગ્રાહકની માગણી', en: 'Against the brief' },
+        title: { gu: 'ગ્રાહકની માગણી', hi: 'ग्राहक की मांग', en: 'Against the brief' },
         head: ['asked for', 'done'],
         rows: [
           ['everyone shares files', '✓ one subnet'],
@@ -215,21 +230,24 @@ export const n7l1: LessonSpec = {
   ],
   takeaway: {
     gu: 'દરેક project નો ક્રમ એક જ છે: અંદરનું નેટવર્ક → gateway → બહારનો રસ્તો → સરનામાં આપોઆપ → NAT → ચકાસણી. અંદરથી બહાર તરફ કામ કરો, અને છેલ્લે ગ્રાહકના શબ્દો સામે દરેક માગણી ટિક કરો.',
+    hi: 'हर project का क्रम एक ही है: अंदर का network → gateway → बाहर का रास्ता → पते अपने आप → NAT → जांच। अंदर से बाहर की तरफ काम करें, और आखिर में ग्राहक के शब्दों के सामने हर मांग tick करें।',
     en: 'Every project follows one order: the inside network, the gateway, the way out, automatic addressing, NAT, then verification. Work from the inside outward, and at the end tick every line of the brief.',
   },
   check: {
     q: {
       gu: 'બધું configure કર્યું, PC ને સરનામું પણ મળ્યું, પણ internet નથી ચાલતું. સૌથી સંભવિત કારણ?',
+      hi: 'सब configure किया, PC को पता भी मिला, पर internet नहीं चल रहा। सबसे संभावित कारण?',
       en: 'Everything is configured and the PCs got addresses, but there is no internet. The most likely cause?',
     },
     options: [
-      { gu: 'NAT નથી — ખાનગી સરનામું બહાર ચાલતું નથી', en: 'NAT is missing — a private address cannot work outside' },
-      { gu: 'Switch ખોટો છે', en: 'The switch is the wrong model' },
-      { gu: 'DHCP pool નાનો છે', en: 'The DHCP pool is too small' },
+      { gu: 'NAT નથી — ખાનગી સરનામું બહાર ચાલતું નથી', hi: 'NAT नहीं — निजी पता बाहर नहीं चलता', en: 'NAT is missing — a private address cannot work outside' },
+      { gu: 'Switch ખોટો છે', hi: 'Switch गलत है', en: 'The switch is the wrong model' },
+      { gu: 'DHCP pool નાનો છે', hi: 'DHCP pool छोटा है', en: 'The DHCP pool is too small' },
     ],
     answer: 0,
     explain: {
       gu: 'સરનામું મળ્યું એટલે DHCP અને gateway બરાબર છે. પણ 192.168.x.x internet પર routable નથી — એને PAT થી જાહેર સરનામામાં બદલવું જ પડે.',
+      hi: 'पता मिला यानी DHCP और gateway ठीक हैं। पर 192.168.x.x internet पर routable नहीं — इसे PAT से सार्वजनिक पते में बदलना ही पड़ेगा।',
       en: 'Getting an address proves DHCP and the gateway are fine. But 192.168.x.x is not routable on the internet; PAT must translate it to the public address.',
     },
   },
@@ -264,20 +282,23 @@ const p2Links = [
 export const n7l2: LessonSpec = {
   why: {
     gu: 'પહેલો project બધાને જોડવા વિશે હતો. આ બીજો એનાથી ઊલટો છે: બધાંને અલગ રાખવા વિશે. અને આ ખરી દુનિયાનો સૌથી સામાન્ય પ્રશ્ન છે — "HR નો ડેટા Sales ન જોઈ શકે, પણ બંનેએ એક જ printer વાપરવાનો છે."',
+    hi: 'पहला project सबको जोड़ने के बारे में था। यह दूसरा उसका उलटा है: सबको अलग रखने के बारे में। और यह असली दुनिया का सबसे आम सवाल है — "HR का data Sales न देख सके, पर दोनों को एक ही printer इस्तेमाल करना है।"',
     en: 'The first project was about joining everyone together. This one is the opposite: keeping them apart. And it is the most common real-world ask there is — "Sales must not see HR data, but both share one printer."',
   },
   viewBox: { w: 900, h: 380 },
   steps: [
     {
       ms: 3000,
-      label: { gu: 'ગ્રાહકનું કહેવું', en: 'The client brief' },
+      label: { gu: 'ગ્રાહકનું કહેવું', hi: 'ग्राहक का कहना', en: 'The client brief' },
       text: {
         beginner: {
           gu: '"પચાસ જણ છીએ — Sales અને HR. HR પાસે પગાર અને કરારના કાગળ છે, એ Sales ના લોકોએ ન જોવા જોઈએ. પણ બંનેએ એક જ printer અને એક જ internet વાપરવાનાં છે." એટલે અલગ પણ રાખવા અને જોડવા પણ — બંને એકસાથે.',
+          hi: '"हम पचास लोग हैं — Sales और HR। HR के पास वेतन और contract के कागज हैं, वे Sales वालों को नहीं देखने चाहिए। पर दोनों को एक ही printer और एक ही internet इस्तेमाल करने हैं।" यानी अलग भी रखना है और जोड़ना भी — दोनों एक साथ।',
           en: '"Fifty of us — Sales and HR. HR holds salary and contract files that Sales must never see. But both share one printer and one internet line." So they must be separated and connected at the same time.',
         },
         exam: {
           gu: 'Requirements: Layer 2 segmentation (VLAN), દરેક VLAN માટે અલગ subnet અને gateway (SVI), અને selective Layer 3 filtering (ACL).',
+          hi: 'Requirements: Layer 2 segmentation (VLAN), हर VLAN के लिए अलग subnet और gateway (SVI), और selective Layer 3 filtering (ACL)।',
           en: 'Requirements: Layer 2 segmentation (VLANs), a separate subnet and gateway per VLAN (SVIs), and selective Layer 3 filtering (an ACL).',
         },
       },
@@ -290,7 +311,7 @@ export const n7l2: LessonSpec = {
             : [],
       }),
       aside: () => ({
-        title: { gu: 'બે વિરોધી માગણી', en: 'Two opposing needs' },
+        title: { gu: 'બે વિરોધી માગણી', hi: 'दो विरोधी मांगें', en: 'Two opposing needs' },
         head: ['need', 'tool'],
         rows: [
           ['keep HR data private', 'VLAN + ACL'],
@@ -301,14 +322,16 @@ export const n7l2: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: '1 · બે જૂથ પાડો', en: '1 · Split them into two groups' },
+      label: { gu: '1 · બે જૂથ પાડો', hi: '1 · दो समूह बनाएं', en: '1 · Split them into two groups' },
       text: {
         beginner: {
           gu: 'પહેલું પગલું VLAN. VLAN 10 ને SALES નામ આપો, VLAN 20 ને HR. પછી ports ને એમાં વહેંચો. આ ક્ષણે એક switch બે અલગ switch જેવો વર્તવા લાગે છે — અને Sales નો broadcast HR સુધી પહોંચવાનો બંધ થઈ જાય છે.',
+          hi: 'पहला कदम VLAN। VLAN 10 को SALES नाम दें, VLAN 20 को HR। फिर ports को इनमें बांटें। इस क्षण एक switch दो अलग switch की तरह व्यवहार करने लगता है — और Sales का broadcast HR तक पहुंचना बंद हो जाता है।',
           en: 'The first step is VLANs. Name VLAN 10 SALES and VLAN 20 HR, then hand the ports out between them. From this moment one switch behaves as two — and Sales broadcasts stop reaching HR.',
         },
         exam: {
           gu: 'દરેક VLAN એક અલગ broadcast domain બને છે. બે અલગ subnets પણ જોઈએ: 10.10.10.0/24 અને 10.20.20.0/24.',
+          hi: 'हर VLAN एक अलग broadcast domain बनता है। दो अलग subnets भी चाहिए: 10.10.10.0/24 और 10.20.20.0/24।',
           en: 'Each VLAN becomes its own broadcast domain, and each needs its own subnet: 10.10.10.0/24 and 10.20.20.0/24.',
         },
       },
@@ -321,7 +344,7 @@ export const n7l2: LessonSpec = {
             : [],
       }),
       aside: (t) => ({
-        title: { gu: 'VLAN assignment', en: 'VLAN assignment' },
+        title: { gu: 'VLAN assignment', hi: 'VLAN assignment', en: 'VLAN assignment' },
         head: ['port', 'device', 'vlan'],
         rows:
           t > 0.35
@@ -336,14 +359,16 @@ export const n7l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: '2 · પણ હવે બહુ અલગ થઈ ગયાં', en: '2 · But now they are too separate' },
+      label: { gu: '2 · પણ હવે બહુ અલગ થઈ ગયાં', hi: '2 · पर अब बहुत अलग हो गए', en: '2 · But now they are too separate' },
       text: {
         beginner: {
           gu: 'VLAN એ કામ તો કર્યું — કદાચ જરૂર કરતાં વધારે સારું. હવે Sales HR સુધી પહોંચતું નથી, પણ સાથે સાથે printer પણ નથી પહોંચતું અને બહાર જવાનો રસ્તો પણ નથી. દીવાલ ઊભી થઈ ગઈ, હવે એમાં એક દરવાજો જોઈએ.',
+          hi: 'VLAN ने काम तो किया — शायद जरूरत से ज्यादा अच्छा। अब Sales HR तक नहीं पहुंचता, पर साथ ही printer भी नहीं पहुंचता और बाहर जाने का रास्ता भी नहीं। दीवार खड़ी हो गई, अब उसमें एक दरवाजा चाहिए।',
           en: 'The VLANs worked — perhaps too well. Sales cannot reach HR, but it also cannot reach the printer or the way out. The wall is up; now it needs a door.',
         },
         exam: {
           gu: 'Inter-VLAN traffic માટે Layer 3 device જોઈએ. Options: router-on-a-stick (subinterfaces) અથવા L3 switch પર SVI — બીજું વધુ scalable છે.',
+          hi: 'Inter-VLAN traffic के लिए Layer 3 device चाहिए। Options: router-on-a-stick (subinterfaces) या L3 switch पर SVI — दूसरा ज्यादा scalable है।',
           en: 'Inter-VLAN traffic needs a Layer 3 device: either router-on-a-stick with subinterfaces, or SVIs on an L3 switch — the latter scales better.',
         },
       },
@@ -357,14 +382,16 @@ export const n7l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: '3 · SVI — switch ને router બનાવો', en: '3 · SVIs — make the switch route' },
+      label: { gu: '3 · SVI — switch ને router બનાવો', hi: '3 · SVI — switch को router बनाएं', en: '3 · SVIs — make the switch route' },
       text: {
         beginner: {
           gu: 'અલગ router ખરીદવાની જરૂર નથી. એ જ switch ની અંદર દરેક VLAN માટે એક virtual interface બનાવો — SVI. VLAN 10 ને 10.10.10.1 અને VLAN 20 ને 10.20.20.1 આપો, પછી `ip routing` ચાલુ કરો. હવે switch બંને VLAN વચ્ચે routing કરશે.',
+          hi: 'अलग router खरीदने की जरूरत नहीं। उसी switch के अंदर हर VLAN के लिए एक virtual interface बनाएं — SVI। VLAN 10 को 10.10.10.1 और VLAN 20 को 10.20.20.1 दें, फिर `ip routing` चालू करें। अब switch दोनों VLAN के बीच routing करेगा।',
           en: 'You do not need a separate router. Inside the same switch create one virtual interface per VLAN — an SVI. Give VLAN 10 the address 10.10.10.1 and VLAN 20 the address 10.20.20.1, then turn on `ip routing`. The switch now routes between them.',
         },
         exam: {
           gu: '`interface vlan 10` → `ip address …` → `no shutdown`, દરેક VLAN માટે. પછી global `ip routing` — એ વગર SVI બને પણ routing થાય નહીં.',
+          hi: '`interface vlan 10` → `ip address …` → `no shutdown`, हर VLAN के लिए। फिर global `ip routing` — इसके बिना SVI बनते हैं पर routing नहीं होती।',
           en: '`interface vlan 10`, `ip address …`, `no shutdown` for each VLAN, then global `ip routing`. Without that last command the SVIs exist but nothing routes.',
         },
       },
@@ -377,7 +404,7 @@ export const n7l2: LessonSpec = {
             : [],
       }),
       aside: (t) => ({
-        title: { gu: 'SVI', en: 'SVIs' },
+        title: { gu: 'SVI', hi: 'SVI', en: 'SVIs' },
         head: ['interface', 'address', 'serves'],
         rows:
           t > 0.35
@@ -391,14 +418,16 @@ export const n7l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: '4 · હવે ફરી એ જ સમસ્યા', en: '4 · And the original problem is back' },
+      label: { gu: '4 · હવે ફરી એ જ સમસ્યા', hi: '4 · अब फिर वही समस्या', en: '4 · And the original problem is back' },
       text: {
         beginner: {
           gu: 'Routing ચાલુ કરતાં જ બધું જોડાઈ ગયું — અને Sales ફરી HR નો server જોઈ શકે છે! આ નિરાશાજનક લાગે, પણ એ બરાબર છે: પહેલાં રસ્તો બનાવવો પડે, પછી જ એના પર દરવાન મૂકી શકાય. ACL ને કામ કરવા માટે routing હોવું જ જોઈએ.',
+          hi: 'Routing चालू करते ही सब जुड़ गया — और Sales फिर HR का server देख सकता है! यह निराशाजनक लगता है, पर यह ठीक है: पहले रास्ता बनाना पड़ता है, फिर उस पर पहरेदार रखा जा सकता है। ACL को काम करने के लिए routing होना ही चाहिए।',
           en: 'The moment routing is on, everything reconnects — and Sales can see the HR server again. It feels like a step backwards, but it is correct: you must build the road before you can post a guard on it. An ACL needs routing to act on.',
         },
         exam: {
           gu: 'ACL routing path પર લાગુ પડે છે, એટલે inter-VLAN routing પહેલાં જોઈએ. Filtering એ connectivity નો વિકલ્પ નથી — એની ઉપરનું સ્તર છે.',
+          hi: 'ACL routing path पर लागू होती है, इसलिए inter-VLAN routing पहले चाहिए। Filtering connectivity का विकल्प नहीं — उसके ऊपर की परत है।',
           en: 'An ACL acts on the routing path, so inter-VLAN routing must exist first. Filtering is not a substitute for connectivity — it is a layer on top of it.',
         },
       },
@@ -412,14 +441,16 @@ export const n7l2: LessonSpec = {
     },
     {
       ms: 3400,
-      label: { gu: '5 · ACL — ચોક્કસ એક દરવાજો બંધ', en: '5 · The ACL — close exactly one door' },
+      label: { gu: '5 · ACL — ચોક્કસ એક દરવાજો બંધ', hi: '5 · ACL — ठीक एक दरवाजा बंद', en: '5 · The ACL — close exactly one door' },
       text: {
         beginner: {
           gu: 'હવે ચોકસાઈનું કામ. એક ACL લખો જે ફક્ત એક વસ્તુ રોકે: Sales થી HR ના server સુધી — deny. પછી એક લીટી ઉમેરો: બાકીનું બધું permit. આ બીજી લીટી અગત્યની છે, નહીંતર અદૃશ્ય `deny any any` printer અને internet પણ બંધ કરી દેશે.',
+          hi: 'अब सटीकता का काम। एक ACL लिखें जो केवल एक चीज रोके: Sales से HR के server तक — deny। फिर एक लाइन जोड़ें: बाकी सब permit। यह दूसरी लाइन महत्वपूर्ण है, वरना अदृश्य `deny any any` printer और internet भी बंद कर देगा।',
           en: 'Now the precise work. Write an ACL that blocks exactly one thing: Sales to the HR server — deny. Then add a line permitting everything else. That second line matters, because otherwise the invisible `deny any any` would also cut the printer and the internet.',
         },
         exam: {
           gu: 'Extended ACL source અને destination બંને જુએ છે. Order: deny specific પહેલાં, permit any any પછી. Implicit deny ને યાદ રાખીને હંમેશા explicit permit ઉમેરો.',
+          hi: 'Extended ACL source और destination दोनों देखती है। Order: deny specific पहले, permit any any बाद में। Implicit deny याद रखकर हमेशा explicit permit जोड़ें।',
           en: 'An extended ACL matches source and destination. Order matters: the specific deny first, then permit any any. Remember the implicit deny and always add the explicit permit.',
         },
       },
@@ -435,7 +466,7 @@ export const n7l2: LessonSpec = {
             : [],
       }),
       aside: (t) => ({
-        title: { gu: 'ACL 110', en: 'ACL 110' },
+        title: { gu: 'ACL 110', hi: 'ACL 110', en: 'ACL 110' },
         head: ['#', 'rule', 'action'],
         rows:
           t > 0.3
@@ -449,14 +480,16 @@ export const n7l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: '6 · બંને માગણી એકસાથે પૂરી', en: '6 · Both needs met at once' },
+      label: { gu: '6 · બંને માગણી એકસાથે પૂરી', hi: '6 · दोनों मांगें एक साथ पूरी', en: '6 · Both needs met at once' },
       text: {
         beginner: {
           gu: 'હવે ત્રણેય ચકાસો. Sales થી HR ના server સુધી — બંધ ✓. Sales થી printer સુધી — ચાલુ ✓. બંનેથી internet — ચાલુ ✓. "અલગ રાખો પણ જોડો" એ વિરોધાભાસી લાગતી માગણી ખરેખર ત્રણ સ્તરોમાં ઉકેલાઈ: VLAN અલગ રાખે, SVI જોડે, ACL ચોક્કસ અપવાદ કાપે.',
+          hi: 'अब तीनों जांचें। Sales से HR के server तक — बंद ✓। Sales से printer तक — चालू ✓। दोनों से internet — चालू ✓। "अलग रखें पर जोड़ें" यह विरोधाभासी लगती मांग असल में तीन परतों में हल हुई: VLAN अलग रखते हैं, SVI जोड़ते हैं, ACL ठीक अपवाद काटती है।',
           en: 'Now check all three. Sales to the HR server — blocked. Sales to the printer — working. Both to the internet — working. The contradictory-sounding brief is really solved in three layers: VLANs separate, SVIs connect, and the ACL cuts one precise exception.',
         },
         exam: {
           gu: 'આ defence in depth નો નાનો દાખલો છે: L2 segmentation, L3 reachability, અને L3/L4 filtering — દરેક સ્તર પોતાનું કામ કરે.',
+          hi: 'यह defence in depth का छोटा उदाहरण है: L2 segmentation, L3 reachability, और L3/L4 filtering — हर परत अपना काम करती है।',
           en: 'This is defence in depth in miniature: L2 segmentation, L3 reachability and L3/L4 filtering, each layer doing its own job.',
         },
       },
@@ -469,7 +502,7 @@ export const n7l2: LessonSpec = {
         ],
       }),
       aside: () => ({
-        title: { gu: 'ગ્રાહકની માગણી', en: 'Against the brief' },
+        title: { gu: 'ગ્રાહકની માગણી', hi: 'ग्राहक की मांग', en: 'Against the brief' },
         head: ['asked for', 'done'],
         rows: [
           ['Sales cannot see HR data', '✓ ACL'],
@@ -482,21 +515,24 @@ export const n7l2: LessonSpec = {
   ],
   takeaway: {
     gu: 'ક્રમ ઊલટો ન કરો: પહેલાં VLAN થી અલગ કરો, પછી SVI થી જોડો, અને છેલ્લે ACL થી ચોક્કસ અપવાદ કાપો. વચ્ચે એક તબક્કો એવો આવશે જ્યાં બધું ફરી ખુલ્લું દેખાશે — એ ભૂલ નથી, એ જરૂરી પગલું છે.',
+    hi: 'क्रम उल्टा न करें: पहले VLAN से अलग करें, फिर SVI से जोड़ें, और आखिर में ACL से ठीक अपवाद काटें। बीच में एक चरण ऐसा आएगा जहां सब फिर खुला दिखेगा — यह गलती नहीं, यह जरूरी कदम है।',
     en: 'Do not reverse the order: separate with VLANs, reconnect with SVIs, then cut one precise exception with an ACL. There will be a stage where everything looks wide open again — that is not a mistake, it is a necessary step.',
   },
   check: {
     q: {
       gu: 'ACL માં ફક્ત "deny sales → HR server" લખ્યું અને બીજું કશું નહીં. શું થશે?',
+      hi: 'ACL में केवल "deny sales → HR server" लिखा और कुछ नहीं। क्या होगा?',
       en: 'Your ACL has only "deny sales → HR server" and nothing else. What happens?',
     },
     options: [
-      { gu: 'બધું બંધ થઈ જશે — અદૃશ્ય deny any any ને કારણે', en: 'Everything is blocked — because of the invisible deny any any' },
-      { gu: 'ફક્ત HR server બંધ, બાકી બધું ચાલુ', en: 'Only the HR server is blocked, everything else works' },
-      { gu: 'કશું બંધ નહીં થાય', en: 'Nothing is blocked at all' },
+      { gu: 'બધું બંધ થઈ જશે — અદૃશ્ય deny any any ને કારણે', hi: 'सब बंद हो जाएगा — अदृश्य deny any any के कारण', en: 'Everything is blocked — because of the invisible deny any any' },
+      { gu: 'ફક્ત HR server બંધ, બાકી બધું ચાલુ', hi: 'केवल HR server बंद, बाकी सब चालू', en: 'Only the HR server is blocked, everything else works' },
+      { gu: 'કશું બંધ નહીં થાય', hi: 'कुछ बंद नहीं होगा', en: 'Nothing is blocked at all' },
     ],
     answer: 0,
     explain: {
       gu: 'દરેક ACL ના અંતે ન દેખાતી `deny any any` હોય છે. એટલે deny લખ્યા પછી `permit ip any any` ઉમેરવું જ પડે, નહીંતર printer અને internet પણ કપાઈ જશે.',
+      hi: 'हर ACL के अंत में न दिखने वाली `deny any any` होती है। इसलिए deny लिखने के बाद `permit ip any any` जोड़ना ही पड़ता है, वरना printer और internet भी कट जाएंगे।',
       en: 'Every ACL ends with an unseen `deny any any`, so after the deny you must add `permit ip any any` or the printer and the internet are cut too.',
     },
   },
