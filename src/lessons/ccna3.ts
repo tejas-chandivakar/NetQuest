@@ -24,20 +24,23 @@ const dhcpLinks = [
 export const n4l1: LessonSpec = {
   why: {
     gu: 'DHCP તમે પહેલાં જોયું — ચાર packets અને સરનામું મળી ગયું. પણ CCNA માં સવાલ બીજો છે: એ pool તમારે જાતે router પર બનાવવો પડે. એમાં ત્રણ વસ્તુ ખોટી થાય તો આખી ઓફિસ અટકી જાય, અને ત્રણેય જાણીતી છે.',
+    hi: 'DHCP आपने पहले देखा — चार packets और पता मिल गया। पर CCNA में सवाल अलग है: वह pool आपको खुद router पर बनाना पड़ता है। उसमें तीन चीजें गलत हों तो पूरी ऑफिस रुक जाती है, और तीनों जानी-मानी हैं।',
     en: 'You have seen DHCP already — four packets and an address appears. The CCNA question is different: you have to build that pool on the router yourself. Three things commonly go wrong, and all three are well known.',
   },
   viewBox: { w: 860, h: 360 },
   steps: [
     {
       ms: 2800,
-      label: { gu: 'પહેલાં સરનામાં અનામત રાખો', en: 'Reserve the addresses first' },
+      label: { gu: 'પહેલાં સરનામાં અનામત રાખો', hi: 'पहले पते अनामत रखें', en: 'Reserve the addresses first' },
       text: {
         beginner: {
           gu: 'Pool બનાવતાં પહેલાં એક કામ કરવાનું છે. Router પોતે .1 વાપરે છે, printer .5 પર છે, server .7 પર. DHCP ને એ સરનામાં વહેંચવા ન દેવાય, નહીંતર બે મશીનને એક જ IP મળી જાય. એટલે પહેલાં એમને બાજુ પર કાઢી લો.',
+          hi: 'Pool बनाने से पहले एक काम करना है। Router खुद .1 वापरता है, printer .5 पर है, server .7 पर। DHCP को वे पते बांटने न दें, वरना दो मशीनों को एक ही IP मिल जाएगा। इसलिए पहले उन्हें किनारे कर दें।',
           en: 'There is one job before building the pool. The router itself uses .1, the printer sits on .5, the server on .7. DHCP must never hand those out or two machines end up with one address. So set them aside first.',
         },
         exam: {
           gu: '`ip dhcp excluded-address 192.168.10.1 192.168.10.9` pool બનાવતાં પહેલાં લખો. આ global command છે, pool ની અંદર નહીં.',
+          hi: '`ip dhcp excluded-address 192.168.10.1 192.168.10.9` pool बनाने से पहले लिखें। यह global command है, pool के अंदर नहीं।',
           en: 'Write `ip dhcp excluded-address 192.168.10.1 192.168.10.9` before creating the pool. It is a global command, not one inside the pool.',
         },
       },
@@ -46,7 +49,7 @@ export const n4l1: LessonSpec = {
         links: dhcpLinks,
       }),
       aside: (t) => ({
-        title: { gu: 'અનામત', en: 'Reserved' },
+        title: { gu: 'અનામત', hi: 'अनामत', en: 'Reserved' },
         head: ['address', 'for'],
         rows:
           t > 0.35
@@ -64,14 +67,16 @@ export const n4l1: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'Pool બનાવો — ત્રણ લીટી', en: 'Build the pool — three lines' },
+      label: { gu: 'Pool બનાવો — ત્રણ લીટી', hi: 'Pool बनाएं — तीन lines', en: 'Build the pool — three lines' },
       text: {
         beginner: {
           gu: 'હવે pool બનાવો. એમાં ત્રણ વસ્તુ કહેવી પડે: કયા નેટવર્કમાંથી વહેંચવું (`network`), gateway કયું આપવું (`default-router`), અને DNS કયું (`dns-server`). ત્રણેયમાંથી એક ભૂલાય તો PC ને સરનામું મળશે પણ કામ નહીં કરે.',
+          hi: 'अब pool बनाएं। इसमें तीन चीजें बतानी हैं: किस network से बांटना है (`network`), कौन सा gateway देना है (`default-router`), और कौन सा DNS (`dns-server`)। तीनों में से एक भूल जाए तो PC को पता तो मिलेगा पर काम नहीं करेगा।',
           en: 'Now build the pool. It needs three things: which network to hand out from (`network`), which gateway to give (`default-router`), and which DNS (`dns-server`). Forget any one of them and the PC gets an address that does not work.',
         },
         exam: {
           gu: '`ip dhcp pool LAN` પછી `network 192.168.10.0 255.255.255.0`, `default-router 192.168.10.1`, `dns-server 8.8.8.8`. Lease default 1 day છે.',
+          hi: '`ip dhcp pool LAN` फिर `network 192.168.10.0 255.255.255.0`, `default-router 192.168.10.1`, `dns-server 8.8.8.8`। Lease default 1 day है।',
           en: '`ip dhcp pool LAN`, then `network 192.168.10.0 255.255.255.0`, `default-router 192.168.10.1`, `dns-server 8.8.8.8`. The default lease is one day.',
         },
       },
@@ -80,7 +85,7 @@ export const n4l1: LessonSpec = {
         links: dhcpLinks,
       }),
       aside: (t) => ({
-        title: { gu: 'Pool LAN', en: 'Pool LAN' },
+        title: { gu: 'Pool LAN', hi: 'Pool LAN', en: 'Pool LAN' },
         head: ['setting', 'value'],
         rows: [
           ['network', t > 0.25 ? '192.168.10.0/24' : '…'],
@@ -92,14 +97,16 @@ export const n4l1: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'PC માગે, router આપે', en: 'The PC asks, the router answers' },
+      label: { gu: 'PC માગે, router આપે', hi: 'PC मांगे, router दे', en: 'The PC asks, the router answers' },
       text: {
         beginner: {
           gu: 'PC1 ચાલુ થાય એટલે broadcast કરે છે. Router સાંભળે છે, pool માંથી પહેલું ખાલી સરનામું શોધે — .1 થી .9 અનામત છે એટલે .10 — અને આપી દે છે, સાથે gateway અને DNS પણ. ચાર packets, બે સેકન્ડ.',
+          hi: 'PC1 चालू होते ही broadcast करता है। Router सुनता है, pool से पहला खाली पता ढूंढता है — .1 से .9 अनामत हैं तो .10 — और दे देता है, साथ में gateway और DNS भी। चार packets, दो सेकंड।',
           en: 'PC1 boots and broadcasts. The router hears it, finds the first free address in the pool — .1 to .9 are reserved so .10 — and hands it over, along with the gateway and DNS. Four packets, two seconds.',
         },
         exam: {
           gu: 'DORA ચાલે છે. Router binding table માં MAC ↔ IP અને lease expiry નોંધે છે. `show ip dhcp binding` થી જોઈ શકાય.',
+          hi: 'DORA चलता है। Router binding table में MAC ↔ IP और lease expiry नोट करता है। `show ip dhcp binding` से देख सकते हैं।',
           en: 'DORA runs. The router records the MAC-to-IP binding and lease expiry, visible with `show ip dhcp binding`.',
         },
       },
@@ -114,21 +121,23 @@ export const n4l1: LessonSpec = {
               : [{ id: 'a', from: 'r1', to: 'pc1', t: 0.1 + ease((t - 0.7) / 0.3) * 0.8, color: 'var(--nq-ok)', label: 'ACK ✓' }],
       }),
       aside: (t) => ({
-        title: { gu: 'Binding table', en: 'Binding table' },
+        title: { gu: 'Binding table', hi: 'Binding table', en: 'Binding table' },
         head: ['IP', 'MAC', 'lease'],
         rows: t > 0.7 ? [['192.168.10.10', 'PC1', '1 day']] : [],
       }),
     },
     {
       ms: 3000,
-      label: { gu: 'બીજા PC ને આગળનું સરનામું', en: 'The next PC gets the next address' },
+      label: { gu: 'બીજા PC ને આગળનું સરનામું', hi: 'दूसरे PC को अगला पता', en: 'The next PC gets the next address' },
       text: {
         beginner: {
           gu: 'PC2 ચાલુ થાય તો એને .11 મળે છે — કારણ કે .10 પહેલેથી અપાયેલું છે. Router દરેક mapping યાદ રાખે છે, એટલે બે મશીનને કદી એક જ સરનામું નથી મળતું. એ જ તો આખા DHCP નો મુદ્દો છે.',
+          hi: 'PC2 चालू हो तो उसे .11 मिलता है — क्योंकि .10 पहले से दिया जा चुका है। Router हर mapping याद रखता है, इसलिए दो मशीनों को कभी एक ही पता नहीं मिलता। यही तो पूरे DHCP का मुद्दा है।',
           en: 'PC2 boots and gets .11, because .10 is already taken. The router remembers every mapping, so two machines never receive one address. That is the entire point of DHCP.',
         },
         exam: {
           gu: 'Router allocate કરતાં પહેલાં ICMP ping થી address મફત છે કે નહીં ચકાસે છે, અને client પણ ARP થી duplicate check કરે છે.',
+          hi: 'Router allocate करने से पहले ICMP ping से address मुफ्त है या नहीं जांचता है, और client भी ARP से duplicate check करता है।',
           en: 'The router pings an address before allocating it, and the client also does a duplicate check with ARP.',
         },
       },
@@ -141,7 +150,7 @@ export const n4l1: LessonSpec = {
             : [{ id: 'a', from: 'r1', to: 'pc2', t: 0.1 + ease((t - 0.6) / 0.4) * 0.8, color: 'var(--nq-ok)', label: 'ACK .11' }],
       }),
       aside: (t) => ({
-        title: { gu: 'Binding table', en: 'Binding table' },
+        title: { gu: 'Binding table', hi: 'Binding table', en: 'Binding table' },
         head: ['IP', 'MAC', 'lease'],
         rows:
           t > 0.6
@@ -154,14 +163,16 @@ export const n4l1: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'છટકું — DHCP બીજી બાજુ હોય તો', en: 'The trap — when DHCP is on the far side' },
+      label: { gu: 'છટકું — DHCP બીજી બાજુ હોય તો', hi: 'छटका — DHCP दूसरी तरफ हो तो', en: 'The trap — when DHCP is on the far side' },
       text: {
         beginner: {
           gu: 'મોટી કંપનીમાં DHCP server એક જ હોય છે અને દરેક શાખામાં નહીં. પણ DHCP નો પહેલો સંદેશ broadcast છે — અને **router broadcast આગળ નથી મોકલતો**. એટલે બીજી બાજુનાં PC ને કદી જવાબ મળે જ નહીં.',
+          hi: 'बड़ी कंपनी में DHCP server एक ही होता है और हर शाखा में नहीं। पर DHCP का पहला संदेश broadcast है — और **router broadcast आगे नहीं भेजता**। इसलिए दूसरी तरफ के PC को कभी जवाब मिलता ही नहीं।',
           en: 'In a large company there is one DHCP server, not one per branch. But the first DHCP message is a broadcast — and **a router does not forward broadcasts**. So PCs on the far side never get an answer.',
         },
         exam: {
           gu: 'Routers broadcast domain ને અટકાવે છે, એટલે DHCPDISCOVER (255.255.255.255) બીજા subnet સુધી પહોંચતું નથી.',
+          hi: 'Routers broadcast domain को रोकते हैं, इसलिए DHCPDISCOVER (255.255.255.255) दूसरे subnet तक नहीं पहुंचता।',
           en: 'Routers terminate the broadcast domain, so a DHCPDISCOVER to 255.255.255.255 never reaches another subnet.',
         },
       },
@@ -182,14 +193,16 @@ export const n4l1: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'ઉકેલ — ip helper-address', en: 'The fix — ip helper-address' },
+      label: { gu: 'ઉકેલ — ip helper-address', hi: 'समाधान — ip helper-address', en: 'The fix — ip helper-address' },
       text: {
         beginner: {
           gu: 'ઉકેલ એક લીટીનો છે. Router ના interface પર `ip helper-address 10.0.0.5` લખો. હવે router broadcast ને પકડીને એને unicast માં બદલી નાખે છે અને સીધો server ને મોકલે છે. Broadcast આગળ નથી જતું — router એનો સંદેશવાહક બની જાય છે.',
+          hi: 'समाधान एक line का है। Router के interface पर `ip helper-address 10.0.0.5` लिखें। अब router broadcast को पकड़कर उसे unicast में बदल देता है और सीधा server को भेज देता है। Broadcast आगे नहीं जाता — router उसका संदेशवाहक बन जाता है।',
           en: 'The fix is one line. On the router’s interface write `ip helper-address 10.0.0.5`. The router now catches the broadcast, converts it to a unicast and sends it straight to the server. The broadcast still does not travel — the router carries the message instead.',
         },
         exam: {
           gu: 'Relay agent broadcast ને unicast કરે છે અને giaddr માં પોતાનું interface IP ભરે છે, જેથી server જાણે કે કયા subnet ના pool માંથી આપવું.',
+          hi: 'Relay agent broadcast को unicast करता है और giaddr में अपना interface IP भरता है, ताकि server को पता चले कि किस subnet के pool से देना है।',
           en: 'The relay agent rewrites the broadcast as unicast and fills giaddr with its own interface IP, so the server knows which subnet’s pool to allocate from.',
         },
       },
@@ -216,21 +229,24 @@ export const n4l1: LessonSpec = {
   ],
   takeaway: {
     gu: 'Router પર DHCP: પહેલાં `excluded-address` થી સ્થિર સરનામાં બચાવો, પછી pool માં network, default-router અને dns-server ત્રણેય આપો. Server બીજા subnet માં હોય તો interface પર `ip helper-address` — કારણ કે router broadcast આગળ નથી મોકલતો.',
+    hi: 'Router पर DHCP: पहले `excluded-address` से स्थिर पते बचाएं, फिर pool में network, default-router और dns-server तीनों दें। Server दूसरे subnet में हो तो interface पर `ip helper-address` — क्योंकि router broadcast आगे नहीं भेजता।',
     en: 'DHCP on a router: first protect the static addresses with `excluded-address`, then give the pool a network, a default-router and a dns-server. If the server sits in another subnet, add `ip helper-address` on the interface — because a router will not forward broadcasts.',
   },
   check: {
     q: {
       gu: 'DHCP server બીજા subnet માં છે અને PC ને સરનામું મળતું નથી. શું જોઈએ?',
+      hi: 'DHCP server दूसरे subnet में है और PC को पता नहीं मिल रहा। क्या चाहिए?',
       en: 'The DHCP server is in another subnet and the PCs get no address. What is needed?',
     },
     options: [
-      { gu: 'Router ના interface પર ip helper-address', en: 'ip helper-address on the router interface' },
-      { gu: 'દરેક PC પર static IP', en: 'A static IP on every PC' },
-      { gu: 'Pool માં વધુ સરનામાં', en: 'More addresses in the pool' },
+      { gu: 'Router ના interface પર ip helper-address', hi: 'Router के interface पर ip helper-address', en: 'ip helper-address on the router interface' },
+      { gu: 'દરેક PC પર static IP', hi: 'हर PC पर static IP', en: 'A static IP on every PC' },
+      { gu: 'Pool માં વધુ સરનામાં', hi: 'Pool में ज्यादा पते', en: 'More addresses in the pool' },
     ],
     answer: 0,
     explain: {
       gu: 'DHCP નો પહેલો સંદેશ broadcast છે અને router એને આગળ નથી મોકલતો. `ip helper-address` router ને એ broadcast પકડીને server સુધી unicast કરવાનું કહે છે.',
+      hi: 'DHCP का पहला संदेश broadcast है और router उसे आगे नहीं भेजता। `ip helper-address` router को वह broadcast पकड़कर server तक unicast करने को कहता है।',
       en: 'The first DHCP message is a broadcast and a router will not forward it. `ip helper-address` tells the router to catch it and unicast it to the server.',
     },
   },
@@ -254,20 +270,23 @@ const natLinks = [
 export const n4l2: LessonSpec = {
   why: {
     gu: 'ખાનગી સરનામું internet પર જાય તો પહેલા જ router પર ફેંકાઈ જાય છે. NAT એ સરહદ પર ઊભું રહીને packet નું સરનામું બદલી નાખે છે — અને એટલું ચોકસાઈથી યાદ રાખે છે કે જવાબ પાછો સાચા મશીન સુધી પહોંચે.',
+    hi: 'निजी पता internet पर जाए तो पहले ही router पर फेंक दिया जाता है। NAT सीमा पर खड़ा होकर packet का पता बदल देता है — और इतनी सटीकता से याद रखता है कि जवाब वापस सही मशीन तक पहुंच जाए।',
     en: 'A private address thrown at the internet is dropped by the first router it meets. NAT stands at the border and rewrites the packet’s address — remembering precisely enough that the reply finds its way back to the right machine.',
   },
   viewBox: { w: 880, h: 400 },
   steps: [
     {
       ms: 2800,
-      label: { gu: 'અંદર કોણ, બહાર કોણ', en: 'Which side is inside, which is outside' },
+      label: { gu: 'અંદર કોણ, બહાર કોણ', hi: 'अंदर कौन, बाहर कौन', en: 'Which side is inside, which is outside' },
       text: {
         beginner: {
           gu: 'NAT ની પહેલી શરત એ છે કે router ને કહેવું પડે કે કયું interface "અંદર" છે અને કયું "બહાર". આ બે લીટી ભૂલાઈ જાય તો NAT configure કર્યા પછી પણ કશું જ નહીં થાય — અને કોઈ error પણ નહીં આવે.',
+          hi: 'NAT की पहली शर्त यह है कि router को बताना पड़ता है कि कौन सा interface "अंदर" है और कौन सा "बाहर"। ये दो lines भूल जाएं तो NAT configure करने के बाद भी कुछ नहीं होगा — और कोई error भी नहीं आएगा।',
           en: 'The first requirement of NAT is telling the router which interface is "inside" and which is "outside". Forget those two lines and NAT will do nothing at all after you configure it — with no error message either.',
         },
         exam: {
           gu: '`ip nat inside` અને `ip nat outside` interface level પર જોઈએ. એ વગર translation rules કદી લાગુ પડતા નથી — આ સૌથી સામાન્ય NAT ભૂલ છે.',
+          hi: '`ip nat inside` और `ip nat outside` interface level पर चाहिए। इसके बिना translation rules कभी लागू नहीं होते — यह सबसे आम NAT गलती है।',
           en: '`ip nat inside` and `ip nat outside` are required at interface level. Without them the translation rules never apply — the single most common NAT mistake.',
         },
       },
@@ -288,14 +307,16 @@ export const n4l2: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'ખાનગી packet સરહદ સુધી', en: 'The private packet reaches the border' },
+      label: { gu: 'ખાનગી packet સરહદ સુધી', hi: 'निजी packet सीमा तक', en: 'The private packet reaches the border' },
       text: {
         beginner: {
           gu: 'PC1 (192.168.1.10) વેબસાઈટ ખોલે છે. Packet R1 સુધી પહોંચે છે. અહીં જ નિર્ણય થાય છે — જો NAT ન હોય તો એ packet આગળ જાય તો ખરો, પણ ISP એને તરત ફેંકી દે, કારણ કે 192.168.x.x internet પર routable જ નથી.',
+          hi: 'PC1 (192.168.1.10) वेबसाइट खोलता है। Packet R1 तक पहुंचता है। यहीं निर्णय होता है — अगर NAT न हो तो वह packet आगे जाए भी, पर ISP उसे तुरंत फेंक दे, क्योंकि 192.168.x.x internet पर routable ही नहीं है।',
           en: 'PC1 (192.168.1.10) opens a website. The packet reaches R1. This is the decision point — without NAT it would go on, but the ISP would drop it instantly, because 192.168.x.x is simply not routable on the internet.',
         },
         exam: {
           gu: 'RFC 1918 addresses internet પર advertise થતાં નથી અને providers એમને filter કરે છે. એટલે outbound traffic માટે translation ફરજિયાત છે.',
+          hi: 'RFC 1918 addresses internet पर advertise नहीं होते और providers उन्हें filter करते हैं। इसलिए outbound traffic के लिए translation अनिवार्य है।',
           en: 'RFC 1918 addresses are never advertised on the internet and providers filter them, so translation is mandatory for outbound traffic.',
         },
       },
@@ -309,14 +330,16 @@ export const n4l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'સરનામું બદલાય', en: 'The address is rewritten' },
+      label: { gu: 'સરનામું બદલાય', hi: 'पता बदल जाता है', en: 'The address is rewritten' },
       text: {
         beginner: {
           gu: 'અહીં NAT કામ કરે છે. R1 packet ખોલે છે, source સરનામું 192.168.1.10 ભૂંસે છે, અને પોતાનું જાહેર સરનામું 203.0.113.2 લખી દે છે. Destination એ જ રહે છે. પછી એ નોંધ કરે છે કે કોના માટે શું કર્યું — આ નોંધ જ સૌથી અગત્યની છે.',
+          hi: 'यहां NAT काम करता है। R1 packet खोलता है, source पता 192.168.1.10 मिटाता है, और अपना सार्वजनिक पता 203.0.113.2 लिख देता है। Destination वही रहता है। फिर वह नोट करता है कि किसके लिए क्या किया — यही नोट सबसे अहम है।',
           en: 'Here NAT does its work. R1 opens the packet, erases the source 192.168.1.10 and writes its own public address 203.0.113.2. The destination is untouched. Then it makes a note of what it did for whom — and that note is the important part.',
         },
         exam: {
           gu: 'Inside-local (192.168.1.10) → inside-global (203.0.113.2). Translation entry બને છે; IP header નો checksum ફરી ગણાય છે.',
+          hi: 'Inside-local (192.168.1.10) → inside-global (203.0.113.2)। Translation entry बनती है; IP header का checksum फिर से गणना होता है।',
           en: 'Inside-local (192.168.1.10) becomes inside-global (203.0.113.2). A translation entry is created and the IP header checksum is recomputed.',
         },
       },
@@ -328,21 +351,23 @@ export const n4l2: LessonSpec = {
         ],
       }),
       aside: (t) => ({
-        title: { gu: 'Translation table', en: 'Translation table' },
+        title: { gu: 'Translation table', hi: 'Translation table', en: 'Translation table' },
         head: ['inside local', 'inside global'],
         rows: t > 0.3 ? [['192.168.1.10:51234', '203.0.113.2:51234']] : [],
       }),
     },
     {
       ms: 3200,
-      label: { gu: 'જવાબ પાછો — ઊલટું ભાષાંતર', en: 'The reply — translated back' },
+      label: { gu: 'જવાબ પાછો — ઊલટું ભાષાંતર', hi: 'जवाब वापस — उल्टा अनुवाद', en: 'The reply — translated back' },
       text: {
         beginner: {
           gu: 'Website જવાબ 203.0.113.2 ને મોકલે છે, કારણ કે એને એ જ સરનામું દેખાયું હતું. Packet R1 પર આવે છે, R1 પોતાની નોંધ જુએ છે — "આ તો PC1 માટે હતું" — અને destination બદલીને 192.168.1.10 કરી નાખે છે. PC1 ને કશી ખબર પડતી નથી.',
+          hi: 'Website जवाब 203.0.113.2 को भेजती है, क्योंकि उसे वही पता दिखा था। Packet R1 पर आता है, R1 अपनी नोट देखता है — "यह तो PC1 के लिए था" — और destination बदलकर 192.168.1.10 कर देता है। PC1 को कुछ पता ही नहीं चलता।',
           en: 'The website replies to 203.0.113.2, because that is the only address it ever saw. The packet arrives at R1, R1 checks its note — "that one was for PC1" — and rewrites the destination to 192.168.1.10. PC1 never knows any of it happened.',
         },
         exam: {
           gu: 'Return traffic માં destination inside-global → inside-local બદલાય છે. Entry ન મળે તો packet drop થાય — એ જ NAT નું implicit security છે.',
+          hi: 'Return traffic में destination inside-global → inside-local बदलता है। Entry न मिले तो packet drop होता है — यही NAT की implicit security है।',
           en: 'On the way back the destination changes from inside-global to inside-local. With no matching entry the packet is dropped — which is NAT’s implicit security.',
         },
       },
@@ -357,14 +382,16 @@ export const n4l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'PAT — port વડે બધાને સમાવો', en: 'PAT — fitting everyone in with ports' },
+      label: { gu: 'PAT — port વડે બધાને સમાવો', hi: 'PAT — port से सबको समाएं', en: 'PAT — fitting everyone in with ports' },
       text: {
         beginner: {
           gu: 'પણ ઘરમાં દસ ઉપકરણ અને જાહેર સરનામું એક જ! તો R1 બીજું કામ કરે છે: દરેક વાતચીતને અલગ port number આપે છે. PC1 ને 51234, PC2 ને 51235. સરનામું એક જ, પણ port અલગ — એટલે જવાબ કદી ભળતો નથી. આને PAT કે NAT overload કહે છે.',
+          hi: 'पर घर में दस उपकरण और सार्वजनिक पता एक ही! तो R1 दूसरा काम करता है: हर बातचीत को अलग port number देता है। PC1 को 51234, PC2 को 51235। पता एक ही, पर port अलग — इसलिए जवाब कभी नहीं मिलते। इसे PAT या NAT overload कहते हैं।',
           en: 'But there are ten devices at home and only one public address. So R1 does something extra: it gives every conversation its own port number. PC1 gets 51234, PC2 gets 51235. One address, different ports — so the replies never get mixed up. This is PAT, or NAT overload.',
         },
         exam: {
           gu: '`ip nat inside source list 1 interface Gi0/1 overload`. `overload` keyword PAT ચાલુ કરે છે — એક public IP પર ~65,000 concurrent sessions.',
+          hi: '`ip nat inside source list 1 interface Gi0/1 overload`। `overload` keyword PAT चालू करता है — एक public IP पर ~65,000 concurrent sessions।',
           en: '`ip nat inside source list 1 interface Gi0/1 overload`. The `overload` keyword enables PAT — around 65,000 concurrent sessions behind one public IP.',
         },
       },
@@ -389,7 +416,7 @@ export const n4l2: LessonSpec = {
             : [],
       }),
       aside: (t) => ({
-        title: { gu: 'એક IP, ઘણા ports', en: 'One IP, many ports' },
+        title: { gu: 'એક IP, ઘણા ports', hi: 'एक IP, कई ports', en: 'One IP, many ports' },
         head: ['inside', 'outside'],
         rows:
           t > 0.4
@@ -403,14 +430,16 @@ export const n4l2: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'Static NAT — બહારથી અંદર આવવા દો', en: 'Static NAT — letting the outside in' },
+      label: { gu: 'Static NAT — બહારથી અંદર આવવા દો', hi: 'Static NAT — बाहर से अंदर आने दें', en: 'Static NAT — letting the outside in' },
       text: {
         beginner: {
           gu: 'PAT એક દિશામાં જ કામ કરે — અંદરથી શરૂ થાય તો જ. પણ તમારો web server અંદર હોય અને બહારના લોકોને એના સુધી પહોંચવું હોય તો? ત્યાં static NAT વપરાય: એક કાયમી જોડી બનાવી દો, "203.0.113.5 એટલે હંમેશા 192.168.1.50".',
+          hi: 'PAT एक ही दिशा में काम करता है — अंदर से शुरू हो तो। पर आपका web server अंदर हो और बाहर के लोगों को उस तक पहुंचना हो तो? वहां static NAT वापरा जाता है: एक स्थायी जोड़ी बना दें, "203.0.113.5 यानी हमेशा 192.168.1.50"।',
           en: 'PAT works one way only — when the conversation starts inside. But what if your web server is inside and the outside world must reach it? Then you use static NAT: create a permanent pair, "203.0.113.5 always means 192.168.1.50".',
         },
         exam: {
           gu: '`ip nat inside source static 192.168.1.50 203.0.113.5` કાયમી bidirectional mapping બનાવે છે. એ translation table માં હંમેશા હાજર રહે છે.',
+          hi: '`ip nat inside source static 192.168.1.50 203.0.113.5` स्थायी bidirectional mapping बनाता है। यह translation table में हमेशा मौजूद रहता है।',
           en: '`ip nat inside source static 192.168.1.50 203.0.113.5` creates a permanent bidirectional mapping that is always present in the translation table.',
         },
       },
@@ -435,21 +464,24 @@ export const n4l2: LessonSpec = {
   ],
   takeaway: {
     gu: 'NAT સરહદ પર packet નું સરનામું બદલે છે અને નોંધ રાખે છે જેથી જવાબ પાછો સાચા મશીન સુધી પહોંચે. PAT port વાપરીને એક જ જાહેર સરનામા પાછળ હજારો મશીન સમાવે. બહારથી અંદર આવવા દેવું હોય તો static NAT. અને `ip nat inside/outside` ભૂલશો નહીં.',
+    hi: 'NAT सीमा पर packet का पता बदलता है और नोट रखता है ताकि जवाब वापस सही मशीन तक पहुंचे। PAT port वापरकर एक ही सार्वजनिक पते के पीछे हजारों मशीनें समा देता है। बाहर से अंदर आने देना हो तो static NAT। और `ip nat inside/outside` भूलें नहीं।',
     en: 'NAT rewrites a packet’s address at the border and keeps a note so the reply finds the right machine. PAT uses ports to fit thousands of machines behind one public address. To let the outside in, use static NAT. And never forget `ip nat inside/outside`.',
   },
   check: {
     q: {
       gu: 'NAT configure કર્યું પણ કશું translate નથી થતું. સૌથી પહેલાં શું તપાસશો?',
+      hi: 'NAT configure किया पर कुछ translate नहीं हो रहा। सबसे पहले क्या जांचेंगे?',
       en: 'NAT is configured but nothing is being translated. What do you check first?',
     },
     options: [
-      { gu: 'Interfaces પર ip nat inside અને ip nat outside છે કે નહીં', en: 'Whether ip nat inside and ip nat outside are on the interfaces' },
-      { gu: 'PC નું IP સરનામું', en: 'The PC’s IP address' },
-      { gu: 'Router નો hostname', en: 'The router’s hostname' },
+      { gu: 'Interfaces પર ip nat inside અને ip nat outside છે કે નહીં', hi: 'Interfaces पर ip nat inside और ip nat outside हैं या नहीं', en: 'Whether ip nat inside and ip nat outside are on the interfaces' },
+      { gu: 'PC નું IP સરનામું', hi: 'PC का IP पता', en: 'The PC’s IP address' },
+      { gu: 'Router નો hostname', hi: 'Router का hostname', en: 'The router’s hostname' },
     ],
     answer: 0,
     explain: {
       gu: 'NAT rules ત્યારે જ લાગુ પડે જ્યારે router ને ખબર હોય કે કયું interface અંદર છે અને કયું બહાર. એ બે લીટી વગર configuration સાચું દેખાય પણ કશું થાય નહીં.',
+      hi: 'NAT rules तभी लागू होते हैं जब router को पता हो कि कौन सा interface अंदर है और कौन सा बाहर। उन दो lines के बिना configuration सही दिखे पर कुछ न हो।',
       en: 'NAT rules only apply once the router knows which interface is inside and which is outside. Without those two lines the configuration looks right but does nothing.',
     },
   },
@@ -475,20 +507,23 @@ const aclLinks = [
 export const n5l2: LessonSpec = {
   why: {
     gu: 'VLAN અને routing ગોઠવાઈ ગયા પછી એક સવાલ બાકી રહે છે: બધાં એકબીજા સુધી પહોંચી શકે છે — પણ શું બધાંએ પહોંચવું જોઈએ? ACL એ router પર લખેલા નિયમો છે જે નક્કી કરે કે કયો packet આગળ જાય અને કયો અહીં જ અટકે.',
+    hi: 'VLAN और routing सेट होने के बाद एक सवाल बाकी रहता है: सब एक-दूसरे तक पहुंच सकते हैं — पर क्या सबको पहुंचना चाहिए? ACL router पर लिखे नियम हैं जो तय करते हैं कि कौन सा packet आगे जाए और कौन यहीं रुके।',
     en: 'Once VLANs and routing are in place one question remains: everyone can reach everyone — but should they? An ACL is a list of rules on the router deciding which packet travels on and which stops right there.',
   },
   viewBox: { w: 880, h: 430 },
   steps: [
     {
       ms: 2800,
-      label: { gu: 'અત્યારે બધાં બધે પહોંચે છે', en: 'Right now everyone reaches everything' },
+      label: { gu: 'અત્યારે બધાં બધે પહોંચે છે', hi: 'अभी सब सब जगह पहुंचते हैं', en: 'Right now everyone reaches everything' },
       text: {
         beginner: {
           gu: 'Routing બરાબર કામ કરે છે — એટલું બરાબર કે મહેમાનનું લેપટોપ પણ કંપનીના server સુધી પહોંચી જાય છે. Routing નું કામ રસ્તો બનાવવાનું છે, એ પૂછતું નથી કે જવું જોઈએ કે નહીં.',
+          hi: 'Routing ठीक काम करती है — इतनी ठीक कि मेहमान का लैपटॉप भी कंपनी के server तक पहुंच जाता है। Routing का काम रास्ता बनाना है, वह नहीं पूछती कि जाना चाहिए या नहीं।',
           en: 'Routing works perfectly — so perfectly that the guest laptop reaches the company server too. Routing’s job is to build a path; it never asks whether anyone should take it.',
         },
         exam: {
           gu: 'Default માં કોઈ filtering નથી; router બધું forward કરે છે જેનો route હોય. Policy enforcement અલગથી ઉમેરવું પડે.',
+          hi: 'Default में कोई filtering नहीं; router सब कुछ forward करता है जिसका route हो। Policy enforcement अलग से जोड़ना पड़ता है।',
           en: 'By default there is no filtering; a router forwards anything it has a route for. Policy enforcement has to be added separately.',
         },
       },
@@ -506,14 +541,16 @@ export const n5l2: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'નિયમોની યાદી બનાવો', en: 'Write a list of rules' },
+      label: { gu: 'નિયમોની યાદી બનાવો', hi: 'नियमों की सूची बनाएं', en: 'Write a list of rules' },
       text: {
         beginner: {
           gu: 'ACL એ ઉપરથી નીચે વંચાતી યાદી છે. દરેક packet એના પર ઊભો રહીને પહેલી લીટીથી તપાસાય છે. મેળ ખાય એટલે નિર્ણય થઈ ગયો — permit કે deny — અને બાકીની લીટીઓ વંચાતી જ નથી. **પહેલો મેળ જીતે.**',
+          hi: 'ACL ऊपर से नीचे पढ़ी जाने वाली सूची है। हर packet उस पर खड़ा होकर पहली line से जांचा जाता है। मेल खाए तो निर्णय हो गया — permit या deny — और बाकी lines पढ़ी ही नहीं जातीं। **पहला मेल जीतता है।**',
           en: 'An ACL is a list read top to bottom. Every packet is checked against line one first. The moment something matches the decision is made — permit or deny — and the remaining lines are never read. **First match wins.**',
         },
         exam: {
           gu: 'ACL sequential છે અને first match પર evaluation અટકી જાય છે. એટલે specific entries પહેલાં અને general પછી મૂકવા — ઊલટું કરો તો specific rule કદી match નહીં થાય.',
+          hi: 'ACL sequential है और first match पर evaluation रुक जाती है। इसलिए specific entries पहले और general बाद में रखें — उल्टा करें तो specific rule कभी match न हो।',
           en: 'An ACL is sequential and evaluation stops at the first match, so specific entries must come before general ones. Reverse them and the specific rule never matches.',
         },
       },
@@ -522,7 +559,7 @@ export const n5l2: LessonSpec = {
         links: aclLinks,
       }),
       aside: (t) => ({
-        title: { gu: 'ACL 100', en: 'ACL 100' },
+        title: { gu: 'ACL 100', hi: 'ACL 100', en: 'ACL 100' },
         head: ['#', 'rule', 'action'],
         rows:
           t > 0.4
@@ -535,14 +572,16 @@ export const n5l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'Staff નો packet — પહેલી લીટીએ permit', en: 'The staff packet — permitted on line one' },
+      label: { gu: 'Staff નો packet — પહેલી લીટીએ permit', hi: 'Staff का packet — पहली line पर permit', en: 'The staff packet — permitted on line one' },
       text: {
         beginner: {
           gu: 'Staff નો packet આવે છે. Router પહેલી લીટી વાંચે: "10.0.1.0 થી server સુધી — permit". મેળ ખાઈ ગયો! નિર્ણય થઈ ગયો, packet આગળ જાય છે. બીજી લીટી વંચાતી પણ નથી.',
+          hi: 'Staff का packet आता है। Router पहली line पढ़ता है: "10.0.1.0 से server तक — permit"। मेल खा गया! निर्णय हो गया, packet आगे जाता है। दूसरी line पढ़ी भी नहीं जाती।',
           en: 'A staff packet arrives. The router reads line one: "10.0.1.0 to the server — permit". It matches. The decision is made and the packet goes through. Line two is never even read.',
         },
         exam: {
           gu: 'Inbound ACL routing decision પહેલાં લાગુ પડે છે. Permit થાય એટલે packet normal forwarding path પર જાય છે.',
+          hi: 'Inbound ACL routing decision से पहले लागू होता है। Permit होने पर packet normal forwarding path पर जाता है।',
           en: 'An inbound ACL is applied before the routing decision. On a permit the packet continues down the normal forwarding path.',
         },
       },
@@ -555,7 +594,7 @@ export const n5l2: LessonSpec = {
             : [{ id: 's', from: 'r1', to: 'srv', t: 0.1 + ease((t - 0.5) / 0.5) * 0.8, color: 'var(--nq-ok)', label: 'line 10 · permit ✓' }],
       }),
       aside: (t) => ({
-        title: { gu: 'તપાસ', en: 'Evaluation' },
+        title: { gu: 'તપાસ', hi: 'जांच', en: 'Evaluation' },
         head: ['#', 'rule', 'result'],
         rows: [
           ['10', '10.0.1.0 → server', t > 0.35 ? 'MATCH · permit ←' : 'checking…'],
@@ -565,14 +604,16 @@ export const n5l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'Guest નો packet — બીજી લીટીએ deny', en: 'The guest packet — denied on line two' },
+      label: { gu: 'Guest નો packet — બીજી લીટીએ deny', hi: 'Guest का packet — दूसरी line पर deny', en: 'The guest packet — denied on line two' },
       text: {
         beginner: {
           gu: 'હવે guest નો packet. પહેલી લીટી વાંચી — 10.0.1.0 નો નથી, મેળ નહીં. બીજી લીટી — 10.0.2.0 થી server, deny. મેળ ખાઈ ગયો. Packet અહીં જ ફેંકાઈ જાય છે અને server સુધી કદી પહોંચતો નથી.',
+          hi: 'अब guest का packet। पहली line पढ़ी — 10.0.1.0 का नहीं है, मेल नहीं। दूसरी line — 10.0.2.0 से server, deny। मेल खा गया। Packet यहीं फेंक दिया जाता है और server तक कभी नहीं पहुंचता।',
           en: 'Now a guest packet. Line one is read — not from 10.0.1.0, no match. Line two — from 10.0.2.0 to the server, deny. That matches. The packet is dropped right here and never reaches the server.',
         },
         exam: {
           gu: 'Deny થાય એટલે packet drop થાય છે અને સામાન્ય રીતે ICMP administratively-prohibited પાછો જાય છે (જો `no ip unreachables` ન હોય તો).',
+          hi: 'Deny होने पर packet drop होता है और आमतौर पर ICMP administratively-prohibited वापस जाता है (अगर `no ip unreachables` न हो तो)।',
           en: 'On a deny the packet is dropped, usually with an ICMP administratively-prohibited reply (unless `no ip unreachables` is set).',
         },
       },
@@ -585,10 +626,10 @@ export const n5l2: LessonSpec = {
       }),
       say: (t) =>
         t > 0.65
-          ? { nodeId: 'r1', text: { gu: 'લીટી 20 મેળ ખાઈ — deny', en: 'Line 20 matched — deny' } }
+          ? { nodeId: 'r1', text: { gu: 'લીટી 20 મેળ ખાઈ — deny', hi: 'Line 20 मेल खा गई — deny', en: 'Line 20 matched — deny' } }
           : null,
       aside: (t) => ({
-        title: { gu: 'તપાસ', en: 'Evaluation' },
+        title: { gu: 'તપાસ', hi: 'जांच', en: 'Evaluation' },
         head: ['#', 'rule', 'result'],
         rows: [
           ['10', '10.0.1.0 → server', t > 0.3 ? 'no match' : 'checking…'],
@@ -598,14 +639,16 @@ export const n5l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'છેલ્લે એક અદૃશ્ય દીવાલ', en: 'An invisible wall at the end' },
+      label: { gu: 'છેલ્લે એક અદૃશ્ય દીવાલ', hi: 'आखिर में एक अदृश्य दीवार', en: 'An invisible wall at the end' },
       text: {
         beginner: {
           gu: 'અહીં સૌથી મોટી છટકું છે. દરેક ACL ના છેડે એક લીટી હોય છે જે તમે લખી નથી અને દેખાતી પણ નથી: **deny any any**. એટલે જે કશામાં મેળ ન ખાય એ બધું ફેંકાઈ જાય. એક permit લખીને બાકીનું ખુલ્લું રહેશે એમ માનવું એ સૌથી સામાન્ય ભૂલ છે.',
+          hi: 'यहां सबसे बड़ा छटका है। हर ACL के अंत में एक line होती है जो आपने लिखी नहीं और दिखती भी नहीं: **deny any any**। इसलिए जो कुछ में मेल न खाए वह सब फेंक दिया जाता है। एक permit लिखकर बाकी खुला रहेगा यह मानना सबसे आम गलती है।',
           en: 'This is the biggest trap. At the end of every ACL sits a line you never wrote and cannot see: **deny any any**. Anything matching nothing above it is dropped. Assuming that one permit leaves the rest open is the most common mistake there is.',
         },
         exam: {
           gu: 'Implicit `deny ip any any` દરેક ACL ના અંતે છે અને `show access-lists` માં દેખાતી નથી. બાકીનું traffic ચાલુ રાખવું હોય તો explicit `permit ip any any` લખવું પડે.',
+          hi: 'Implicit `deny ip any any` हर ACL के अंत में है और `show access-lists` में नहीं दिखती। बाकी traffic चालू रखना हो तो explicit `permit ip any any` लिखना पड़ता है।',
           en: 'The implicit `deny ip any any` ends every ACL and does not appear in `show access-lists`. To let other traffic through you must write an explicit `permit ip any any`.',
         },
       },
@@ -621,10 +664,10 @@ export const n5l2: LessonSpec = {
       }),
       say: (t) =>
         t > 0.7
-          ? { nodeId: 'r1', text: { gu: 'કશામાં મેળ નહીં — એટલે બંધ', en: 'Matched nothing — so blocked' } }
+          ? { nodeId: 'r1', text: { gu: 'કશામાં મેળ નહીં — એટલે બંધ', hi: 'कुछ में मेल नहीं — तो बंद', en: 'Matched nothing — so blocked' } }
           : null,
       aside: (t) => ({
-        title: { gu: 'ACL 100 — ખરેખર', en: 'ACL 100 — what it really is' },
+        title: { gu: 'ACL 100 — ખરેખર', hi: 'ACL 100 — असल में', en: 'ACL 100 — what it really is' },
         head: ['#', 'rule', 'action'],
         rows: [
           ['10', '10.0.1.0 → server', 'permit'],
@@ -635,14 +678,16 @@ export const n5l2: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'ક્યાં લગાવવો — અને કઈ દિશામાં', en: 'Where to apply it — and in which direction' },
+      label: { gu: 'ક્યાં લગાવવો — અને કઈ દિશામાં', hi: 'कहां लगाएं — और किस दिशा में', en: 'Where to apply it — and in which direction' },
       text: {
         beginner: {
           gu: 'ACL લખવાથી કશું થતું નથી — એને interface પર લગાવવો પડે, અને દિશા કહેવી પડે. જૂનો નિયમ છે: standard ACL destination ની નજીક, extended ACL source ની નજીક. કારણ સાદું છે — નકામો traffic જેટલો વહેલો રોકાય એટલું સારું.',
+          hi: 'ACL लिखने से कुछ नहीं होता — उसे interface पर लगाना पड़ता है, और दिशा बतानी पड़ती है। पुराना नियम है: standard ACL destination के पास, extended ACL source के पास। कारण सीधा है — नाकाम traffic जितना जल्दी रुके उतना अच्छा।',
           en: 'Writing an ACL does nothing — you must apply it to an interface and state a direction. The old rule: standard ACLs near the destination, extended ACLs near the source. The reason is simple — stop unwanted traffic as early as you can.',
         },
         exam: {
           gu: '`ip access-group 100 in` interface પર લગાવે છે. Standard ACL ફક્ત source જુએ છે એટલે source પાસે મૂકો તો બધું જ કપાઈ જાય; extended ACL source અને destination બંને જુએ છે.',
+          hi: '`ip access-group 100 in` interface पर लगाता है। Standard ACL केवल source देखता है इसलिए source के पास रखें तो सब कट जाए; extended ACL source और destination दोनों देखता है।',
           en: '`ip access-group 100 in` applies it to an interface. A standard ACL matches on source only, so placing it near the source would cut everything; an extended ACL matches both source and destination.',
         },
       },
@@ -660,7 +705,7 @@ export const n5l2: LessonSpec = {
             : [],
       }),
       aside: () => ({
-        title: { gu: 'ક્યાં મૂકવો', en: 'Where to place it' },
+        title: { gu: 'ક્યાં મૂકવો', hi: 'कहां रखें', en: 'Where to place it' },
         head: ['type', 'matches on', 'place near'],
         rows: [
           ['standard', 'source only', 'the destination'],
@@ -671,21 +716,24 @@ export const n5l2: LessonSpec = {
   ],
   takeaway: {
     gu: 'ACL ઉપરથી નીચે વંચાય અને પહેલો મેળ જીતે — બાકીની લીટીઓ વંચાતી જ નથી. છેડે એક અદૃશ્ય `deny any any` હંમેશા બેઠી હોય છે, એટલે જે લખ્યું નથી એ બધું બંધ. લખવાથી કશું ન થાય; interface પર દિશા સાથે લગાવવો પડે.',
+    hi: 'ACL ऊपर से नीचे पढ़ा जाता है और पहला मेल जीतता है — बाकी lines पढ़ी ही नहीं जातीं। अंत में एक अदृश्य `deny any any` हमेशा बैठी होती है, इसलिए जो नहीं लिखा वह सब बंद। लिखने से कुछ न हो; interface पर दिशा के साथ लगाना पड़ता है।',
     en: 'An ACL is read top to bottom and the first match wins — nothing below it is read. An invisible `deny any any` always sits at the end, so anything you did not write is blocked. Writing it does nothing; you must apply it to an interface with a direction.',
   },
   check: {
     q: {
       gu: 'તમે ACL માં ફક્ત એક લીટી લખી: "permit 10.0.1.0". બાકીના નેટવર્કનું શું થશે?',
+      hi: 'आपने ACL में सिर्फ एक line लिखी: "permit 10.0.1.0"। बाकी network का क्या होगा?',
       en: 'Your ACL has just one line: "permit 10.0.1.0". What happens to every other network?',
     },
     options: [
-      { gu: 'બધું બંધ — છેડે અદૃશ્ય deny any any છે', en: 'All blocked — the invisible deny any any ends the list' },
-      { gu: 'બધું ચાલુ — ફક્ત લખેલું જ લાગુ પડે', en: 'All allowed — only what is written applies' },
-      { gu: 'કશું નહીં થાય', en: 'Nothing happens at all' },
+      { gu: 'બધું બંધ — છેડે અદૃશ્ય deny any any છે', hi: 'सब बंद — अंत में अदृश्य deny any any है', en: 'All blocked — the invisible deny any any ends the list' },
+      { gu: 'બધું ચાલુ — ફક્ત લખેલું જ લાગુ પડે', hi: 'सब चालू — सिर्फ लिखा ही लागू होता है', en: 'All allowed — only what is written applies' },
+      { gu: 'કશું નહીં થાય', hi: 'कुछ नहीं होगा', en: 'Nothing happens at all' },
     ],
     answer: 0,
     explain: {
       gu: 'દરેક ACL ના અંતે ન દેખાતી `deny any any` હોય છે. એક permit લખો એટલે એ એક જ ચાલુ રહે અને બાકીનું બધું કપાઈ જાય — એટલે ACL લગાવતાં પહેલાં હંમેશા વિચારો કે શું ચાલુ રાખવું છે.',
+      hi: 'हर ACL के अंत में न दिखने वाली `deny any any` होती है। एक permit लिखें तो वही एक चालू रहे और बाकी सब कट जाए — इसलिए ACL लगाने से पहले हमेशा सोचें कि क्या चालू रखना है।',
       en: 'Every ACL ends with an unseen `deny any any`. Write one permit and only that survives while everything else is cut — so always think about what must stay allowed before you apply one.',
     },
   },

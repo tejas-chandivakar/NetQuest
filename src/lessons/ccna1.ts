@@ -11,19 +11,22 @@ const WARN = 'var(--nq-warn)'
 export const n1l4: LessonSpec = {
   why: {
     gu: 'Subnetting CCNA નો સૌથી ડરામણો ભાગ ગણાય છે, પણ એનો આખો વિચાર એક જ વાક્યમાં છે: એક મોટી શેરીને દીવાલ નાખીને નાની ગલીઓમાં વહેંચવી. દીવાલ ક્યાં પડે એ subnet mask નક્કી કરે છે.',
+    hi: 'Subnetting CCNA का सबसे डरावना हिस्सा माना जाता है, पर इसका पूरा विचार एक ही वाक्य में है: एक बड़ी सड़क को दीवार लगाकर छोटी गलियों में बांटना। दीवार कहां पड़े यह subnet mask तय करता है।',
     en: 'Subnetting has a reputation as the frightening part of CCNA, but the whole idea fits in one sentence: split one big street into smaller lanes by putting up walls. The subnet mask decides where each wall goes.',
   },
   steps: [
     {
       ms: 2800,
-      label: { gu: 'એક મોટી શેરી — 254 ઘર', en: 'One big street — 254 houses' },
+      label: { gu: 'એક મોટી શેરી — 254 ઘર', hi: 'एक बड़ी सड़क — 254 घर', en: 'One big street — 254 houses' },
       text: {
         beginner: {
           gu: '192.168.1.0/24 એટલે એક શેરી જેમાં 254 ઘર સમાઈ શકે. પણ તમારી ઓફિસમાં ફક્ત ત્રણ વિભાગ છે — Sales માં 20 માણસ, HR માં 10, IT માં 5. બધાને એક જ શેરીમાં મૂકો તો 219 સરનામાં નકામાં પડ્યાં રહે.',
+          hi: '192.168.1.0/24 यानी एक सड़क जिसमें 254 घर समा सकें। पर आपकी ऑफिस में सिर्फ तीन विभाग हैं — Sales में 20 लोग, HR में 10, IT में 5। सबको एक ही सड़क पर रखें तो 219 पते बेकार पड़े रहें।',
           en: '192.168.1.0/24 is one street with room for 254 houses. But your office has three departments — 20 in Sales, 10 in HR, 5 in IT. Put them all on one street and 219 addresses sit unused.',
         },
         exam: {
           gu: '/24 માં 8 host bits છે: 2^8 − 2 = 254 usable addresses. એક જ broadcast domain હોવાથી દરેક broadcast બધા 254 hosts સુધી પહોંચે છે.',
+          hi: '/24 में 8 host bits हैं: 2^8 − 2 = 254 usable addresses। एक ही broadcast domain होने से हर broadcast सभी 254 hosts तक पहुंचता है।',
           en: 'A /24 has 8 host bits: 2^8 − 2 = 254 usable addresses. With one broadcast domain every broadcast reaches all 254 hosts.',
         },
       },
@@ -41,7 +44,7 @@ export const n1l4: LessonSpec = {
         ],
       }),
       aside: () => ({
-        title: { gu: 'વપરાશ', en: 'Utilisation' },
+        title: { gu: 'વપરાશ', hi: 'उपयोग', en: 'Utilisation' },
         head: ['', 'count'],
         rows: [
           ['addresses available', '254'],
@@ -52,14 +55,16 @@ export const n1l4: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'Host bits ઉધાર લો', en: 'Borrow host bits' },
+      label: { gu: 'Host bits ઉધાર લો', hi: 'Host bits उधार लें', en: 'Borrow host bits' },
       text: {
         beginner: {
           gu: 'શેરી વહેંચવા માટે આપણે ઘરના નંબર માટેના bits માંથી થોડા ઉધાર લઈએ છીએ અને એમને શેરીના નામમાં ઉમેરી દઈએ છીએ. બે bits ઉધાર લો તો /24 નું /26 થઈ જાય — અને એક શેરીની ચાર ગલીઓ બની જાય.',
+          hi: 'सड़क बांटने के लिए हम घर के नंबर के bits में से कुछ उधार लेते हैं और उन्हें सड़क के नाम में जोड़ देते हैं। दो bits उधार लें तो /24 का /26 बन जाए — और एक सड़क की चार गलियां बन जाएं।',
           en: 'To split the street we borrow a few bits from the house numbers and hand them to the street name. Borrow two bits and /24 becomes /26 — one street turns into four lanes.',
         },
         exam: {
           gu: 'Borrowed bits ની સંખ્યા n હોય તો 2^n subnets મળે. /24 → /26 એટલે 2 bits, 4 subnets, દરેકમાં 2^6 − 2 = 62 usable hosts.',
+          hi: 'Borrowed bits की संख्या n हो तो 2^n subnets मिलें। /24 → /26 यानी 2 bits, 4 subnets, हर एक में 2^6 − 2 = 62 usable hosts।',
           en: 'Borrowing n bits yields 2^n subnets. /24 → /26 borrows 2 bits for 4 subnets, each with 2^6 − 2 = 62 usable hosts.',
         },
       },
@@ -69,7 +74,7 @@ export const n1l4: LessonSpec = {
         ],
       }),
       aside: (t) => ({
-        title: { gu: 'Bits ઉધાર', en: 'Borrowing bits' },
+        title: { gu: 'Bits ઉધાર', hi: 'Bits उधार', en: 'Borrowing bits' },
         head: ['borrowed', 'prefix', 'subnets', 'hosts each'],
         rows: [
           ['0', '/24', '1', '254'],
@@ -82,14 +87,16 @@ export const n1l4: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'ચાર ગલીઓ બની', en: 'Four lanes appear' },
+      label: { gu: 'ચાર ગલીઓ બની', hi: 'चार गलियां बनीं', en: 'Four lanes appear' },
       text: {
         beginner: {
           gu: '/26 એટલે દરેક ગલીમાં 64 સરનામાં. એટલે ગલીઓ 0 થી શરૂ થઈને દર 64 પગલે બદલાય: .0, .64, .128, .192. આ 64 ને block size કહે છે — અને subnetting નો આખો જવાબ આ એક આંકડામાં છે.',
+          hi: '/26 यानी हर गली में 64 पते। तो गलियां 0 से शुरू होकर हर 64 कदम पर बदलें: .0, .64, .128, .192। इस 64 को block size कहते हैं — और subnetting का पूरा जवाब इसी एक अंक में है।',
           en: 'A /26 gives 64 addresses per lane. So the lanes start at 0 and change every 64 steps: .0, .64, .128, .192. That 64 is the block size — and the whole answer to any subnetting question lives in that one number.',
         },
         exam: {
           gu: 'Block size = 256 − mask octet. /26 માં mask નો છેલ્લો octet 192 છે, એટલે 256 − 192 = 64. Subnets એ જ અંતરે આવે છે.',
+          hi: 'Block size = 256 − mask octet। /26 में mask का आखिरी octet 192 है, तो 256 − 192 = 64। Subnets उसी अंतर पर आते हैं।',
           en: 'Block size = 256 − the mask octet. For /26 the last mask octet is 192, so 256 − 192 = 64. The subnets land at that spacing.',
         },
       },
@@ -102,7 +109,7 @@ export const n1l4: LessonSpec = {
         ],
       }),
       aside: (t) => ({
-        title: { gu: 'ચાર subnets', en: 'The four subnets' },
+        title: { gu: 'ચાર subnets', hi: 'चार subnets', en: 'The four subnets' },
         head: ['network', 'first', 'last', 'broadcast'],
         rows: [
           ['192.168.1.0', '.1', '.62', '.63'],
@@ -114,14 +121,16 @@ export const n1l4: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'દરેક ગલીમાં ત્રણ ખાસ સરનામાં', en: 'Three special addresses per lane' },
+      label: { gu: 'દરેક ગલીમાં ત્રણ ખાસ સરનામાં', hi: 'हर गली में तीन खास पते', en: 'Three special addresses per lane' },
       text: {
         beginner: {
           gu: 'દરેક ગલીમાં પહેલું સરનામું ગલીનું નામ છે અને છેલ્લું broadcast. વચ્ચેનાં જ વાપરી શકાય. એટલે 64 માંથી 62 મળે. અને સામાન્ય રીતે એક વધુ router ના gateway માટે જાય — એટલે ખરેખર 61 મશીન બેસે.',
+          hi: 'हर गली में पहला पता गली का नाम है और आखिरी broadcast। बीच वाले ही वापरे जा सकते हैं। तो 64 में से 62 मिलें। और आमतौर पर एक और router के gateway के लिए जाए — तो असल में 61 मशीनें बैठें।',
           en: 'In every lane the first address names the lane and the last is its broadcast. Only the middle ones are usable, so 64 gives you 62. One more usually goes to the router as the gateway — leaving room for 61 machines.',
         },
         exam: {
           gu: 'Network address = બધા host bits 0; broadcast = બધા host bits 1. Usable range એ બેની વચ્ચે. Gateway સામાન્ય રીતે પહેલું usable address લે છે.',
+          hi: 'Network address = सभी host bits 0; broadcast = सभी host bits 1। Usable range इन दोनों के बीच। Gateway आमतौर पर पहला usable address लेता है।',
           en: 'Network address = all host bits 0; broadcast = all host bits 1. The usable range sits between them, and the gateway conventionally takes the first usable address.',
         },
       },
@@ -136,7 +145,7 @@ export const n1l4: LessonSpec = {
         ],
       }),
       aside: () => ({
-        title: { gu: '192.168.1.64/26', en: '192.168.1.64/26' },
+        title: { gu: '192.168.1.64/26', hi: '192.168.1.64/26', en: '192.168.1.64/26' },
         head: ['address', 'role'],
         rows: [
           ['192.168.1.64', 'network — not usable'],
@@ -148,14 +157,16 @@ export const n1l4: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'દરેક વિભાગને પોતાની ગલી', en: 'A lane for each department' },
+      label: { gu: 'દરેક વિભાગને પોતાની ગલી', hi: 'हर विभाग को अपनी गली', en: 'A lane for each department' },
       text: {
         beginner: {
           gu: 'હવે દરેક વિભાગને પોતાની ગલી મળી. Sales .0/26 માં, HR .64/26 માં, IT .128/26 માં. એકબીજાના broadcast સંભળાતા નથી, અને વચ્ચે router હોવાથી તમે નક્કી કરી શકો કે કોણ કોને મળે.',
+          hi: 'अब हर विभाग को अपनी गली मिल गई। Sales .0/26 में, HR .64/26 में, IT .128/26 में। एक-दूसरे के broadcast सुनाई नहीं देते, और बीच में router होने से आप तय कर सकते हैं कि कौन किससे मिले।',
           en: 'Now each department has its own lane: Sales in .0/26, HR in .64/26, IT in .128/26. They no longer hear each other’s broadcasts, and because a router sits between them you decide who may reach whom.',
         },
         exam: {
           gu: 'દરેક subnet એક અલગ broadcast domain છે. Inter-subnet traffic router (અથવા L3 switch) થઈને જ જાય, એટલે ત્યાં ACL લગાવી શકાય.',
+          hi: 'हर subnet एक अलग broadcast domain है। Inter-subnet traffic router (या L3 switch) से ही जाता है, इसलिए वहां ACL लगा सकते हैं।',
           en: 'Each subnet is a separate broadcast domain. Inter-subnet traffic must cross a router (or L3 switch), which is exactly where an ACL can be applied.',
         },
       },
@@ -179,14 +190,16 @@ export const n1l4: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'VLSM — બધી ગલીઓ સરખી ન હોય', en: 'VLSM — lanes need not be equal' },
+      label: { gu: 'VLSM — બધી ગલીઓ સરખી ન હોય', hi: 'VLSM — सभी गलियां समान न हों', en: 'VLSM — lanes need not be equal' },
       text: {
         beginner: {
           gu: 'IT માં ફક્ત 5 માણસ છે તો એમને 62 સરનામાં શું કામ? એટલે ગલીઓ અલગ અલગ કદની બનાવાય છે — મોટા વિભાગને મોટી, નાનાને નાની. આને VLSM કહે છે. બે router વચ્ચેની લિંક માટે તો /30 પૂરતું છે — ફક્ત બે સરનામાં.',
+          hi: 'IT में सिर्फ 5 लोग हैं तो उन्हें 62 पते क्यों? इसलिए गलियां अलग-अलग आकार की बनाई जाती हैं — बड़े विभाग को बड़ी, छोटे को छोटी। इसे VLSM कहते हैं। दो router के बीच की link के लिए तो /30 काफी है — सिर्फ दो पते।',
           en: 'If IT has only five people, why give them 62 addresses? So we build lanes of different sizes — bigger for bigger departments. That is VLSM. A link between two routers needs only a /30 — just two addresses.',
         },
         exam: {
           gu: 'VLSM માં સૌથી મોટી જરૂરિયાતથી શરૂ કરીને ઉતરતા ક્રમે allocate કરો, નહીંતર overlap થાય. Point-to-point links માટે /30 (અથવા /31) વાપરો.',
+          hi: 'VLSM में सबसे बड़ी जरूरत से शुरू करके उतरते क्रम में allocate करें, वरना overlap हो। Point-to-point links के लिए /30 (या /31) वापरें।',
           en: 'With VLSM allocate from the largest requirement downward, or the blocks will overlap. Use /30 (or /31) for point-to-point links.',
         },
       },
@@ -199,7 +212,7 @@ export const n1l4: LessonSpec = {
         ],
       }),
       aside: () => ({
-        title: { gu: 'કદ પ્રમાણે', en: 'Right-sized' },
+        title: { gu: 'કદ પ્રમાણે', hi: 'आकार के अनुसार', en: 'Right-sized' },
         head: ['need', 'prefix', 'gives'],
         rows: [
           ['20 users', '/26', '62'],
@@ -212,21 +225,24 @@ export const n1l4: LessonSpec = {
   ],
   takeaway: {
     gu: 'Subnetting એટલે host bits ઉધાર લઈને એક નેટવર્કને ઘણાં નાનાંમાં વહેંચવું. Block size = 256 − mask octet, અને subnets એ જ અંતરે આવે. દરેકમાં પહેલું નામ, છેલ્લું broadcast. VLSM થી દરેક ગલી જેટલી જોઈએ એટલી જ મોટી બનાવો.',
+    hi: 'Subnetting यानी host bits उधार लेकर एक network को कई छोटों में बांटना। Block size = 256 − mask octet, और subnets उसी अंतर पर आते हैं। हर एक में पहला नाम, आखिरी broadcast। VLSM से हर गली जितनी चाहिए उतनी ही बड़ी बनाएं।',
     en: 'Subnetting is borrowing host bits to split one network into many. Block size = 256 − the mask octet, and the subnets land at that spacing. In each, the first address names it and the last is broadcast. With VLSM you size every lane to exactly what it needs.',
   },
   check: {
     q: {
       gu: '192.168.1.0/26 પછીનું બીજું subnet કયું?',
+      hi: '192.168.1.0/26 के बाद का दूसरा subnet कौन सा?',
       en: 'What is the next subnet after 192.168.1.0/26?',
     },
     options: [
-      { gu: '192.168.1.64', en: '192.168.1.64' },
-      { gu: '192.168.1.26', en: '192.168.1.26' },
-      { gu: '192.168.1.128', en: '192.168.1.128' },
+      { gu: '192.168.1.64', hi: '192.168.1.64', en: '192.168.1.64' },
+      { gu: '192.168.1.26', hi: '192.168.1.26', en: '192.168.1.26' },
+      { gu: '192.168.1.128', hi: '192.168.1.128', en: '192.168.1.128' },
     ],
     answer: 0,
     explain: {
       gu: '/26 નો mask octet 192 છે, એટલે block size = 256 − 192 = 64. Subnets દર 64 પગલે આવે: .0, .64, .128, .192.',
+      hi: '/26 का mask octet 192 है, तो block size = 256 − 192 = 64। Subnets हर 64 कदम पर आते हैं: .0, .64, .128, .192।',
       en: 'The mask octet for /26 is 192, so the block size is 256 − 192 = 64. The subnets step by 64: .0, .64, .128, .192.',
     },
   },
@@ -252,20 +268,23 @@ const vlanLinks = [
 export const n2l2: LessonSpec = {
   why: {
     gu: 'એક switch ખરીદો અને તમને એક નેટવર્ક મળે છે. પણ Sales અને Accounts ને અલગ રાખવાં હોય તો? બીજો switch ખરીદવાની જરૂર નથી — VLAN એક જ switch ને અંદરથી ઘણા switch માં વહેંચી દે છે.',
+    hi: 'एक switch खरीदें और आपको एक network मिलता है। पर Sales और Accounts को अलग रखना हो तो? दूसरा switch खरीदने की जरूरत नहीं — VLAN एक ही switch को अंदर से कई switch में बांट देता है।',
     en: 'Buy one switch and you get one network. But what if Sales and Accounts must stay apart? You do not need a second switch — a VLAN splits one switch into several from the inside.',
   },
   viewBox: { w: 860, h: 390 },
   steps: [
     {
       ms: 2800,
-      label: { gu: 'બધા એક જ નેટવર્કમાં', en: 'Everyone on one network' },
+      label: { gu: 'બધા એક જ નેટવર્કમાં', hi: 'सब एक ही network में', en: 'Everyone on one network' },
       text: {
         beginner: {
           gu: 'Switch ડબ્બામાંથી કાઢો એટલે એના બધા ports એક જ નેટવર્કમાં હોય છે — VLAN 1 માં. ચારેય PC એકબીજાને જુએ છે, એકબીજાને ping કરી શકે છે, અને એકબીજાના broadcast સાંભળે છે.',
+          hi: 'Switch डिब्बे से निकालें तो उसके सारे ports एक ही network में होते हैं — VLAN 1 में। चारों PC एक-दूसरे को देखते हैं, एक-दूसरे को ping कर सकते हैं, और एक-दूसरे के broadcast सुनते हैं।',
           en: 'Take a switch out of the box and every port sits in one network — VLAN 1. All four PCs see each other, can ping each other, and hear each other’s broadcasts.',
         },
         exam: {
           gu: 'Default માં બધા ports access mode માં VLAN 1 પર હોય છે. એક જ broadcast domain, એક જ MAC address table space.',
+          hi: 'Default में सारे ports access mode में VLAN 1 पर होते हैं। एक ही broadcast domain, एक ही MAC address table space।',
           en: 'By default every port is an access port in VLAN 1: one broadcast domain sharing one MAC address table space.',
         },
       },
@@ -289,14 +308,16 @@ export const n2l2: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'પણ એ જોખમ છે', en: 'But that is a risk' },
+      label: { gu: 'પણ એ જોખમ છે', hi: 'पर यह जोखिम है', en: 'But that is a risk' },
       text: {
         beginner: {
           gu: 'Accounts નું કમ્પ્યુટર અને મહેમાનનું લેપટોપ એક જ નેટવર્કમાં હોય એ સારું નથી. વળી કોઈ એક મશીન broadcast નો વરસાદ કરે તો બધાં ધીમાં પડે. મોટા નેટવર્કમાં આ સમસ્યા ગંભીર બને છે.',
+          hi: 'Accounts का कंप्यूटर और मेहमान का लैपटॉप एक ही network में हों यह अच्छा नहीं। फिर कोई एक मशीन broadcast की बारिश करे तो सब धीमे पड़ जाएं। बड़े network में यह समस्या गंभीर बनती है।',
           en: 'Having the Accounts machine and a guest laptop on one network is not healthy. And if one machine floods broadcasts, everyone slows down. In a large network that becomes serious.',
         },
         exam: {
           gu: 'મોટું broadcast domain = વધુ ARP/DHCP broadcast દરેક host સુધી, અને કોઈ security boundary નહીં. એ જ બે કારણ VLAN ના મૂળમાં છે.',
+          hi: 'बड़ा broadcast domain = ज्यादा ARP/DHCP broadcast हर host तक, और कोई security boundary नहीं। यही दो कारण VLAN की जड़ में हैं।',
           en: 'A large broadcast domain means more ARP and DHCP broadcasts reaching every host, and no security boundary. Those two reasons are the whole motivation for VLANs.',
         },
       },
@@ -316,14 +337,16 @@ export const n2l2: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'VLAN બનાવો — એક નંબર, એક નામ', en: 'Create a VLAN — a number and a name' },
+      label: { gu: 'VLAN બનાવો — એક નંબર, એક નામ', hi: 'VLAN बनाएं — एक नंबर, एक नाम', en: 'Create a VLAN — a number and a name' },
       text: {
         beginner: {
           gu: 'VLAN એ switch ની અંદર એક અદૃશ્ય દીવાલ છે. તમે ફક્ત એક નંબર આપો છો — VLAN 10, નામ Sales. આ ક્ષણે switch ની અંદર એક નવું, સાવ ખાલી નેટવર્ક બની જાય છે, જેમાં હજી એકેય port નથી.',
+          hi: 'VLAN switch के अंदर एक अदृश्य दीवार है। आप सिर्फ एक नंबर देते हैं — VLAN 10, नाम Sales। इस क्षण switch के अंदर एक नया, बिल्कुल खाली network बन जाता है, जिसमें अभी एक भी port नहीं है।',
           en: 'A VLAN is an invisible wall inside the switch. You simply give it a number — VLAN 10, named Sales. At that moment a brand-new, completely empty network exists inside the switch, with no ports in it yet.',
         },
         exam: {
           gu: '`vlan 10` + `name Sales` VLAN database માં entry બનાવે છે. Normal range 1–1005, extended 1006–4094. VLAN બન્યું એટલું જ — ports હજી જોડાયા નથી.',
+          hi: '`vlan 10` + `name Sales` VLAN database में entry बनाता है। Normal range 1–1005, extended 1006–4094। VLAN बना बस — ports अभी जुड़े नहीं।',
           en: '`vlan 10` plus `name Sales` creates an entry in the VLAN database. The normal range is 1–1005 and extended is 1006–4094. The VLAN now exists, but no ports belong to it.',
         },
       },
@@ -334,7 +357,7 @@ export const n2l2: LessonSpec = {
         links: vlanLinks,
       }),
       aside: (t) => ({
-        title: { gu: 'VLAN database', en: 'VLAN database' },
+        title: { gu: 'VLAN database', hi: 'VLAN database', en: 'VLAN database' },
         head: ['id', 'name', 'ports'],
         rows:
           t > 0.4
@@ -347,14 +370,16 @@ export const n2l2: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'Port ને VLAN માં મૂકો', en: 'Put a port into the VLAN' },
+      label: { gu: 'Port ને VLAN માં મૂકો', hi: 'Port को VLAN में रखें', en: 'Put a port into the VLAN' },
       text: {
         beginner: {
           gu: 'હવે ports ને નવી VLAN માં ખસેડો. Fa0/1 અને Fa0/2 ને VLAN 10 માં મૂક્યા — PC1 અને PC2 હવે Sales માં. PC3 અને PC4 ને VLAN 20 માં મૂકીએ. દીવાલ ઊભી થઈ ગઈ.',
+          hi: 'अब ports को नई VLAN में खिसकाएं। Fa0/1 और Fa0/2 को VLAN 10 में रखा — PC1 और PC2 अब Sales में। PC3 और PC4 को VLAN 20 में रखें। दीवार खड़ी हो गई।',
           en: 'Now move ports into the new VLAN. Fa0/1 and Fa0/2 go into VLAN 10 — PC1 and PC2 are now in Sales. Put Fa0/3 and Fa0/4 into VLAN 20. The wall is up.',
         },
         exam: {
           gu: '`switchport mode access` + `switchport access vlan 10`. એક access port એક જ VLAN માં રહી શકે, અને એના પરના frames untagged હોય છે.',
+          hi: '`switchport mode access` + `switchport access vlan 10`। एक access port एक ही VLAN में रह सकता है, और उस पर के frames untagged होते हैं।',
           en: '`switchport mode access` then `switchport access vlan 10`. An access port belongs to exactly one VLAN and its frames travel untagged.',
         },
       },
@@ -363,7 +388,7 @@ export const n2l2: LessonSpec = {
         links: vlanLinks,
       }),
       aside: (t) => ({
-        title: { gu: 'Port assignment', en: 'Port assignment' },
+        title: { gu: 'Port assignment', hi: 'Port assignment', en: 'Port assignment' },
         head: ['port', 'vlan'],
         rows: [
           ['Fa0/1', t > 0.3 ? '10' : '1'],
@@ -375,14 +400,16 @@ export const n2l2: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'દીવાલ કામ કરે છે', en: 'The wall works' },
+      label: { gu: 'દીવાલ કામ કરે છે', hi: 'दीवार काम करती है', en: 'The wall works' },
       text: {
         beginner: {
           gu: 'હવે PC1 થી PC2 ને ping કરો — ચાલે છે, બંને VLAN 10 માં છે. પણ PC1 થી PC3 ને ping કરો — નથી ચાલતું! જોકે બંને એક જ switch માં જોડાયેલા છે અને એમનાં IP પણ એક જ નેટવર્કનાં છે. Switch એ frame ને બીજી VLAN માં જવા જ નથી દેતો.',
+          hi: 'अब PC1 से PC2 को ping करें — चलता है, दोनों VLAN 10 में हैं। पर PC1 से PC3 को ping करें — नहीं चलता! हालांकि दोनों एक ही switch में जुड़े हैं और उनके IP भी एक ही network के हैं। Switch उस frame को दूसरी VLAN में जाने ही नहीं देता।',
           en: 'Ping PC1 to PC2 — it works, both are in VLAN 10. Now ping PC1 to PC3 — it fails. And yet they are plugged into the same switch, with IPs in the same network. The switch simply refuses to let the frame cross into the other VLAN.',
         },
         exam: {
           gu: 'Switch દરેક VLAN માટે અલગ MAC table રાખે છે અને એક VLAN નો frame બીજી VLAN ના port પર કદી forward થતો નથી — IP subnet સરખું હોય તો પણ.',
+          hi: 'Switch हर VLAN के लिए अलग MAC table रखता है और एक VLAN का frame दूसरी VLAN के port पर कभी forward नहीं होता — IP subnet समान हो तो भी।',
           en: 'The switch keeps a separate MAC table per VLAN and never forwards a frame from one VLAN out of another VLAN’s port — even when the IP subnet matches.',
         },
       },
@@ -406,14 +433,16 @@ export const n2l2: LessonSpec = {
     },
     {
       ms: 2800,
-      label: { gu: 'ફરી જોડવા router જોઈએ', en: 'To rejoin them you need a router' },
+      label: { gu: 'ફરી જોડવા router જોઈએ', hi: 'फिर से जोड़ने के लिए router चाहिए', en: 'To rejoin them you need a router' },
       text: {
         beginner: {
           gu: 'VLAN દીવાલ ઊભી કરે છે, અને એ દીવાલ ઓળંગવાનો એક જ રસ્તો છે: Layer 3. Router કે L3 switch વચ્ચે મૂકો તો જ Sales અને Accounts વાત કરી શકે — અને ત્યાં જ તમે ACL લગાવીને નક્કી કરી શકો કે કોણ શું જોઈ શકે.',
+          hi: 'VLAN दीवार खड़ी करता है, और उस दीवार को पार करने का एक ही रास्ता है: Layer 3। Router या L3 switch बीच में रखें तो ही Sales और Accounts बात कर सकें — और वहीं आप ACL लगाकर तय कर सकते हैं कि कौन क्या देख सके।',
           en: 'A VLAN builds a wall, and there is only one way over it: Layer 3. Put a router or an L3 switch in between and Sales can reach Accounts — and that is exactly where an ACL decides who may see what.',
         },
         exam: {
           gu: 'Inter-VLAN routing router-on-a-stick (subinterfaces પર 802.1Q) અથવા L3 switch પર SVI થી થાય છે. દરેક VLAN ને પોતાનું IP subnet અને gateway જોઈએ.',
+          hi: 'Inter-VLAN routing router-on-a-stick (subinterfaces पर 802.1Q) या L3 switch पर SVI से होती है। हर VLAN को अपना IP subnet और gateway चाहिए।',
           en: 'Inter-VLAN routing is done with router-on-a-stick (802.1Q subinterfaces) or SVIs on an L3 switch. Each VLAN needs its own IP subnet and gateway.',
         },
       },
@@ -442,21 +471,24 @@ export const n2l2: LessonSpec = {
   ],
   takeaway: {
     gu: 'VLAN એક switch ને અંદરથી ઘણા અલગ switch માં વહેંચે છે. એક VLAN નો frame બીજીમાં કદી જતો નથી — IP સરખાં હોય તો પણ. ફરી જોડવા માટે Layer 3 જોઈએ, અને એ જ જગ્યા છે જ્યાં તમે નિયમો લગાવી શકો.',
+    hi: 'VLAN एक switch को अंदर से कई अलग switch में बांट देता है। एक VLAN का frame दूसरी में कभी नहीं जाता — IP समान हों तो भी। फिर से जोड़ने के लिए Layer 3 चाहिए, और वही जगह है जहां आप नियम लगा सकते हैं।',
     en: 'A VLAN splits one switch into several from the inside. A frame in one VLAN never reaches another — even with matching IPs. Rejoining them takes Layer 3, and that is precisely where you can apply rules.',
   },
   check: {
     q: {
       gu: 'PC1 (VLAN 10) અને PC3 (VLAN 20) એક જ switch પર છે અને બંનેનાં IP 192.168.1.x છે. Ping ચાલશે?',
+      hi: 'PC1 (VLAN 10) और PC3 (VLAN 20) एक ही switch पर हैं और दोनों के IP 192.168.1.x हैं। Ping चलेगा?',
       en: 'PC1 (VLAN 10) and PC3 (VLAN 20) are on the same switch, both with 192.168.1.x addresses. Will ping work?',
     },
     options: [
-      { gu: 'ના — VLAN અલગ છે, એટલે frame પહોંચતો જ નથી', en: 'No — different VLANs, so the frame never gets across' },
-      { gu: 'હા — IP એક જ નેટવર્કનાં છે એટલે ચાલશે', en: 'Yes — the IPs are in the same network, so it works' },
-      { gu: 'હા — એક જ switch પર છે એટલે ચાલશે', en: 'Yes — they are on the same switch, so it works' },
+      { gu: 'ના — VLAN અલગ છે, એટલે frame પહોંચતો જ નથી', hi: 'नहीं — VLAN अलग हैं, इसलिए frame पहुंचता ही नहीं', en: 'No — different VLANs, so the frame never gets across' },
+      { gu: 'હા — IP એક જ નેટવર્કનાં છે એટલે ચાલશે', hi: 'हां — IP एक ही network के हैं इसलिए चलेगा', en: 'Yes — the IPs are in the same network, so it works' },
+      { gu: 'હા — એક જ switch પર છે એટલે ચાલશે', hi: 'हां — एक ही switch पर हैं इसलिए चलेगा', en: 'Yes — they are on the same switch, so it works' },
     ],
     answer: 0,
     explain: {
       gu: 'VLAN એ Layer 2 ની દીવાલ છે. Switch એક VLAN નો frame બીજી VLAN ના port પર કદી મોકલતો નથી, ભલે IP subnet સરખું હોય. ઓળંગવા માટે router જોઈએ.',
+      hi: 'VLAN Layer 2 की दीवार है। Switch एक VLAN का frame दूसरी VLAN के port पर कभी नहीं भेजता, चाहे IP subnet समान हो। पार करने के लिए router चाहिए।',
       en: 'A VLAN is a Layer 2 wall. The switch never sends a frame from one VLAN out of another VLAN’s port, whatever the IP subnet says. Crossing it requires a router.',
     },
   },
@@ -476,20 +508,23 @@ const trunkNodes = (tagged: boolean) => [
 export const n2l3: LessonSpec = {
   why: {
     gu: 'VLAN એક switch પર સહેલી છે. પણ બે switch હોય અને બંને પર એક જ VLAN હોય તો? વચ્ચેની એક જ લિંક પર બંને VLAN નો traffic કેવી રીતે જાય, અને સામે છેડે કેવી રીતે ઓળખાય કે કયો frame કઈ VLAN નો હતો?',
+    hi: 'VLAN एक switch पर आसान है। पर दो switch हों और दोनों पर एक ही VLAN हो तो? बीच की एक ही link पर दोनों VLAN का traffic कैसे जाए, और सामने छोर पर कैसे पहचाना जाए कि कौन सा frame किस VLAN का था?',
     en: 'VLANs on one switch are easy. But with two switches carrying the same VLANs, how does traffic for both cross a single link — and how does the far end know which frame belonged to which VLAN?',
   },
   viewBox: { w: 900, h: 380 },
   steps: [
     {
       ms: 2800,
-      label: { gu: 'બે switch, એક જ VLAN', en: 'Two switches, the same VLANs' },
+      label: { gu: 'બે switch, એક જ VLAN', hi: 'दो switch, एक ही VLAN', en: 'Two switches, the same VLANs' },
       text: {
         beginner: {
           gu: 'ઓફિસ વધી એટલે બીજો switch આવ્યો. VLAN 10 (Sales) અને VLAN 20 (Accounts) બંને switch પર છે — PC1 અને PC2 બંને Sales માં, પણ અલગ switch પર. એમને વાત કરવી છે.',
+          hi: 'ऑफिस बढ़ी तो दूसरा switch आया। VLAN 10 (Sales) और VLAN 20 (Accounts) दोनों switch पर हैं — PC1 और PC2 दोनों Sales में, पर अलग switch पर। उन्हें बात करनी है।',
           en: 'The office grew so a second switch arrived. VLAN 10 (Sales) and VLAN 20 (Accounts) exist on both — PC1 and PC2 are both in Sales but on different switches. They need to talk.',
         },
         exam: {
           gu: 'VLAN ID દરેક switch પર locally significant છે, પણ end-to-end connectivity માટે બંને છેડે એ જ VLAN ID હોવું જોઈએ.',
+          hi: 'VLAN ID हर switch पर locally significant है, पर end-to-end connectivity के लिए दोनों छोर पर वही VLAN ID होनी चाहिए।',
           en: 'A VLAN ID is locally significant to each switch, but end-to-end connectivity needs the same VLAN ID configured at both ends.',
         },
       },
@@ -506,14 +541,16 @@ export const n2l3: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'Access link ની મર્યાદા', en: 'What an access link cannot do' },
+      label: { gu: 'Access link ની મર્યાદા', hi: 'Access link की सीमा', en: 'What an access link cannot do' },
       text: {
         beginner: {
           gu: 'વચ્ચેની લિંકને સાદા access port તરીકે રાખો તો એ ફક્ત એક જ VLAN વહન કરી શકે. VLAN 10 પસંદ કરો તો Sales તો જોડાય, પણ Accounts નો traffic અટકી જાય. બે VLAN માટે બે અલગ કેબલ નાખવા પડે — અને દસ VLAN હોય તો દસ કેબલ!',
+          hi: 'बीच की link को साधारण access port की तरह रखें तो वह सिर्फ एक ही VLAN वहन कर सके। VLAN 10 चुनें तो Sales जुड़े, पर Accounts का traffic रुक जाए। दो VLAN के लिए दो अलग cable लगाने पड़ें — और दस VLAN हों तो दस cable!',
           en: 'Leave the link between them as a plain access port and it can carry only one VLAN. Choose VLAN 10 and Sales connects, but Accounts is stuck. Two VLANs would need two cables — and ten VLANs, ten cables.',
         },
         exam: {
           gu: 'Access port untagged frames વહન કરે છે અને એક જ VLAN માં હોય છે. દરેક VLAN માટે અલગ link એ નથી scalable કે નથી સસ્તું.',
+          hi: 'Access port untagged frames वहन करता है और एक ही VLAN में होता है। हर VLAN के लिए अलग link न scalable है न सस्ता।',
           en: 'An access port carries untagged frames in exactly one VLAN. A separate link per VLAN scales neither in ports nor in cost.',
         },
       },
@@ -534,14 +571,16 @@ export const n2l3: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'Trunk — એક લિંક, બધી VLAN', en: 'A trunk — one link, every VLAN' },
+      label: { gu: 'Trunk — એક લિંક, બધી VLAN', hi: 'Trunk — एक link, सभी VLAN', en: 'A trunk — one link, every VLAN' },
       text: {
         beginner: {
           gu: 'ઉકેલ એ છે કે વચ્ચેની લિંકને trunk બનાવો. Trunk એક જ કેબલ પર બધી VLAN નો traffic લઈ જાય છે. પણ તો સામે છેડે ગૂંચવાડો ન થાય? એટલે જ 802.1Q આવે છે.',
+          hi: 'समाधान यह है कि बीच की link को trunk बनाएं। Trunk एक ही cable पर सभी VLAN का traffic ले जाता है। पर सामने छोर पर गड़बड़ न हो? इसीलिए 802.1Q आता है।',
           en: 'The answer is to make that link a trunk. A trunk carries traffic for every VLAN down one cable. But then how does the far end keep them apart? That is what 802.1Q is for.',
         },
         exam: {
           gu: '`switchport mode trunk` port ને 802.1Q trunk બનાવે છે. બંને છેડે trunk હોવું જોઈએ — એક છેડે access રહે તો mismatch થાય.',
+          hi: '`switchport mode trunk` port को 802.1Q trunk बनाता है। दोनों छोर पर trunk होना चाहिए — एक छोर पर access रहे तो mismatch हो।',
           en: '`switchport mode trunk` turns the port into an 802.1Q trunk. Both ends must be trunks — leaving one end as access causes a mode mismatch.',
         },
       },
@@ -565,14 +604,16 @@ export const n2l3: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'Tag ચઢે', en: 'The tag goes on' },
+      label: { gu: 'Tag ચઢે', hi: 'Tag चढ़ता है', en: 'The tag goes on' },
       text: {
         beginner: {
           gu: 'અહીં જ જાદુ છે. Frame trunk પર નીકળે એ પહેલાં switch એના પર એક નાનું લેબલ ચોંટાડે છે: "હું VLAN 10 નો છું". આ 4 byte નું લેબલ એટલે 802.1Q tag. એના વગર સામેના switch ને ખબર જ ન પડે કે frame કઈ VLAN નો હતો.',
+          hi: 'यहीं जादू है। Frame trunk पर निकले इससे पहले switch उस पर एक छोटा label चिपकाता है: "मैं VLAN 10 का हूं"। यह 4 byte का label यानी 802.1Q tag। इसके बिना सामने switch को पता ही न चले कि frame किस VLAN का था।',
           en: 'Here is the trick. Just before a frame leaves on the trunk the switch sticks a small label on it: "I belong to VLAN 10." That four-byte label is the 802.1Q tag. Without it the far switch would have no idea which VLAN the frame came from.',
         },
         exam: {
           gu: '802.1Q tag Ethernet header માં source MAC પછી 4 bytes ઉમેરે છે: TPID 0x8100, priority (CoS), DEI, અને 12-bit VLAN ID. FCS ફરી ગણાય છે.',
+          hi: '802.1Q tag Ethernet header में source MAC के बाद 4 bytes जोड़ता है: TPID 0x8100, priority (CoS), DEI, और 12-bit VLAN ID। FCS फिर से गणना होती है।',
           en: 'The 802.1Q tag inserts 4 bytes after the source MAC: TPID 0x8100, a priority (CoS) field, DEI, and a 12-bit VLAN ID. The FCS is recalculated.',
         },
       },
@@ -591,7 +632,7 @@ export const n2l3: LessonSpec = {
             : [{ id: 'p', from: 'sw1', to: 'sw2', t: 0.1 + ease((t - 0.35) / 0.65) * 0.8, color: WARN, label: 'tagged · VLAN 10' }],
       }),
       aside: (t) => ({
-        title: { gu: 'Frame માં શું છે', en: 'Inside the frame' },
+        title: { gu: 'Frame માં શું છે', hi: 'Frame में क्या है', en: 'Inside the frame' },
         head: ['field', 'value'],
         rows:
           t > 0.35
@@ -610,14 +651,16 @@ export const n2l3: LessonSpec = {
     },
     {
       ms: 3000,
-      label: { gu: 'Tag ઊતરે', en: 'The tag comes off' },
+      label: { gu: 'Tag ઊતરે', hi: 'Tag उतरता है', en: 'The tag comes off' },
       text: {
         beginner: {
           gu: 'સામેનો switch tag વાંચે છે — "VLAN 10" — અને જાણે કે આ frame ક્યાં મોકલવો. પછી એ tag કાઢી નાખે છે અને સાદો frame PC2 ને આપે છે. PC2 ને ખબર પણ નથી કે વચ્ચે કોઈ લેબલ લાગ્યું હતું. VLAN તો switch ની વાત છે, PC ની નહીં.',
+          hi: 'सामने switch tag पढ़ता है — "VLAN 10" — और जान जाता है कि यह frame कहां भेजना। फिर वह tag निकाल देता है और साधारण frame PC2 को देता है। PC2 को पता भी नहीं कि बीच में कोई label लगा था। VLAN तो switch की बात है, PC की नहीं।',
           en: 'The far switch reads the tag — VLAN 10 — and knows where the frame belongs. Then it strips the tag off and hands a plain frame to PC2. PC2 never knows a label was ever there. VLANs are a switch concern, not a PC one.',
         },
         exam: {
           gu: 'Egress access port પર tag દૂર થાય છે. End hosts હંમેશા untagged frames જુએ છે (voice VLAN જેવા ખાસ કિસ્સા સિવાય).',
+          hi: 'Egress access port पर tag हटता है। End hosts हमेशा untagged frames देखते हैं (voice VLAN जैसे खास मामलों को छोड़कर)।',
           en: 'The tag is removed on egress at the access port. End hosts always see untagged frames (barring special cases such as a voice VLAN).',
         },
       },
@@ -638,14 +681,16 @@ export const n2l3: LessonSpec = {
     },
     {
       ms: 3200,
-      label: { gu: 'Native VLAN — tag વગરનું ખાનું', en: 'The native VLAN — the untagged lane' },
+      label: { gu: 'Native VLAN — tag વગરનું ખાનું', hi: 'Native VLAN — tag बिना का खाना', en: 'The native VLAN — the untagged lane' },
       text: {
         beginner: {
           gu: 'Trunk પર એક VLAN એવી હોય છે જેને tag લાગતો જ નથી — native VLAN, default માં VLAN 1. અહીં જ સૌથી સામાન્ય ભૂલ થાય છે: બે છેડે અલગ native VLAN હોય તો traffic ચૂપચાપ ખોટી VLAN માં ભળી જાય. કોઈ error નહીં, બસ ખોટું વર્તન.',
+          hi: 'Trunk पर एक VLAN ऐसी होती है जिस पर tag लगता ही नहीं — native VLAN, default में VLAN 1। यहीं सबसे आम गलती होती है: दोनों छोर पर अलग native VLAN हो तो traffic चुपचाप गलत VLAN में मिल जाए। कोई error नहीं, बस गलत व्यवहार।',
           en: 'On a trunk one VLAN travels with no tag at all — the native VLAN, VLAN 1 by default. This is where the classic mistake happens: if the two ends disagree on the native VLAN, traffic silently leaks into the wrong one. No error message, just wrong behaviour.',
         },
         exam: {
           gu: 'Native VLAN mismatch CDP/STP errors આપે છે અને VLAN hopping નું જોખમ ઊભું કરે છે. Best practice: બંને છેડે એકસરખું, અને કોઈ unused VLAN વાપરવું.',
+          hi: 'Native VLAN mismatch CDP/STP errors देता है और VLAN hopping का जोखिम खड़ा करता है। Best practice: दोनों छोर पर एक समान, और कोई unused VLAN वापरें।',
           en: 'A native VLAN mismatch raises CDP/STP errors and opens a VLAN-hopping risk. Best practice: match both ends, and set it to an unused VLAN.',
         },
       },
@@ -663,7 +708,7 @@ export const n2l3: LessonSpec = {
             : [{ id: 'p', from: 'sw1', to: 'sw2', t: 0.1 + ease(t / 0.5) * 0.8, color: 'var(--nq-ok)', label: 'untagged · native' }],
       }),
       aside: () => ({
-        title: { gu: 'Trunk પર', en: 'On the trunk' },
+        title: { gu: 'Trunk પર', hi: 'Trunk पर', en: 'On the trunk' },
         head: ['vlan', 'tagged?'],
         rows: [
           ['1 (native)', 'no — untagged'],
@@ -675,21 +720,24 @@ export const n2l3: LessonSpec = {
   ],
   takeaway: {
     gu: 'Access port એક VLAN વહન કરે, trunk બધી. Trunk પર નીકળતી વખતે frame પર 802.1Q tag ચઢે અને સામે છેડે ઊતરે — એટલે PC ને કદી ખબર પડતી નથી. Native VLAN જ એકમાત્ર untagged રહે છે, અને બંને છેડે એ સરખી ન હોય તો traffic ચૂપચાપ ખોટે રસ્તે જાય.',
+    hi: 'Access port एक VLAN वहन करे, trunk सभी। Trunk पर निकलते समय frame पर 802.1Q tag चढ़े और सामने छोर पर उतरे — इसलिए PC को कभी पता नहीं चलता। Native VLAN ही एकमात्र untagged रहती है, और दोनों छोर पर समान न हो तो traffic चुपचाप गलत रास्ते जाए।',
     en: 'An access port carries one VLAN, a trunk carries them all. Leaving on a trunk a frame gains an 802.1Q tag and loses it at the far end, so the PC never knows. Only the native VLAN stays untagged — and if the two ends disagree on it, traffic goes quietly astray.',
   },
   check: {
     q: {
       gu: 'Trunk પર frame ને 802.1Q tag કેમ લગાવવો પડે છે?',
+      hi: 'Trunk पर frame को 802.1Q tag क्यों लगाना पड़ता है?',
       en: 'Why does a frame need an 802.1Q tag on a trunk?',
     },
     options: [
-      { gu: 'જેથી સામેનો switch જાણે કે frame કઈ VLAN નો છે', en: 'So the far switch knows which VLAN the frame belongs to' },
-      { gu: 'જેથી frame ઝડપથી જાય', en: 'So the frame travels faster' },
-      { gu: 'જેથી PC ને VLAN ની ખબર પડે', en: 'So the PC learns about the VLAN' },
+      { gu: 'જેથી સામેનો switch જાણે કે frame કઈ VLAN નો છે', hi: 'ताकि सामने switch जाने कि frame किस VLAN का है', en: 'So the far switch knows which VLAN the frame belongs to' },
+      { gu: 'જેથી frame ઝડપથી જાય', hi: 'ताकि frame तेजी से जाए', en: 'So the frame travels faster' },
+      { gu: 'જેથી PC ને VLAN ની ખબર પડે', hi: 'ताकि PC को VLAN का पता चले', en: 'So the PC learns about the VLAN' },
     ],
     answer: 0,
     explain: {
       gu: 'એક જ કેબલ પર ઘણી VLAN નો traffic જાય છે. Tag વગર સામેનો switch એમને અલગ પાડી જ ન શકે. PC ને tag દેખાતો જ નથી — એ પહેલાં જ ઊતરી જાય છે.',
+      hi: 'एक ही cable पर कई VLAN का traffic जाता है। Tag के बिना सामने switch उन्हें अलग कर ही न सके। PC को tag दिखता ही नहीं — वह पहले ही उतर जाता है।',
       en: 'One cable carries traffic for many VLANs; without the tag the far switch could not tell them apart. The PC never sees the tag — it is stripped before delivery.',
     },
   },
