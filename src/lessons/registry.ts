@@ -70,6 +70,10 @@ import {
   n7l1Break,
   n7l2Break,
 } from './breaksCCNA'
+import { p1l1, p1l2, p1l3, p1l4 } from './ccnp1'
+import { p2l1, p2l2, p2l3, p2l4, p2l5, p2l6 } from './ccnp2'
+import { p3l1, p3l2, p3l3, p3l4, p3l5, p3l6 } from './ccnp3'
+import { p4l1, p4l2, p4l3, p4l4 } from './ccnp4'
 
 /** Learn-stage animations that are built. */
 export const LESSONS: Record<string, LessonSpec> = {
@@ -126,6 +130,26 @@ export const LESSONS: Record<string, LessonSpec> = {
   n6l3,
   n7l1: n7l1Learn,
   n7l2: n7l2Learn,
+  p1l1,
+  p1l2,
+  p1l3,
+  p1l4,
+  p2l1,
+  p2l2,
+  p2l3,
+  p2l4,
+  p2l5,
+  p2l6,
+  p3l1,
+  p3l2,
+  p3l3,
+  p3l4,
+  p3l5,
+  p3l6,
+  p4l1,
+  p4l2,
+  p4l3,
+  p4l4,
 }
 
 /** Configure-stage labs that are built. */
